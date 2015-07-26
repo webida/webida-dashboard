@@ -1,0 +1,17 @@
+/*!
+ * Webida (http://webida.org)
+ */
+
+.page-container {
+    margin: 0 0 0 250px;
+    padding: 0;
+}
+
+.page-wrapper {
+    margin: 0;
+    display: none;
+}
+
+.active-page {
+    display: block;
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Webida Dashboard</title>
+
+    <link rel="shorcut icon" href="../resource/webida_favicon_16.png" type="image/x-icon">
+    <link rel="icon" href="../resource/webida_favicon_16.png" type="image/x-icon">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="../css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/webida-dashboard.css" rel="stylesheet">
+    <link href="../css/router.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="../resource/webida-white.png" class="wb-logo navbar-left" alt="webida">
+                <a class="navbar-brand navbar-left" href="index.html">Webida</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href="#">lisyoen@gmail.com</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a tabindex="-1" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
+                        </li>
+                        <li><a tabindex="-1" href="#"><i class="fa fa-gear fa-fw"></i> Setting</a>
+                        </li>
+                        <li><a tabindex="-1" href="#"><i class="fa fa-question fa-fw"></i> Help</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="#workspace"><i class="fa fa-folder-o fa-fw"></i> Workspaces </a>
+                        </li>
+                        <li>
+                            <a href="#settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://github.com/webida/webida-client/wiki"><i class="fa fa-link fa-fw"></i> Help Contents</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://groups.google.com/forum/?hl=ko#!forum/webida"><i class="fa fa-link fa-fw"></i> Community</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-container" class="page-container">
+            <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page active-page">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header">Workspaces <a href="#"><i class="fa fa-plus-square fa-1x"></i></a></h3>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div id="workspace-panel" class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> S-Core Cafe</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div><i class="fa fa-folder-o"></i> bootstrap-example.git</div>
+                                <div><i class="fa fa-folder-o"></i> cafe.git
+                                    <br>└ <i class="fa fa-globe"></i>  <a href="https://100216-cafe.webida.org/" target="_blank">cafe deploy</a>  <a href="#"><i class="fa fa-minus-circle"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <span class="pull-left">2 projects 2.3MB</span>
+                                <span class="pull-right">
+                                        <a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" target="_blank" class="btn btn-primary btn-xs pull-right">
+                                            Open
+                                        </a>
+
+                                    </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> Demo 2015</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div><i class="fa fa-folder-o"></i> demo-app.git</div>
+                                <div><i class="fa fa-folder-o"></i> java-sample.git</div>
+                                <div><i class="fa fa-folder-o"></i> web-sample.git</div>
+                            </div>
+                            <div class="panel-footer">
+                                <span class="pull-left">3 projects 4.6MB</span>
+                                <span class="pull-right">
+                                    <button class="btn btn-primary btn-xs pull-right">
+                                        Open
+                                    </button>
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> webida</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div><i class="fa fa-folder-o"></i> webida-client.git</div>
+                                <div><i class="fa fa-folder-o"></i> webida-server.git</div>
+                                <div><i class="fa fa-folder-o"></i> webida-dashboard.git</div>
+                            </div>
+                            <div class="panel-footer">
+                                <span class="pull-left">3 projects 26.1MB</span>
+                                <span class="pull-right">
+                                    <button class="btn btn-primary btn-xs pull-right">
+                                        Open
+                                    </button>
+
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> Al-bot</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div><i class="fa fa-folder-o"></i> albot.git</div>
+
+                            </div>
+                            <div class="panel-footer">
+                                <span class="pull-left">1 projects 630KB</span>
+                                <span class="pull-right">
+                                    <button class="btn btn-primary btn-xs pull-right">
+                                        Open
+                                    </button>
+
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#workspace-page -->
+            <div id="settings-page" data-hash="#settings" class="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <h3 class="page-header">Settings</h3>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-10 col-md-12">
+                        <div class="wrap" id="area-settings" style="display: block;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> Public SSH Key</div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <textarea cols="80" rows="4" id="public-ssh-key" class="col-lg-12"></textarea>
+                                    <span class="pull-left">
+                                        <button class="btn btn-primary">
+                                            Generate new key
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> GitHub Token</div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="text" id="github-token" class="col-lg-12"></input>
+                                    <span class="pull-left">
+                                        <button class="btn btn-primary">
+                                            Save token
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> Personal Tokens</div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table id="menu-table" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-lg-5">Token</th>
+                                                        <th class="col-lg-3">Created date</th>
+                                                        <th class="col-lg-4 button-area"><i class="fa fa-plus"></i><span class="btn"> Add new personal token</span>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tr>
+                                                    <td colspan="3" class="menu-category">There are no personal tokens.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#settings-page -->
+        </div>
+        <!-- /#page-container -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../js/sb-admin-2.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="../js/Class.js"></script>
+    <script src="../js/ba-tiny-pubsub.js"></script>
+    <script src="../js/router.js"></script>
+    <script src="../js/main.js"></script>
+
+</body>
+
+</html>
