@@ -33,9 +33,9 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 
 </head>
 
@@ -52,23 +52,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="../resource/webida-white.png" class="wb-logo navbar-left" alt="webida">
-                <a class="navbar-brand navbar-left" href="index.html">Webida</a>
+                <img src="../resource/webida-white.png" class="wb-logo navbar-left" alt="webida" title="Go to main page">
+                <a class="navbar-brand navbar-left" href="main.html">Webida</a>
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
+            <ul id="account-menu" class="nav navbar-top-links navbar-right webida-hidden">
                 <li class="dropdown">
-                    <a data-toggle="dropdown" href="#">lisyoen@gmail.com</a>
+                    <a id="user-email" data-toggle="dropdown" href="#"></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a tabindex="-1" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
                         </li>
-                        <li><a tabindex="-1" href="#"><i class="fa fa-gear fa-fw"></i> Setting</a>
-                        </li>
-                        <li><a tabindex="-1" href="#"><i class="fa fa-question fa-fw"></i> Help</a>
-                        </li>
                         <li class="divider"></li>
-                        <li><a tabindex="-1" href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a tabindex="-1" href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                 </li>
@@ -79,17 +75,6 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
                         <li>
                             <a href="#workspace"><i class="fa fa-folder-o fa-fw"></i> Workspaces </a>
                         </li>
@@ -110,110 +95,15 @@
         </nav>
 
         <div id="page-container" class="page-container">
-            <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page active-page">
+            <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="page-header">Workspaces <a href="#"><i class="fa fa-plus-square fa-1x"></i></a></h3>
+                        <h3 class="page-header">Workspaces <a id="create-workspace-button" class="webida-hidden" href="#workspace/new"><i class="fa fa-plus-square fa-1x" title="Create a new workspace"></i></a> <a id="refresh-workspace-button" class="webida-hidden" href="#workspace"><i class="fa fa-refresh fa-1x" title="Refresh workspace"></i></a></h3>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
                 <div id="workspace-panel" class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> S-Core Cafe</div>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div><i class="fa fa-folder-o"></i> bootstrap-example.git</div>
-                                <div><i class="fa fa-folder-o"></i> cafe.git
-                                    <br>└ <i class="fa fa-globe"></i>  <a href="https://100216-cafe.webida.org/" target="_blank">cafe deploy</a>  <a href="#"><i class="fa fa-minus-circle"></i></a>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <span class="pull-left">2 projects 2.3MB</span>
-                                <span class="pull-right">
-                                        <a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" target="_blank" class="btn btn-primary btn-xs pull-right">
-                                            Open
-                                        </a>
-
-                                    </span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> Demo 2015</div>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div><i class="fa fa-folder-o"></i> demo-app.git</div>
-                                <div><i class="fa fa-folder-o"></i> java-sample.git</div>
-                                <div><i class="fa fa-folder-o"></i> web-sample.git</div>
-                            </div>
-                            <div class="panel-footer">
-                                <span class="pull-left">3 projects 4.6MB</span>
-                                <span class="pull-right">
-                                    <button class="btn btn-primary btn-xs pull-right">
-                                        Open
-                                    </button>
-                                </span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> webida</div>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div><i class="fa fa-folder-o"></i> webida-client.git</div>
-                                <div><i class="fa fa-folder-o"></i> webida-server.git</div>
-                                <div><i class="fa fa-folder-o"></i> webida-dashboard.git</div>
-                            </div>
-                            <div class="panel-footer">
-                                <span class="pull-left">3 projects 26.1MB</span>
-                                <span class="pull-right">
-                                    <button class="btn btn-primary btn-xs pull-right">
-                                        Open
-                                    </button>
-
-                                </span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> Al-bot</div>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div><i class="fa fa-folder-o"></i> albot.git</div>
-
-                            </div>
-                            <div class="panel-footer">
-                                <span class="pull-left">1 projects 630KB</span>
-                                <span class="pull-right">
-                                    <button class="btn btn-primary btn-xs pull-right">
-                                        Open
-                                    </button>
-
-                                </span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.row -->
             </div>
@@ -236,12 +126,12 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <textarea cols="80" rows="4" id="public-ssh-key" class="col-lg-12"></textarea>
+                                    <textarea cols="80" rows="4" id="public-ssh-key" class="col-sm-12 col-md-12 col-lg-12"></textarea>
                                     <span class="pull-left">
-                                        <button class="btn btn-primary">
-                                            Generate new key
-                                        </button>
-                                    </span>
+                                            <button class="btn btn-primary">
+                                                Generate new key
+                                            </button>
+                                        </span>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -251,7 +141,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <input type="text" id="github-token" class="col-lg-12"></input>
+                                    <input type="text" id="github-token" class="col-sm-12 col-md-12 col-lg-12"></input>
                                     <span class="pull-left">
                                         <button class="btn btn-primary">
                                             Save token
@@ -312,15 +202,84 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
+    <!-- Handlebar Template Library -->
+    <script src="../js/handlebars-v3.0.3.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="../js/sb-admin-2.js"></script>
 
     <!-- Custom JavaScript -->
+    <script src="../js/config.js"></script>
+    <script src="../js/require.min.js" data-main="../js/main"></script>
     <script src="../js/Class.js"></script>
-    <script src="../js/ba-tiny-pubsub.js"></script>
-    <script src="../js/router.js"></script>
-    <script src="../js/main.js"></script>
-
+    <script id="workspace-panel-template" type="text/x-handlebars-template">
+        <div id="new-workspace" class="col-lg-3 col-md-6 webida-hidden">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="panel-title col-xs-12">
+                            <input id="new-workspace-name" type="text" value="new workspace" class="form-control" autofocus></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                </div>
+                <div class="panel-footer">
+                    <span class="pull-left">0 projects 0MB</span>
+                    <span class="pull-right"><a id="create-cancel-button" href="#workspace" class="btn btn-danger btn-xs pull-right" title="Open workspace with IDE">Cancel</a></span>
+                    <span class="pull-right"><a id="create-decision-button" href="#" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Create</a></span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        {{#this}}
+        <div class="col-lg-3 col-md-6 workspace-item" data-key="{{name}}">
+            <div class="panel panel-default workspace-panel" data-key="{{name}}">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-key="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {{#projects}}
+                    <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
+                        <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a> <a href="#"><i class="fa fa-play-circle"></i> <i class="fa fa-minus-circle"></i></a> {{/deploys}}
+                    </div>
+                    {{/projects}}
+                </div>
+                <div class="panel-footer">
+                    <span class="pull-left">{{projects.length}} projects {{size}}</span>
+                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-key="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        {{/this}}
+    </script>
+    <script id="workspace-item-template" type="text/x-handlebars-template">
+        {{#this}}
+        <div class="panel panel-default workspace-panel" data-key="{{name}}">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-key="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                {{#projects}}
+                <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
+                    <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a> <a href="#"><i class="fa fa-play-circle"></i> <i class="fa fa-minus-circle"></i></a> {{/deploys}}
+                </div>
+                {{/projects}}
+            </div>
+            <div class="panel-footer">
+                <span class="pull-left">{{projects.length}} projects {{size}}</span>
+                <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-key="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        {{/this}}
+    </script>
 </body>
+
 
 </html>

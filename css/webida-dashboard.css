@@ -53,4 +53,18 @@
 
 #workspace-panel > div .panel-body {
     height: 100px;
+    overflow-y: auto;
+}
+
+.webida-hidden {
+    display: none;
+}
+
+#new-workspace div.panel-heading {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.delete-warning:hover {
+    color: #C00000;
 }
