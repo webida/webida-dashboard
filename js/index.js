@@ -16,52 +16,20 @@
 
 $(function () {
     'use strict';
-    
-    require([
-        'app-config',
-        'webida-0.3'
-    ], function (appConfig, webida) {
-        
-        webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl);
 
-        webida.auth.getLoginStatus(function (err, user) {
-            if (err || !user) {
-                //$('button.login').removeClass('webida-hidden');
-                //$('button.logout').addClass('webida-hidden');
-            } else {
-                //$('button.login').addClass('webida-hidden');
-                //$('button.logout').removeClass('webida-hidden');
-                location.href = 'main.html';
-            }
+    require([
+        'services/AuthManager',
+    ], function (AuthManager) {
+
+        AuthManager.initAuth();
+        AuthManager.getLoginStatusOnce().then(function() {
+            location.href = 'main.html';
+        }).catch(function(e) {
+            console.log('not logged.');
         });
 
         $('button.login').click(function () {
-            //var reUrl = getRedirectUrl();
-            var url = webida.conf.authApiBaseUrl + '/authorize?response_type=token' +
-                '&redirect_uri=' + encodeURIComponent(appConfig.redirectUrl) +
-                '&client_id=' + appConfig.clientId +
-                '&skip_decision=false&type=web_server&state=site';
-
-            location.href = url;
-        });
-
-        $('button.logout').click(function () {
-            webida.auth.logout(function (err) {
-                if (err) {
-                    console.log('login fail', err);
-                } else {
-                    location.reload();
-                }
-            });
+            location.href = AuthManager.getLoginUrl();
         });
     });
-
-    function setOnlineView() {
-
-    }
-
-    function setOfflineView() {
-
-    }
-
 });

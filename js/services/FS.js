@@ -213,7 +213,20 @@ define([
                     }
                 });
             }, path, isRecursive);
-        }
+        },
+        
+        rename: function (oldPath, newPath) {
+            var _this = this;
+            return new Promise(function(resolve, reject) {
+                _this.fs.move(oldPath, newPath, function(e) {
+                    if (e) {
+                        reject(convertToError(e));
+                    } else {
+                        resolve();
+                    }                        
+                });
+            });
+        },
     });
 
     if (FS.instance === undefined) {

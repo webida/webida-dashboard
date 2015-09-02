@@ -61,7 +61,7 @@
                 <li class="dropdown">
                     <a id="user-email" data-toggle="dropdown" href="#"></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a tabindex="-1" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
+                        <li><a tabindex="-1" data-toggle="modal" data-target="#user-profile" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
                         </li>
                         <li class="divider"></li>
                         <li><a tabindex="-1" href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -81,11 +81,15 @@
                         <li>
                             <a href="#settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
-                        <li>
+                        <!--                        <li>
                             <a target="_blank" href="https://github.com/webida/webida-client/wiki"><i class="fa fa-link fa-fw"></i> Help Contents</a>
                         </li>
+-->
                         <li>
                             <a target="_blank" href="https://groups.google.com/forum/?hl=ko#!forum/webida"><i class="fa fa-link fa-fw"></i> Community</a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.facebook.com/webida.org"><i class="fa fa-facebook fa-fw"></i> Facebook</a>
                         </li>
                     </ul>
                 </div>
@@ -98,7 +102,7 @@
             <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="page-header">Workspaces <a id="create-workspace-button" class="webida-hidden" href="#workspace/new"><i class="fa fa-plus-square fa-1x" title="Create a new workspace"></i></a> <a id="refresh-workspace-button" class="webida-hidden" href="#workspace"><i class="fa fa-refresh fa-1x" title="Refresh workspace"></i></a></h3>
+                        <h3 class="page-header">Workspaces <a id="new-workspace-button" class="webida-hidden" href="#"><i class="fa fa-plus-square fa-1x" title="Create a new workspace"></i></a> <a id="refresh-workspace-button" class="webida-hidden" href="#"><i class="fa fa-refresh fa-1x" title="Refresh workspace"></i></a></h3>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -190,6 +194,131 @@
         </div>
         <!-- /#page-container -->
 
+        <!-- Modal -->
+        <div class="modal fade" id="user-profile" tabindex="-1" role="dialog" aria-labelledby="user-profile-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="user-profile-title">User Profile</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" action="#">
+                            <div class="form-group">
+                                <label class="col-sm-2 col-lg-2 control-label">Email</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <p class="form-control-static" id="profile-email"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-name" class="col-sm-2 col-lg-2 control-label">Name</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input type="text" class="form-control" id="profile-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-url" class="col-sm-2 col-lg-2 control-label">Url</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input type="text" class="form-control" id="profile-url">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-company" class="col-sm-2 col-lg-2 control-label">Company</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input type="text" class="form-control" id="profile-company">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-location" class="col-sm-2 col-lg-2 control-label">Location</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input type="text" class="form-control" id="profile-location">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-gravatar" class="col-sm-2 col-lg-2 control-label">Gravatar</label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input type="text" class="form-control" id="profile-gravatar">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary apply" disabled="">Apply</button>
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#user-profile -->
+        <div class="modal fade" id="new-workspace" tabindex="-1" role="dialog" aria-labelledby="new-workspace-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="new-workspace-title">New Workspace</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="new-workspace-name" class="control-label">Workspace name</label>
+                                <input type="text" class="form-control" id="new-workspace-name"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary create">Create</button>
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#new-workspace -->
+        <div class="modal fade" id="edit-workspace" tabindex="-1" role="dialog" aria-labelledby="edit-workspace-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="edit-workspace-title">Edit Workspace</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="new-workspace-name" class="control-label" id="edit-workspace-label">Workspace name</label>
+                                <input type="text" class="form-control" id="edit-workspace-name"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary apply" disabled="">Apply</button>
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#edit-workspace -->
+        <div class="modal fade" id="workspace-delete-confirm" tabindex="-1" role="dialog" aria-labelledby="workspace-delete-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="workspace-delete-title">Delete Workspace</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="delete-confirm-text" class="control-label" id="delete-confirm-label">Workspace name</label>
+                                <input type="text" class="form-control" id="delete-confirm-text" placeholder="Enter the workspace name to delete"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger delete" disabled="">Delete this workspace</button>
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#workspace-delete-confirm -->
     </div>
     <!-- /#wrapper -->
 
@@ -212,44 +341,34 @@
     <script src="../js/config.js"></script>
     <script src="../js/require.min.js" data-main="../js/main"></script>
     <script src="../js/Class.js"></script>
+
+    <script id="user-profile-template" type="text/x-handlebars-template">
+        <div class="profile-name">name: {{name}}</div>
+        <div class="profile-email">email: {{email}}</div>
+        <div class="profile-company">company: {{company}}</div>
+        <div class="profile-location">location: {{location}}</div>
+        <div class="profile-gravatar">gravatar: {{gravatar}}</div>
+    </script>
     <script id="workspace-panel-template" type="text/x-handlebars-template">
-        <div id="new-workspace" class="col-lg-3 col-md-6 webida-hidden">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="panel-title col-xs-12">
-                            <input id="new-workspace-name" type="text" value="new workspace" class="form-control" autofocus></input>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                </div>
-                <div class="panel-footer">
-                    <span class="pull-left">0 projects 0MB</span>
-                    <span class="pull-right"><a id="create-cancel-button" href="#workspace" class="btn btn-danger btn-xs pull-right" title="Open workspace with IDE">Cancel</a></span>
-                    <span class="pull-right"><a id="create-decision-button" href="#" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Create</a></span>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
         {{#this}}
-        <div class="col-lg-3 col-md-6 workspace-item" data-key="{{name}}">
-            <div class="panel panel-default workspace-panel" data-key="{{name}}">
+        <div class="col-lg-3 col-md-6 workspace-item" data-workspace="{{name}}">
+            <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-key="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a></div>
+                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                            href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
                     </div>
                 </div>
                 <div class="panel-body">
                     {{#projects}}
                     <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
-                        <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a> <a href="#"><i class="fa fa-play-circle"></i> <i class="fa fa-minus-circle"></i></a> {{/deploys}}
+                        <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/deploys}}
                     </div>
                     {{/projects}}
                 </div>
                 <div class="panel-footer">
                     <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-key="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
+                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -258,22 +377,23 @@
     </script>
     <script id="workspace-item-template" type="text/x-handlebars-template">
         {{#this}}
-        <div class="panel panel-default workspace-panel" data-key="{{name}}">
+        <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-key="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a></div>
+                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                        href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
                 </div>
             </div>
             <div class="panel-body">
                 {{#projects}}
                 <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
-                    <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a> <a href="#"><i class="fa fa-play-circle"></i> <i class="fa fa-minus-circle"></i></a> {{/deploys}}
+                    <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/deploys}}
                 </div>
                 {{/projects}}
             </div>
             <div class="panel-footer">
                 <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-key="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
+                <span class="pull-right"><button data-workspace="{{name}}" class="btn btn-primary btn-xs pull-right workspace-open" title="Open workspace with IDE">Open</button></span>
                 <div class="clearfix"></div>
             </div>
         </div>

@@ -4,16 +4,38 @@ var Class = function (parent) {
     };
 
     if (parent) {
-        var subclass = function() {};
+        var subclass = function () {};
         subclass.prototype = parent.prototype;
         klass.prototype = new subclass();
     }
 
     klass.prototype.init = function () {};
+    klass.prototype.fillFrom = function (obj) {
+        function isFillable(o) {
+            return (o.hasOwnProperty('fillFrom') && o.fillFrom.constructor === Function) ||
+                (o.constructor.prototype.hasOwnProperty('fillFrom') && o.constructor.prototype.fillFrom.constructor ===
+                    Function);
+        }
+        for (var i in obj) {
+            if (this.hasOwnProperty(i) || this.constructor.prototype.hasOwnProperty(i)) {
+                if (isFillable(this[i])) {
+                    this[i].fillFrom(obj[i]);
+                } else if (obj[i].constructor === Array && this[i].constructor === Array) {
+                    for (var j in obj[i]) {
+                        this[i][j] = obj[i][j];
+                    }
+                } else if (obj[i].constructor === Function) {
+                    // ignore
+                } else {
+                    this[i] = obj[i];
+                }
+            }
+        }
+    };
 
     klass.fn = klass.prototype;
     klass.fn.parent = klass;
-    klass._super = klass.__proto__;
+    klass._super = klass.constructor.prototype;
 
     klass.extend = function (obj) {
         var extended = obj.extended;
