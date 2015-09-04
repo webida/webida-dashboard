@@ -16,104 +16,179 @@
 
 define([
     'app-config',
-    'services/AuthManager',
-], function (appConfig, AuthManager) {
+    'services/Auth',
+    'services/SettingsManager',
+    'ModalFactory'
+], function (appConfig, Auth, SettingsManager, ModalFactory) {
     'use strict';
 
-    var ProfileController = {
-        userInfo: undefined,
-        init: function (user) {
-            this.userInfo = user;
+    var SettingsController = {
+        settings: {
+            publicSSHKey: undefined,
+            githubToken: undefined,
+            personalTokens: []
+        },
+
+        init: function () {
             this.cacheElement();
             this.eventBinding();
-            this.renderProfile();
+            this.loadSettings().then(function () {
+                self.renderSettings();
+            });
         },
+
         cacheElement: function () {
             // templates
+            this.$personalTokenTemplate = Handlebars.compile($('#personal-token-template').html());
             // page widgets
+            this.$wrapper = $('#wrapper');
+            this.$settingsPage = this.$wrapper.find('#settings-page');
+
+            this.$publicSSHKeyPanel = this.$wrapper.find('#ssh-key-panel');
+            this.$publicSSHKey = this.$publicSSHKeyPanel.find('#public-ssh-key');
+            this.$generateNewKeyButton = this.$publicSSHKeyPanel.find('button.generate');
+
+            this.$githubTokenPanel = this.$wrapper.find('#github-token-panel');
+            this.$githubToken = this.$githubTokenPanel.find('#github-token');
+            this.$saveTokenButton = this.$githubTokenPanel.find('button.save');
+
+            this.$personalTokenPanel = this.$wrapper.find('#personal-token-panel');
+            this.$personalTokenTable = this.$personalTokenPanel.find('#personal-token-table');
+            this.$addNewPersonalTokenButton = this.$personalTokenPanel.find('button.add-new');
             // modal widgets
-            this.$userProfileModal = $('#user-profile');
-            this.$applyButton = this.$userProfileModal.find('button.apply');
-            this.$profileEmail = this.$userProfileModal.find('#profile-email');
-            this.$profileName = this.$userProfileModal.find('#profile-name');
-            this.$profileUrl = this.$userProfileModal.find('#profile-url');
-            this.$profilCompany = this.$userProfileModal.find('#profile-company');
-            this.$profileLocation = this.$userProfileModal.find('#profile-location');
-            this.$profileGravatar = this.$userProfileModal.find('#profile-gravatar');
+            // modal
+            this.$generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
         },
+
         eventBinding: function () {
-            this.$userProfileModal.on('shown.bs.modal', function () {
-                //
+
+            this.$generateNewKeyModal.setup({
+                title: 'Generate New Key',
+                message: 'The previous public ssh key will be replaced with a new one! Are you sure to continue?',
+                buttons: [{
+                    id: 'generate-yes-button',
+                    name: 'Yes',
+                    class: 'btn btn-danger',
+                    onclick: function (e) {
+                        var buttonObj = $('#' + this.id);
+                        console.log('Yes');
+                        buttonObj.attr('disabled', '');
+                        SettingsManager.removePublicSSHKey().then(function (info) {
+                            return SettingsManager.generatePublicSSHKey();
+                        }).then(function (info) {
+                            return SettingsManager.getPublicSSHKey();
+                        }).then(function(key) {
+                            console.log('key', key);
+                            self.settings.publicSSHKey = key;
+                            self.renderPublicSSHKey();
+                        }).catch(function (e) {
+                            alert(e);
+                        }).then(function () {
+                            buttonObj.removeAttr('disabled');
+                            self.$generateNewKeyModal.close();
+                        });
+                    }
+                }, {
+                    name: 'No',
+                    default: true,
+                    close: true,
+                }]
             });
-            this.$userProfileModal.on('hidden.bs.modal', function () {
-                self.renderProfile();
-            });
-            this.$applyButton.on('click', function (e) {
-                self.updateProfile(self.getModifiedProfile()).then(function(user) {
-                    self.renderProfile(user);
-                    self.$userProfileModal.find('button.close').click();
-                }).catch(function(e) {
-                    self.$applyButton.removeAttr('disabled');
-                    alert(e);
-                    console.log(e);
+
+            this.$generateNewKeyButton.on('click', function (e) {
+                console.log('click');
+                self.$generateNewKeyModal.popup().then(function(button){
+                    console.log(button);
                 });
-                self.$applyButton.attr('disabled', '');
             });
-            this.$userProfileModal.find('input.form-control').on('keypress', function (e) {
-                console.log('keypress', e);
+            
+            this.$githubToken.on('keypress', function(e) {
                 if (e.keyCode === 13) { // Enter
-                    self.$applyButton.click();
-                } else {
-                    self.$applyButton.removeAttr('disabled');
+                    self.$saveTokenButton.click();
                 }
             });
-        },
-        getModifiedProfile: function() {
-            var profile = {};
-            //$.extend(profile, this.userInfo);
-            profile.email = this.userInfo.email;
-            profile.name = this.$profileName.val();
-            profile.url = this.$profileUrl.val();
-            profile.company = this.$profilCompany.val();
-            profile.location = this.$profileLocation.val();
-            profile.gravatar = this.$profileGravatar.val();
-            return profile;
-        },
-        setProfile: function (user) {
-            this.userInfo = user || this.userInfo;
-        },
-        loadProfile: function () {
-            AuthManager.getMyInfo(true).then(function (user) {
-                self.userInfo = user;
-            }).catch(function (e) {
-                alert(e);
-                console.log(e);
+            
+            this.$githubToken.on('keyup', function(e) {
+                if (self.$githubToken.val() == self.settings.githubToken) {
+                    self.$saveTokenButton.attr('disabled', '');
+                } else {
+                    self.$saveTokenButton.removeAttr('disabled');
+                }
+            });
+            
+            this.$saveTokenButton.on('click', function(e) {
+                self.$saveTokenButton.removeAttr('disabled');
+                var token = self.$githubToken.val();
+                
+                SettingsManager.setGitHubToken(token).then(function() {
+                    return SettingsManager.getGitHubToken();
+                }).then(function(token) {
+                    self.settings.githubToken = token;
+                    self.renderGithubToken();
+                }).catch(function(e){
+                    alert(e);
+                });
+            });
+            
+            this.$addNewPersonalTokenButton.on('click', function(e) {
+                SettingsManager.addNewPersonalToken().then(function(token) {
+                    return SettingsManager.getPersonalTokens();
+                }).then(function(tokens){
+                    console.log('tokens', tokens);
+                    self.settings.personalTokens = tokens;
+                    self.renderPersonalTokenTable();
+                }).catch(function(e){
+                    alert(e);
+                });
             });
         },
-        renderProfile: function (user) {
-            this.userInfo = user || this.userInfo;
-            this.$profileEmail.text(this.userInfo.email);
-            this.$profileName.val(this.userInfo.name);
-            this.$profileUrl.val(this.userInfo.url);
-            this.$profilCompany.val(this.userInfo.company);
-            this.$profileLocation.val(this.userInfo.location);
-            this.$profileGravatar.val(this.userInfo.gravatar);
-            this.$applyButton.attr('disabled', '');
-        },
-        updateProfile: function (user, callback) {
+
+        loadSettings: function () {
             return new Promise(function (resolve, reject) {
-                AuthManager.updateUser(user).then(function (user) {
-                    self.userInfo = user;
-                    resolve(user);
+                Auth.getLoginStatusOnce().then(function () {
+                    return Auth.initAuthOnce();
+                }).then(function () {
+                    Promise.all([SettingsManager.getPublicSSHKey(),
+                        SettingsManager.getGitHubToken(),
+                        SettingsManager.getPersonalTokens()
+                    ]).then(function (values) {
+                        self.settings.publicSSHKey = values[0];
+                        self.settings.githubToken = values[1];
+                        self.settings.personalTokens = values[2];
+                        resolve();
+                    }).catch(function (e) {
+                        alert(e);
+                        reject(e);
+                    });
                 }).catch(function (e) {
-                    console.log(e);
+                    alert(e);
                     reject(e);
                 });
             });
         },
+
+        renderSettings: function () {
+            this.renderPublicSSHKey();
+            this.renderGithubToken();
+            this.renderPersonalTokenTable();
+        },
+        
+        renderPublicSSHKey: function() {
+            this.$publicSSHKey.text(this.settings.publicSSHKey);
+        },
+        
+        renderGithubToken: function() {
+            this.$githubToken.val(this.settings.githubToken);
+            this.$saveTokenButton.attr('disabled', '');
+        },
+
+        renderPersonalTokenTable: function() {
+            console.log('this.settings.personalTokens', this.settings.personalTokens);
+            this.$personalTokenTable.html(this.$personalTokenTemplate(this.settings.personalTokens));
+        }
     };
 
-    var self = ProfileController;
+    var self = SettingsController;
 
-    return ProfileController;
+    return SettingsController;
 });

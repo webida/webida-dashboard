@@ -79,7 +79,7 @@ define([
             Promise.all([this.getWorkspaces(), App.getMyAppInfo()]).then(function (values) {
                 var workspaces = values[0];
                 var apps = values[1];
-                //console.log('workspaces', workspaces);
+                console.log('workspaces', workspaces);
                 //console.log('apps', apps);
 
                 function findApp(wsName, prjName) {

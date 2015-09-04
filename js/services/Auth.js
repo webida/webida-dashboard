@@ -15,69 +15,137 @@
  */
 
 define([
-    'webida',
-    'q'
-], function (webida, Q) {
+    'app-config',
+    'webida-0.3',
+], function (appConfig, webida) {
     'use strict';
-    var Auth = function () {};
 
-    $.extend(Auth.prototype, {
-        getMyInfo: function () {
-            var defer = Q.defer();
-
-            webida.auth.getMyInfo(function (e, info) {
-                if (e) {
-                    //e = JSON.parse(e);
-                    defer.reject(e);
-
-                } else {
-                    defer.resolve(info);
-                }
-            });
-
-            return defer.promise;
+    var Auth = {
+        userInfo: undefined,
+        
+        getLoginUrl: function () {
+            return webida.conf.authApiBaseUrl + '/authorize?response_type=token' +
+                '&redirect_uri=' + encodeURIComponent(appConfig.redirectUrl) +
+                '&client_id=' + appConfig.clientId +
+                '&skip_decision=false&type=web_server&state=site';
         },
-
-        getPersonalTokens: function () {
-            var defer = Q.defer();
-            webida.auth.getPersonalTokens(function (e, personalTokens) {
-                if (e) {
-                    defer.reject(e);
-                } else {
-                    defer.resolve(personalTokens);
-                }
+        
+        logout: function () {
+            return new Promise(function (resolve, reject) {
+                console.log('promise logout');
+                webida.auth.logout(function (err) {
+                    if (err) {
+                        reject(new Error('logout fail'));
+                    } else {
+                        //location.reload();
+                        resolve();
+                    }
+                });
             });
-            return defer.promise;
+        },
+        
+        getLoginStatusOnce: function () {
+            return (this._getLoginStatus = this._getLoginStatus || this.getLoginStatus());
+        },
+        
+        getLoginStatus: function () {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                webida.auth.getLoginStatus(function (err, user) {
+                    if (err || !user) {
+                        reject(new Error('need to login'));
+                    } else {
+                        that.userInfo = user;
+                        resolve(user);
+                    }
+                });
+            });
+        },
+        
+        getMyInfo: function (isForceReload) {
+            var reload = !this.userInfo || isForceReload;
+            if (reload) {
+                var that = this;
+                return new Promise(function (resolve, reject) {
+                    webida.auth.getMyInfo(function (err, user) {
+                        if (err || !user) {
+                            reject(new Error('fail to get myInfo'));
+                        } else {
+                            that.userInfo = user;
+                            resolve(user);
+                        }
+                    });
+                });
+            } else {
+                return Promise.resolve(this.userInfo);
+            }
+        },
+        
+        updateUser: function (user) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                webida.auth.updateUser(user, function (err, user) {
+                    if (err || !user) {
+                        reject(new Error('fail to update userInfo'));
+                    } else {
+                        that.userInfo = user;
+                        resolve(user);
+                    }
+                });
+            });
+        },
+        
+        initAuthOnce: function () {
+            return (this._initAuth = this._initAuth || this.initAuth());
+        },
+        
+        initAuth: function () {
+            return new Promise(function (resolve, reject) {
+                console.log('promise initAuth');
+                webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl,
+                    null,
+                    function () {
+                        resolve();
+                    });
+            });
+        },
+        
+        getPersonalTokens: function () {
+            return new Promise(function(resolve, reject) {
+                webida.auth.getPersonalTokens(function (e, personalTokens) {
+                    if (e) {
+                        reject(e);
+                    } else {
+                        resolve(personalTokens);
+                    }
+                });
+            });
         },
 
         addNewPersonalToken: function () {
-            var defer = Q.defer();
-            webida.auth.addNewPersonalToken(function (e, token) {
-                if (e) {
-                    defer.reject(e);
-                } else {
-                    defer.resolve(token);
-                }
+            return new Promise(function(resolve, reject) {
+                webida.auth.addNewPersonalToken(function (e, token) {
+                    if (e) {
+                        reject(e);
+                    } else {
+                        resolve(token);
+                    }
+                });
             });
-            return defer.promise;
         },
 
         deletePersonalToken: function (token) {
-            var defer = Q.defer();
-            webida.auth.deletePersonalToken(token, function (e) {
-                if (e) {
-                    defer.reject(e);
-                } else {
-                    defer.resolve();
-                }
+            return new Promise(function(resolve, reject) {
+                webida.auth.deletePersonalToken(token, function (e) {
+                    if (e) {
+                        reject(e);
+                    } else {
+                        resolve();
+                    }
+                });
             });
-            return defer.promise;
-        }
-    });
+        },
+    };
 
-    if (Auth.instance === undefined) {
-        Auth.instance = new Auth();
-    }
-
-    return Auth.instance;
+    return Auth;
 });

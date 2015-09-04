@@ -25,6 +25,7 @@ $(function () {
         AuthManager.getLoginStatusOnce().then(function() {
             location.href = 'main.html';
         }).catch(function(e) {
+            alert(e);
             console.log('not logged.');
         });
 

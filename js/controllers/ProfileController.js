@@ -16,8 +16,8 @@
 
 define([
     'app-config',
-    'services/AuthManager',
-], function (appConfig, AuthManager) {
+    'services/Auth',
+], function (appConfig, Auth) {
     'use strict';
 
     var ProfileController = {
@@ -31,6 +31,7 @@ define([
         cacheElement: function () {
             // templates
             // page widgets
+            this.$openProfileButton = $('#open-profile-button');
             // modal widgets
             this.$userProfileModal = $('#user-profile');
             this.$applyButton = this.$userProfileModal.find('button.apply');
@@ -42,6 +43,9 @@ define([
             this.$profileGravatar = this.$userProfileModal.find('#profile-gravatar');
         },
         eventBinding: function () {
+            this.$openProfileButton.on('click', function(e) {
+                self.$userProfileModal.modal();
+            });
             this.$userProfileModal.on('shown.bs.modal', function () {
                 //
             });
@@ -83,7 +87,7 @@ define([
             this.userInfo = user || this.userInfo;
         },
         loadProfile: function () {
-            AuthManager.getMyInfo(true).then(function (user) {
+            Auth.getMyInfo(true).then(function (user) {
                 self.userInfo = user;
             }).catch(function (e) {
                 alert(e);
@@ -102,7 +106,7 @@ define([
         },
         updateProfile: function (user, callback) {
             return new Promise(function (resolve, reject) {
-                AuthManager.updateUser(user).then(function (user) {
+                Auth.updateUser(user).then(function (user) {
                     self.userInfo = user;
                     resolve(user);
                 }).catch(function (e) {

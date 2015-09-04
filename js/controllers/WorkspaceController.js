@@ -17,9 +17,9 @@
 define([
     'app-config',
     'webida-0.3',
-    'services/AuthManager',
+    'services/Auth',
     'services/WorkspaceManager',
-], function (appConfig, webida, AuthManager, WorkspaceManager) {
+], function (appConfig, webida, Auth, WorkspaceManager) {
     'use strict';
 
     var Deploy = new Class();
@@ -108,12 +108,14 @@ define([
 
     var WorkspaceController = {
         works: undefined,
+        
         init: function () {
             this.works = new Works();
             this.cacheElement();
             this.eventBinding();
             this.loadWorkspaces();
         },
+        
         cacheElement: function () {
             // templates
             this.$workspacePanelTemplate = Handlebars.compile($('#workspace-panel-template').html());
@@ -139,6 +141,7 @@ define([
             this.$editWorkspaceName = this.$editWorkspaceModal.find('#edit-workspace-name');
             this.$applyWorkspaceButton = this.$editWorkspaceModal.find('button.apply');
         },
+        
         eventBinding: function () {
             this.$workspacePage.on('page-on', function (e, hash, param) {
                 console.log('page on', app, param);
@@ -284,18 +287,21 @@ define([
                 window.open(WorkspaceManager.getWorkspaceOpenUrl(wsName));
             });
         },
+        
         renderWorkspace: function (workspace) {
             $('div.workspace-item[data-workspace="' + workspace.name + '"]').html(self.$workspaceItemTemplate(
                 workspace));
         },
+        
         renderWorkspaces: function (workspaces) {
             workspaces = workspaces || self.works.workspaces;
             self.$workspacePanel.html(self.$workspacePanelTemplate(workspaces));
         },
+        
         loadWorkspaces: function () {
             self.works = new Works();
-            AuthManager.getLoginStatusOnce().then(function () {
-                return AuthManager.initAuthOnce();
+            Auth.getLoginStatusOnce().then(function () {
+                return Auth.initAuthOnce();
             }).then(function () {
                 WorkspaceManager.loadWorkspaces(function (workspaces) {
                     self.works.fillWorkspaces(workspaces);
@@ -306,8 +312,11 @@ define([
                     self.works.findWorkspace(workspace.name).fillFrom(workspace);
                     self.renderWorkspace(workspace);
                 });
+            }).catch(function(e) {
+                location.href = '/index.html';
             });
         },
+        
         popupNewWorkspace: function () {
             var wsName = 'new workspace';
             var wsNewName = wsName;
@@ -322,9 +331,11 @@ define([
             for (var count = 1; isConflict(wsNewName); ++count) {
                 wsNewName = wsName + ' (' + count + ')';
             }
+            console.log(self.$newWorkspaceModal.modal);
             self.$newWorkspaceModal.modal();
             self.$newWorkspaceName.val(wsNewName);
         },
+        
         createWorkspace: function (name, callback) {
             console.log('createWorkspace', name);
             WorkspaceManager.createWorkspace(name).then(function () {
@@ -341,6 +352,7 @@ define([
                 if (callback) callback(e);
             });
         },
+        
         deleteWorkspace: function (name, callback) {
             console.log('deleteWorkspace this', this);
             WorkspaceManager.deleteWorkspace(name).then(function () {
@@ -354,6 +366,7 @@ define([
                 if (callback) callback(e);
             });
         },
+        
         editWorkspace: function (oldName, newName, callback) {
             console.log('editWorkspace', name, newName);
             WorkspaceManager.editWorkspace(oldName, newName).then(function() {
@@ -366,6 +379,7 @@ define([
                 if (callback) callback(e);
             });
         },
+        
         setOnlineView: function () {
             self.$newWorkspaceButton.removeClass('webida-hidden');
             self.$refreshWorkspaceButton.removeClass('webida-hidden');

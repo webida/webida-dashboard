@@ -15,7 +15,7 @@
  */
 
 define([
-    'lodash',
+    'lodash.min',
     'services/FS',
     'services/Auth',
     'q'
@@ -32,122 +32,112 @@ define([
     $.extend(SettingsManager.prototype, {
 
         getPublicSSHKey: function () {
-            var defer = Q.defer();
+            return new Promise(function (resolve, reject) {
 
-            FS.readFile(PUBLIC_KEY_PATH).then(function (key) {
-                defer.resolve(key);
+                FS.readFile(PUBLIC_KEY_PATH).then(function (key) {
+                    resolve(key);
 
-            }).fail(function (e) {
-                defer.reject(e);
+                }).fail(function (e) {
+                    reject(e);
+                });
             });
-
-            return defer.promise;
         },
 
         generatePublicSSHKey: function () {
-            //var _this = this;
-            var defer = Q.defer();
+            return new Promise(function (resolve, reject) {
+                Auth.getMyInfo().then(function (info) {
+                    var opts = {
+                        cmd: 'ssh-keygen',
+                        args: ['-t', 'rsa', '-C', info.email, '-f',
+                            RSA_KEY_PATH, '-N', ''
+                        ]
+                    };
 
-            Auth.getMyInfo().then(function (info) {
+                    FS.exec('', opts).then(function () {
+                        resolve();
+                    });
 
-                var opts = {
-                    cmd: 'ssh-keygen',
-                    args: ['-t', 'rsa', '-C', info.email, '-f', RSA_KEY_PATH, '-N', '']
-                };
-
-                FS.exec('', opts).then(function () {
-                    defer.resolve();
-
+                }).catch(function (e) {
+                    reject(e);
                 });
-
-            }).fail(function (e) {
-                defer.reject(e);
             });
-
-            return defer.promise;
         },
 
         removePublicSSHKey: function () {
-            //var _this = this;
-            var defer = Q.defer();
-
-            FS.delete(PUBLIC_KEY_PATH, false)
-            .then($.proxy(FS.delete, FS, RSA_KEY_PATH, false))
-            .then(function () {
-                defer.resolve();
-
-            }).fail(function (e) {
-                defer.reject(e);
+            return new Promise(function (resolve, reject) {
+                FS.delete(PUBLIC_KEY_PATH, false)
+                    .then($.proxy(FS.delete, FS, RSA_KEY_PATH, false))
+                    .then(function () {
+                        resolve();
+                    }).fail(function (e) {
+                        reject(e);
+                    });
             });
-
-            return defer.promise;
         },
 
         getGitHubToken: function () {
-            var defer = Q.defer();
+            return new Promise(function (resolve, reject) {
 
-            FS.readFile(GITHUB_TOKEN_PATH).then(function (token) {
-                defer.resolve(token);
+                FS.readFile(GITHUB_TOKEN_PATH).then(function (token) {
+                    resolve(JSON.parse(token).tokenKey);
 
-            }).fail(function (e) {
-                console.log('readFile error: ' + e);
-                defer.reject(e);
+                }).fail(function (e) {
+                    console.log('readFile error: ' + e);
+                    reject(e);
+                });
             });
-
-            return defer.promise;
         },
 
         setGitHubToken: function (token) {
-            var defer = Q.defer();
-            var obj = {
-                tokenKey: token
-            };
+            return new Promise(function (resolve, reject) {
+                var obj = {
+                    tokenKey: token
+                };
 
-            FS.writeFile(GITHUB_TOKEN_PATH, JSON.stringify(obj)).then(function () {
-                defer.resolve();
+                FS.writeFile(GITHUB_TOKEN_PATH, JSON.stringify(obj)).then(function () {
+                    resolve();
 
-            }).fail(function (e) {
-                console.log('writeFile error: ' + e);
-                defer.reject(e);
+                }).fail(function (e) {
+                    console.log('writeFile error: ' + e);
+                    reject(e);
+                });
             });
-
-            return defer.promise;
         },
 
         getPersonalTokens: function () {
-            var defer = Q.defer();
-            Auth.getPersonalTokens().then(function (personalTokens) {
-                var tokens = _.sortBy(personalTokens, function (token) {
-                    return new Date(token.issueTime).getTime();
+            return new Promise(function (resolve, reject) {
+                Auth.getPersonalTokens().then(function (personalTokens) {
+                    var tokens = _.sortBy(personalTokens, function (token) {
+                        return new Date(token.issueTime).getTime();
+                    });
+                    resolve(tokens);
+                }).catch(function (e) {
+                    console.error('getPerosonalTokens error: ' + e);
+                    reject(e);
                 });
-                defer.resolve(tokens);
-            }).fail(function (e) {
-                console.error('getPerosonalTokens error: ' + e);
-                defer.reject(e);
             });
-            return defer.promise;
         },
 
         addNewPersonalToken: function () {
-            var defer = Q.defer();
-            Auth.addNewPersonalToken().then(function (token) {
-                defer.resolve(token);
-            }).fail(function (e) {
-                console.error('addNewPersonalToken error: ' + e);
-                defer.reject(e);
+            return new Promise(function (resolve, reject) {
+                Auth.addNewPersonalToken().then(function (token) {
+                    resolve(token);
+                }).catch(function (e) {
+                    console.error('addNewPersonalToken error: ' + e);
+                    reject(e);
+                });
             });
-            return defer.promise;
         },
 
         deletePersonalToken: function (token) {
-            var defer = Q.defer();
-            Auth.deletePersonalToken(token).then(function () {
-                defer.resolve();
-            }).fail(function (e) {
-                console.error('deletePersonalToken error: ' + e);
-                defer.reject(e);
+            return new Promise(function (resolve, reject) {
+                Auth.deletePersonalToken(token).then(function () {
+                    resolve();
+                }).catch(function (e) {
+                    console.error('deletePersonalToken error: ' + e);
+                    reject(e);
+                });
             });
-            return defer.promise;
         }
     });
 

@@ -18,8 +18,8 @@ require([
     'app-config',
     'app-data',
     'router',
-    'services/AuthManager',
-], function (appConfig, appData, router, AuthManager) {
+    'services/Auth',
+], function (appConfig, appData, router, Auth) {
     'use strict';
 
     console.log('required');
@@ -35,17 +35,20 @@ require([
 
     var app = {
         checkLogin: function () {
-            AuthManager.initAuthOnce();
-            AuthManager.getLoginStatusOnce().catch(function () {
-                location.href = 'index.html';
+            Auth.initAuthOnce();
+            Auth.getLoginStatusOnce().catch(function () {
+                location.href = '/index.html';
             }).then(function (user) {
                 $('#user-email').text(user.email);
                 require(['controllers/ProfileController'], function (ProfileController) {
                     ProfileController.init(user);
+                    // for debugging
+                    window.PC = ProfileController;
                 });
                 app.setOnlineView();
             });
         },
+        
         init: function () {
             app.checkLogin();
             app.cacheElements();
@@ -55,6 +58,7 @@ require([
             // for debugging
             window.app = this;
         },
+        
         cacheElements: function () {
             console.log('cacheElements');
             // templates
@@ -62,12 +66,14 @@ require([
             app.$wrapper = $('#wrapper');
             app.$workspacePage = app.$wrapper.find('#workspace-page');
             app.$settingsPage = app.$wrapper.find('#settings-page');
+            app.$logoutButton = app.$wrapper.find('#logout-button');
             // modals
         },
+        
         bindEvents: function () {
             app.$workspacePage.on('page-init', function (e, hash, param) {
                 require(['controllers/WorkspaceController'], function (WorkspaceController) {
-                    AuthManager.initAuthOnce().then(function () {
+                    Auth.initAuthOnce().then(function () {
                         WorkspaceController.init();
                     });
                     // for debugging
@@ -76,16 +82,24 @@ require([
                 console.log('page init', hash);
             });
             app.$settingsPage.on('page-init', function (e, hash, param) {
-                require(['controllers/WorkspaceController'], function (WorkspaceController) {
-                    AuthManager.initAuthOnce().then(function () {
-                        WorkspaceController.init();
+                require(['controllers/SettingsController'], function (settingsController) {
+                    Auth.initAuthOnce().then(function () {
+                        settingsController.init();
                     });
                     // for debugging
-                    window.WC = WorkspaceController;
+                    window.SC = settingsController;
                 });
                 console.log('page init', hash);
             });
+            app.$logoutButton.on('click', function(e) {
+                Auth.logout().then(function() {
+                    location.href = '/index.html';
+                }).catch(function(e){
+                    alert(e);
+                });
+            });
         },
+        
         setOnlineView: function () {
             $('#account-menu').removeClass('webida-hidden');
         },

@@ -61,10 +61,10 @@
                 <li class="dropdown">
                     <a id="user-email" data-toggle="dropdown" href="#"></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a tabindex="-1" data-toggle="modal" data-target="#user-profile" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
+                        <li><a tabindex="-1" id="open-profile-button" href="#"><i class="fa fa-user fa-fw"></i> Profile</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a tabindex="-1" href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a tabindex="-1" id="logout-button" href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                 </li>
@@ -108,6 +108,56 @@
                 </div>
                 <!-- /.row -->
                 <div id="workspace-panel" class="row">
+                    <script id="workspace-panel-template" type="text/x-handlebars-template">
+                        {{#this}}
+                        <div class="col-lg-3 col-md-6 workspace-item" data-workspace="{{name}}">
+                            <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                                            href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {{#each projects}}
+                                    <div><i class="fa fa-folder-o"></i> {{name}} {{#each deploys}}
+                                        <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/each}}
+                                    </div>
+                                    {{/each}}
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="pull-left">{{projects.length}} projects {{size}}</span>
+                                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/this}}
+                    </script>
+                    <script id="workspace-item-template" type="text/x-handlebars-template">
+                        {{#this}}
+                        <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                                        href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                {{#each projects}}
+                                <div><i class="fa fa-folder-o"></i> {{name}} {{#each deploys}}
+                                    <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/each}}
+                                </div>
+                                {{/each}}
+                            </div>
+                            <div class="panel-footer">
+                                <span class="pull-left">{{projects.length}} projects {{size}}</span>
+                                <span class="pull-right"><button data-workspace="{{name}}" class="btn btn-primary btn-xs pull-right workspace-open" title="Open workspace with IDE">Open</button></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        {{/this}}
+                    </script>
                 </div>
                 <!-- /.row -->
             </div>
@@ -123,22 +173,22 @@
                 <div class="row">
                     <div class="col-lg-10 col-md-12">
                         <div class="wrap" id="area-settings" style="display: block;">
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="ssh-key-panel">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> Public SSH Key</div>
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <textarea cols="80" rows="4" id="public-ssh-key" class="col-sm-12 col-md-12 col-lg-12"></textarea>
+                                    <textarea cols="80" rows="5" id="public-ssh-key" class="col-sm-12 col-md-12 col-lg-12 public-ssh-key" readonly></textarea>
                                     <span class="pull-left">
-                                            <button class="btn btn-primary">
+                                            <button class="btn btn-primary generate">
                                                 Generate new key
                                             </button>
                                         </span>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="github-token-panel">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> GitHub Token</div>
@@ -147,13 +197,13 @@
                                 <div class="panel-body">
                                     <input type="text" id="github-token" class="col-sm-12 col-md-12 col-lg-12"></input>
                                     <span class="pull-left">
-                                        <button class="btn btn-primary">
+                                        <button class="btn btn-primary save">
                                             Save token
                                         </button>
                                     </span>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="personal-token-panel">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="panel-title col-xs-12 test-left"><i class="fa fa-key fa-1.5x"></i> Personal Tokens</div>
@@ -162,25 +212,27 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <table id="menu-table" class="table table-hover">
-                                                <thead>
+                                            <table id="personal-token-table" class="table table-hover">
+                                                <script id="personal-token-template" type="text/x-handlebars-template">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-lg-8">Token</th>
+                                                            <th class="col-lg-4">Issue time</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {{#if this}} {{#this}}
                                                     <tr>
-                                                        <th class="col-lg-5">Token</th>
-                                                        <th class="col-lg-3">Created date</th>
-                                                        <th class="col-lg-4 button-area"><i class="fa fa-plus"></i><span class="btn"> Add new personal token</span>
-                                                        </th>
+                                                        <td>{{data}}</td>
+                                                        <td>{{issueTime}}<a data-token="{{data}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a></td>
                                                     </tr>
-                                                </thead>
-                                                <tr>
-                                                    <td colspan="3" class="menu-category">There are no personal tokens.</td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-
+                                                    {{/this}} {{else}}
+                                                    <tr>
+                                                        <td colspan="3" class="menu-category">There are no personal tokens.</td>
+                                                    </tr>
+                                                    {{/if}}
+                                                </script>
                                             </table>
+                                            <button class="btn btn-primary add-new"><i class="fa fa-plus"></i> Add new personal token</button>
                                         </div>
                                     </div>
                                 </div>
@@ -319,6 +371,31 @@
             </div>
         </div>
         <!-- /#workspace-delete-confirm -->
+        <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-labelledby="edit-workspace-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <script id="common-modal-template" type="text/x-handlebars-template">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="alert-title">{{title}}</h4>
+                        </div>
+                        {{#if message}}
+                        <div class="modal-body">
+                            {{message}}
+                        </div>
+                        {{/if}}
+                        <div class="modal-footer">
+                            {{#if buttons}} {{#each buttons}}
+                            <button {{#if id}}id="{{id}}" {{/if}} type="button" class="{{#if class}}{{class}}{{else}}btn btn-default{{/if}}" {{#if disabled}}disabled="" {{/if}} {{#if close}}data-dismiss="modal" {{/if}}>{{#if name}}{{name}}{{else}}Ok{{/if}}</button>
+                            {{/each}} {{else}}
+                            <button type="button" class="btn btn-primary apply" disabled="">Ok</button>
+                            {{/if}}
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+        <!-- /#common-modal -->
     </div>
     <!-- /#wrapper -->
 
@@ -342,63 +419,6 @@
     <script src="../js/require.min.js" data-main="../js/main"></script>
     <script src="../js/Class.js"></script>
 
-    <script id="user-profile-template" type="text/x-handlebars-template">
-        <div class="profile-name">name: {{name}}</div>
-        <div class="profile-email">email: {{email}}</div>
-        <div class="profile-company">company: {{company}}</div>
-        <div class="profile-location">location: {{location}}</div>
-        <div class="profile-gravatar">gravatar: {{gravatar}}</div>
-    </script>
-    <script id="workspace-panel-template" type="text/x-handlebars-template">
-        {{#this}}
-        <div class="col-lg-3 col-md-6 workspace-item" data-workspace="{{name}}">
-            <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
-                            href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    {{#projects}}
-                    <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
-                        <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/deploys}}
-                    </div>
-                    {{/projects}}
-                </div>
-                <div class="panel-footer">
-                    <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="btn btn-primary btn-xs pull-right" title="Open workspace with IDE">Open</a></span>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-        {{/this}}
-    </script>
-    <script id="workspace-item-template" type="text/x-handlebars-template">
-        {{#this}}
-        <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
-                        href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
-                </div>
-            </div>
-            <div class="panel-body">
-                {{#projects}}
-                <div><i class="fa fa-folder-o"></i> {{name}} {{#deploys}}
-                    <br>└ <i class="fa fa-globe"></i> <a href="{{url}}" target="_blank">{{name}}</a>{{/deploys}}
-                </div>
-                {{/projects}}
-            </div>
-            <div class="panel-footer">
-                <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                <span class="pull-right"><button data-workspace="{{name}}" class="btn btn-primary btn-xs pull-right workspace-open" title="Open workspace with IDE">Open</button></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-        {{/this}}
-    </script>
 </body>
 
 
