@@ -77,7 +77,7 @@ define([
                             return SettingsManager.generatePublicSSHKey();
                         }).then(function (info) {
                             return SettingsManager.getPublicSSHKey();
-                        }).then(function(key) {
+                        }).then(function (key) {
                             console.log('key', key);
                             self.settings.publicSSHKey = key;
                             self.renderPublicSSHKey();
@@ -97,47 +97,58 @@ define([
 
             this.$generateNewKeyButton.on('click', function (e) {
                 console.log('click');
-                self.$generateNewKeyModal.popup().then(function(button){
+                self.$generateNewKeyModal.popup().then(function (button) {
                     console.log(button);
                 });
             });
-            
-            this.$githubToken.on('keypress', function(e) {
+
+            this.$githubToken.on('keypress', function (e) {
                 if (e.keyCode === 13) { // Enter
                     self.$saveTokenButton.click();
                 }
             });
-            
-            this.$githubToken.on('keyup', function(e) {
+
+            this.$githubToken.on('keyup', function (e) {
                 if (self.$githubToken.val() == self.settings.githubToken) {
                     self.$saveTokenButton.attr('disabled', '');
                 } else {
                     self.$saveTokenButton.removeAttr('disabled');
                 }
             });
-            
-            this.$saveTokenButton.on('click', function(e) {
+
+            this.$saveTokenButton.on('click', function (e) {
                 self.$saveTokenButton.removeAttr('disabled');
                 var token = self.$githubToken.val();
-                
-                SettingsManager.setGitHubToken(token).then(function() {
+
+                SettingsManager.setGitHubToken(token).then(function () {
                     return SettingsManager.getGitHubToken();
-                }).then(function(token) {
+                }).then(function (token) {
                     self.settings.githubToken = token;
                     self.renderGithubToken();
-                }).catch(function(e){
+                }).catch(function (e) {
                     alert(e);
                 });
             });
-            
-            this.$addNewPersonalTokenButton.on('click', function(e) {
-                SettingsManager.addNewPersonalToken().then(function(token) {
+
+            this.$addNewPersonalTokenButton.on('click', function (e) {
+                SettingsManager.addNewPersonalToken().then(function (token) {
                     return SettingsManager.getPersonalTokens();
-                }).then(function(tokens){
+                }).then(function (tokens) {
                     console.log('tokens', tokens);
                     self.settings.personalTokens = tokens;
                     self.renderPersonalTokenTable();
-                }).catch(function(e){
+                }).catch(function (e) {
+                    alert(e);
+                });
+            });
+
+            this.$personalTokenTable.delegate('a.delete-token', 'click', function (e) {
+                var token = $(this).attr('data-token');
+                SettingsManager.deletePersonalToken(token).then(function () {
+                    return self.loadPersonalTokens();
+                }).then(function() {
+                    self.renderPersonalTokenTable();
+                }).catch(function (e) {
                     alert(e);
                 });
             });
@@ -148,13 +159,10 @@ define([
                 Auth.getLoginStatusOnce().then(function () {
                     return Auth.initAuthOnce();
                 }).then(function () {
-                    Promise.all([SettingsManager.getPublicSSHKey(),
-                        SettingsManager.getGitHubToken(),
-                        SettingsManager.getPersonalTokens()
+                    Promise.all([self.loadPublicSSHKey(),
+                        self.loadGitHubToken(),
+                        self.loadPersonalTokens()
                     ]).then(function (values) {
-                        self.settings.publicSSHKey = values[0];
-                        self.settings.githubToken = values[1];
-                        self.settings.personalTokens = values[2];
                         resolve();
                     }).catch(function (e) {
                         alert(e);
@@ -167,22 +175,61 @@ define([
             });
         },
 
+        loadPublicSSHKey: function () {
+            return new Promise(function (resolve, reject) {
+                SettingsManager.getPublicSSHKey().then(function (key) {
+                    self.settings.publicSSHKey = key;
+                    resolve();
+                }).catch(function (e) {
+                    reject(e);
+                });
+            }).catch(function (e) {
+                reject(e);
+            });
+        },
+
+        loadGitHubToken: function () {
+            return new Promise(function (resolve, reject) {
+                SettingsManager.getGitHubToken().then(function (token) {
+                    self.settings.githubToken = token;
+                    resolve();
+                }).catch(function (e) {
+                    reject(e);
+                });
+            }).catch(function (e) {
+                reject(e);
+            });
+        },
+
+        loadPersonalTokens: function () {
+            return new Promise(function (resolve, reject) {
+                SettingsManager.getPersonalTokens().then(function (tokens) {
+                    self.settings.personalTokens = tokens;
+                    resolve();
+                }).catch(function (e) {
+                    reject(e);
+                });
+            }).catch(function (e) {
+                reject(e);
+            });
+        },
+
         renderSettings: function () {
             this.renderPublicSSHKey();
             this.renderGithubToken();
             this.renderPersonalTokenTable();
         },
-        
-        renderPublicSSHKey: function() {
+
+        renderPublicSSHKey: function () {
             this.$publicSSHKey.text(this.settings.publicSSHKey);
         },
-        
-        renderGithubToken: function() {
+
+        renderGithubToken: function () {
             this.$githubToken.val(this.settings.githubToken);
             this.$saveTokenButton.attr('disabled', '');
         },
 
-        renderPersonalTokenTable: function() {
+        renderPersonalTokenTable: function () {
             console.log('this.settings.personalTokens', this.settings.personalTokens);
             this.$personalTokenTable.html(this.$personalTokenTemplate(this.settings.personalTokens));
         }

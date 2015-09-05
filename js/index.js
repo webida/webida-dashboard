@@ -18,19 +18,16 @@ $(function () {
     'use strict';
 
     require([
-        'services/AuthManager',
-    ], function (AuthManager) {
-
-        AuthManager.initAuth();
-        AuthManager.getLoginStatusOnce().then(function() {
+        'services/Auth',
+    ], function (Auth) {
+        Auth.getLoginStatusOnce().then(function(a) {
             location.href = 'main.html';
         }).catch(function(e) {
-            alert(e);
-            console.log('not logged.');
+            console.log('not logged in.');
         });
 
         $('button.login').click(function () {
-            location.href = AuthManager.getLoginUrl();
+            location.href = Auth.getLoginUrl();
         });
     });
 });
