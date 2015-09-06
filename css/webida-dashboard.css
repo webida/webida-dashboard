@@ -68,3 +68,31 @@
 .delete-warning:hover {
     color: #C00000;
 }
+
+.workspace-status { 
+    font-size: medium;
+    color: gray;
+}
+
+.quota-usage {
+    color: gray;
+    margin-left: 3px;
+}
+
+.workspace-usage { 
+    color: gray;
+    margin-left: 3px;
+    margin-right: 10px;
+}
+
+.project-usage { 
+    color: gray;
+    margin-left: 3px;
+    margin-right: 10px;
+}
+
+.deploy-usage { 
+    color: gray;
+    margin-left: 3px;
+    margin-right: 10px;
+}

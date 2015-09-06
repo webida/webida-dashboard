@@ -102,7 +102,16 @@
             <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="page-header">Workspaces <a id="new-workspace-button" class="webida-hidden" href="#"><i class="fa fa-plus-square fa-1x" title="Create a new workspace"></i></a> <a id="refresh-workspace-button" class="webida-hidden" href="#"><i class="fa fa-refresh fa-1x" title="Refresh workspace"></i></a></h3>
+                        <h3 class="page-header">Workspaces 
+                            <a id="new-workspace-button" class="webida-hidden" href="#"><i class="fa fa-plus-square fa-1x" title="Create a new workspace"></i></a> 
+                            <a id="refresh-workspace-button" class="webida-hidden" href="#"><i class="fa fa-refresh fa-1x" title="Refresh workspace"></i></a>
+                        <span id="workspace-status" class="workspace-status pull-right webida-hidden">
+                        <i class="fa fa-cubes fa-1x" title="Workspaces"></i><span id="workspace-usage" class="workspace-usage" title="Workspaces">0</span>
+                            <i class="fa fa-folder-o fa-1x" title="Projects"></i><span id="project-usage" class="project-usage" title="Projects">0</span>
+                            <i class="fa fa-globe fa-1x" title="Deploys"></i><span id="deploy-usage" class="deploy-usage" title="Deploys">0</span>
+                            <i class="fa fa-dashboard fa-1x" title="Quota usage"></i><span id="quota-usage" class="quota-usage" title="Quota usage">0/0MB(0%)</span>
+                        </span>
+                        </h3>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -114,7 +123,7 @@
                             <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                                        <div class="panel-title col-xs-12 test-left"><i class="fa fa-cubes fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
                                             href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
                                     </div>
                                 </div>
@@ -139,7 +148,7 @@
                         <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-folder-o fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                                    <div class="panel-title col-xs-12 test-left"><i class="fa fa-cubes fa-1.5x"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="fa fa-trash fa-1.5x pull-right delete-warning"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
                                         href="#"><i class="fa fa-pencil fa-1.5x pull-right delete-warning"></i></a></div>
                                 </div>
                             </div>

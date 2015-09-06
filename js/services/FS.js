@@ -168,24 +168,28 @@ define([
         },
 
         getQuotaLimit: function () {
-            return this._wrapFunction(function (defer) {
-                this.fs.getQuotaLimit(function (e, limit) {
+            var _this = this;
+            return new Promise(function(resolve, reject) {
+                console.log('limit this', _this);
+                _this.fs.getQuotaLimit(function (e, limit) {
                     if (e) {
-                        defer.reject(convertToError(e));
+                        reject(convertToError(e));
                     } else {
-                        defer.resolve(limit);
+                        resolve(limit);
                     }
                 });
             });
         },
 
         getQuotaUsage: function () {
-            return this._wrapFunction(function (defer) {
-                this.fs.getQuotaUsage(function (e, usage) {
+            var _this = this;
+            return new Promise(function(resolve, reject) {
+                console.log('usage this', _this);
+                _this.fs.getQuotaUsage(function (e, usage) {
                     if (e) {
-                        defer.reject(convertToError(e));
+                        reject(convertToError(e));
                     } else {
-                        defer.resolve(usage);
+                        resolve(usage);
                     }
                 });
             });
@@ -218,6 +222,7 @@ define([
         rename: function (oldPath, newPath) {
             var _this = this;
             return new Promise(function(resolve, reject) {
+                console.log('rename this', this);
                 _this.fs.move(oldPath, newPath, function(e) {
                     if (e) {
                         reject(convertToError(e));

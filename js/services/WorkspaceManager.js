@@ -52,6 +52,7 @@ define([
                 });
             });
         },
+
         getProjects: function (wsName) {
             return new Promise(function (resolve, reject) {
                 //console.log('promise getProjects', wsName);
@@ -74,6 +75,7 @@ define([
                 });
             });
         },
+
         loadWorkspaces: function (workspacesCallback, projectsCallback) {
             var _this = this;
             Promise.all([this.getWorkspaces(), App.getMyAppInfo()]).then(function (values) {
@@ -119,9 +121,11 @@ define([
                 }); // foreach workspaces
             });
         },
+
         getWorkspaceOpenUrl: function (wsName) {
             return 'https://webida.org/apps/ide/src/index.html?workspace=' + fsid + '/' + wsName;
         },
+
         createWorkspace: function (name /*, desc*/ ) {
             // TODO should save desc when createWorkspace. Later, use desc parameter.
             var WS_META_PATH = name + '/.workspace';
@@ -144,6 +148,7 @@ define([
                 });
             });
         },
+
         deleteWorkspace: function (name) {
             return new Promise(function (resolve, reject) {
                 FS.delete(name, true).then(function () {
@@ -153,11 +158,26 @@ define([
                 });
             });
         },
+
         editWorkspace: function (oldName, newName) {
             // TODO should make the way to save description or some other workspace's information.
             return new Promise(function (resolve, reject) {
                 FS.rename(oldName, newName).then(function () {
                     resolve();
+                }).catch(function (e) {
+                    reject(e);
+                });
+            });
+        },
+
+        getQuota: function () {
+            return new Promise(function (resolve, reject) {
+                Promise.all([FS.getQuotaLimit(), FS.getQuotaUsage()]).then(function (values) {
+                    var quota = {
+                        limit: values[0],
+                        usage: values[1]
+                    };
+                    resolve(quota);
                 }).catch(function (e) {
                     reject(e);
                 });

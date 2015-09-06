@@ -65,6 +65,13 @@ define([
 
     var Works = new Class();
     Works.include({
+        status: {
+            workspaceCount: 0,
+            projectCount: 0,
+            deployCount: 0,
+            quotaUsage: 0,
+            quotaLimit: 0,
+        },
         workspaces: [], // array of Workspace
         init: function (obj) {
             if (typeof (obj) === 'object') {
@@ -108,14 +115,14 @@ define([
 
     var WorkspaceController = {
         works: undefined,
-        
+
         init: function () {
             this.works = new Works();
             this.cacheElement();
             this.eventBinding();
             this.loadWorkspaces();
         },
-        
+
         cacheElement: function () {
             // templates
             this.$workspacePanelTemplate = Handlebars.compile($('#workspace-panel-template').html());
@@ -126,6 +133,12 @@ define([
             this.$workspacePanel = this.$wrapper.find('#workspace-panel');
             this.$newWorkspaceButton = this.$wrapper.find('#new-workspace-button');
             this.$refreshWorkspaceButton = this.$wrapper.find('#refresh-workspace-button');
+
+            this.$workspaceStatus = this.$wrapper.find('#workspace-status');
+            this.$workspaceUsage = this.$wrapper.find('#workspace-usage');
+            this.$projectUsage = this.$wrapper.find('#project-usage');
+            this.$deployUsage = this.$wrapper.find('#deploy-usage');
+            this.$quotaUsage = this.$wrapper.find('#quota-usage');
             // modal widgets
             this.$newWorkspaceModal = this.$wrapper.find('#new-workspace');
             this.$newWorkspaceName = this.$newWorkspaceModal.find('#new-workspace-name');
@@ -141,7 +154,7 @@ define([
             this.$editWorkspaceName = this.$editWorkspaceModal.find('#edit-workspace-name');
             this.$applyWorkspaceButton = this.$editWorkspaceModal.find('button.apply');
         },
-        
+
         eventBinding: function () {
             this.$workspacePage.on('page-on', function (e, hash, param) {
                 console.log('page on', app, param);
@@ -192,7 +205,7 @@ define([
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete modal', wsName, this);
                 self.$workspaceDeleteConfirmModal.find('button.delete').attr('data-workspace',
-                                                                           wsName);
+                    wsName);
                 self.$deleteConfirmLabel.text('Workspace name ("' + wsName + '")');
                 self.$deleteConfirmText.val('');
                 self.$deleteWorkspaceConfirmButton.attr('disabled', '');
@@ -287,17 +300,41 @@ define([
                 window.open(WorkspaceManager.getWorkspaceOpenUrl(wsName));
             });
         },
-        
+
         renderWorkspace: function (workspace) {
             $('div.workspace-item[data-workspace="' + workspace.name + '"]').html(self.$workspaceItemTemplate(
                 workspace));
         },
-        
+
         renderWorkspaces: function (workspaces) {
             workspaces = workspaces || self.works.workspaces;
             self.$workspacePanel.html(self.$workspacePanelTemplate(workspaces));
         },
+
+        renderStatus: function () {
+            this.$workspaceStatus.removeClass('webida-hidden');
+            this.$workspaceUsage.text(this.works.status.workspaceCount);
+            this.$projectUsage.text(this.works.status.projectCount);
+            this.$deployUsage.text(this.works.status.deployCount);
+
+            var usageMB = parseInt(this.works.status.quotaUsage / (1024 * 1024), 10);
+            var limitMB = parseInt(this.works.status.quotaLimit / (1024 * 1024), 10);
+            var percent = parseInt(+this.works.status.quotaUsage / +this.works.status.quotaLimit * 100, 10);
+
+            this.$quotaUsage.text(usageMB + 'MB /' + limitMB + 'MB(' + percent + '%)');
+        },
         
+        loadQuata: function() {
+            WorkspaceManager.getQuota().then(function(quota) {
+                self.works.status.quotaUsage = quota.usage;
+                self.works.status.quotaLimit = quota.limit;
+                self.renderStatus();
+            }).catch(function(e) {
+                alert(e);
+                console.log(e);
+            });
+        },
+
         loadWorkspaces: function () {
             self.works = new Works();
             Auth.getLoginStatusOnce().then(function () {
@@ -307,16 +344,26 @@ define([
                     self.works.fillWorkspaces(workspaces);
                     self.renderWorkspaces();
                     self.setOnlineView();
+                    self.loadQuata();
+                    self.works.status.workspaceCount = workspaces.length;
+                    self.works.status.projectCount = 0;
+                    self.works.status.deployCount = 0;
+                    self.renderStatus();
                 }, function (workspace) {
                     console.log('self.works.findWorkspace', workspace);
                     self.works.findWorkspace(workspace.name).fillFrom(workspace);
                     self.renderWorkspace(workspace);
+                    self.works.status.projectCount += (workspace.projects ? workspace.projects.length : 0);
+                    workspace.projects.forEach(function(project){
+                        self.works.status.deployCount += (project.deploys ? project.deploys.length : 0);
+                    });
+                    self.renderStatus();
                 });
-            }).catch(function(e) {
+            }).catch(function (e) {
                 location.href = '/index.html';
             });
         },
-        
+
         popupNewWorkspace: function () {
             var wsName = 'new workspace';
             var wsNewName = wsName;
@@ -335,7 +382,7 @@ define([
             self.$newWorkspaceModal.modal();
             self.$newWorkspaceName.val(wsNewName);
         },
-        
+
         createWorkspace: function (name, callback) {
             console.log('createWorkspace', name);
             WorkspaceManager.createWorkspace(name).then(function () {
@@ -352,7 +399,7 @@ define([
                 if (callback) callback(e);
             });
         },
-        
+
         deleteWorkspace: function (name, callback) {
             console.log('deleteWorkspace this', this);
             WorkspaceManager.deleteWorkspace(name).then(function () {
@@ -366,20 +413,20 @@ define([
                 if (callback) callback(e);
             });
         },
-        
+
         editWorkspace: function (oldName, newName, callback) {
             console.log('editWorkspace', name, newName);
-            WorkspaceManager.editWorkspace(oldName, newName).then(function() {
+            WorkspaceManager.editWorkspace(oldName, newName).then(function () {
                 var ws = self.works.findWorkspace(oldName);
                 ws.name = newName;
                 self.renderWorkspaces();
                 if (callback) callback();
-            }).catch(function(e){
+            }).catch(function (e) {
                 alert(e);
                 if (callback) callback(e);
             });
         },
-        
+
         setOnlineView: function () {
             self.$newWorkspaceButton.removeClass('webida-hidden');
             self.$refreshWorkspaceButton.removeClass('webida-hidden');
