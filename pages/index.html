@@ -57,7 +57,7 @@
             </div>
             <!-- /.navbar-header -->
 
-            <div class="nav navbar-top-links navbar-right">
+            <div id="account-menu" class="nav navbar-top-links navbar-right webida-hidden">
                 <button class="btn btn-primary btn-sm login">
                     Log-in
                 </button>
@@ -120,7 +120,55 @@
 
         </div>
         <!-- /#footer .wb-footer" -->
-
+        <div class="modal fade" id="new-account" tabindex="-1" role="dialog" aria-labelledby="new-account-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="new-account-title">New Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="new-workspace-name" class="control-label">Please input a valid email address.
+                                    <br> This email address will be used as your ID.</label>
+                                <input type="email" class="form-control" id="new-account-email" placeholder="Email address"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary create">Create an account</button>
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#new-account-modal -->
+        <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-labelledby="edit-workspace-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <script id="common-modal-template" type="text/x-handlebars-template">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="alert-title">{{title}}</h4>
+                        </div>
+                        {{#if message}}
+                        <div class="modal-body">
+                            <span>{{message}}</span>
+                        </div>
+                        {{/if}}
+                        <div class="modal-footer">
+                            {{#if buttons}} {{#each buttons}}
+                            <button {{#if id}}id="{{id}}" {{/if}} type="button" class="{{#if class}}{{class}}{{else}}btn btn-default{{/if}}" {{#if disabled}}disabled="" {{/if}} {{#if close}}data-dismiss="modal" {{/if}}>{{#if name}}{{name}}{{else}}Ok{{/if}}</button>
+                            {{/each}} {{else}}
+                            <button type="button" class="btn btn-primary apply" disabled="">Ok</button>
+                            {{/if}}
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+        <!-- /#common-modal -->
     </div>
     <!-- /#wrapper -->
 
@@ -130,6 +178,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <!-- Handlebar Template Library -->
+    <script src="../js/handlebars-v3.0.3.js"></script>
+    
     <!-- Custom JavaScript -->
     <script src="../js/config.js"></script>
     <script src="../js/require.min.js" data-main="../js/index"></script>

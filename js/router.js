@@ -44,6 +44,9 @@
     $(window).on('load', function () {
         if (window.location.hash.length > 0) {
             route();
+        } else {
+            var activePage = pageContainer.find('.default-page');
+            $.changePage(activePage.attr('data-hash'));
         }
     });
 
@@ -61,14 +64,11 @@
             };
             page.trigger('page-init');
         }
-        var activePage = pageContainer.find('.default-page');
-        activePage.removeClass('default-page').addClass('active-page');
-        activePage.trigger('page-on');
     };
 
     $.changePage = function (nextPageHash, params) {
         location.hash = nextPageHash + (params ? '/' + params : '');
     };
-    
+
     return $;
 })(jQuery);

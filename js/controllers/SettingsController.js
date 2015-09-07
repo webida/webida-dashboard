@@ -57,12 +57,12 @@ define([
             this.$addNewPersonalTokenButton = this.$personalTokenPanel.find('button.add-new');
             // modal widgets
             // modal
-            this.$generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
+            this.generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
         },
 
         eventBinding: function () {
 
-            this.$generateNewKeyModal.setup({
+            this.generateNewKeyModal.setup({
                 title: 'Generate New Key',
                 message: 'The previous public ssh key will be replaced with a new one! Are you sure to continue?',
                 buttons: [{
@@ -85,7 +85,7 @@ define([
                             alert(e);
                         }).then(function () {
                             buttonObj.removeAttr('disabled');
-                            self.$generateNewKeyModal.close();
+                            self.generateNewKeyModal.close();
                         });
                     }
                 }, {
@@ -97,7 +97,7 @@ define([
 
             this.$generateNewKeyButton.on('click', function (e) {
                 console.log('click');
-                self.$generateNewKeyModal.popup().then(function (button) {
+                self.generateNewKeyModal.popup().then(function (button) {
                     console.log(button);
                 });
             });

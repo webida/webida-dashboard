@@ -145,6 +145,18 @@ define([
                 });
             });
         },
+        
+        createAccount: function(email) {
+            return new Promise(function(resolve, reject) {
+                webida.auth.signup(email, function(err) {
+                    if (err) {
+                        reject(new Error(err));
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        },
     };
 
     return Auth;

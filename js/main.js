@@ -50,9 +50,9 @@ require([
         },
         
         init: function () {
-            app.checkLogin();
-            app.cacheElements();
-            app.bindEvents();
+            this.checkLogin();
+            this.cacheElements();
+            this.bindEvents();
 
             $.setPageContainer('#page-container');
             // for debugging
