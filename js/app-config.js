@@ -26,6 +26,6 @@ define([], function () {
         appRoute: {
             site: 'apps/desktop/index.html'
         },
-        redirectUrl: window.location.protocol + '//100216-webida-dashboard.webida.org/pages/auth.html'
+        redirectUrl: window.location.protocol + '//' + window.location.host + '/pages/auth.html'
     };
 });

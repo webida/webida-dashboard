@@ -34,6 +34,8 @@ define([
             }
         }
     });
+    // for debugging
+    window.WB = webida;
 
     var Project = new Class();
     Project.include({
