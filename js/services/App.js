@@ -28,16 +28,26 @@ define([
                         //e = JSON.parse(e);
                         reject(e);
                     } else {
-                        info.forEach(function(e, i, a){
+                        info.forEach(function (e, i, a) {
                             var fsUrl = a[i].srcurl;
-                            var splittedUrl = fsUrl.split('/');
-                            a[i].url = {
-                                protocol: splittedUrl[0],
-                                host: splittedUrl[2],
-                                fsid: splittedUrl[3],
-                                workspace: splittedUrl[4],
-                                project: splittedUrl[5],
-                            };
+                            if (fsUrl) {
+                                var splittedUrl = fsUrl.split('/');
+                                a[i].url = {
+                                    protocol: splittedUrl[0],
+                                    host: splittedUrl[2],
+                                    fsid: splittedUrl[3],
+                                    workspace: splittedUrl[4],
+                                    project: splittedUrl[5],
+                                };
+                            } else {
+                                a[i].url = {
+                                    protocol: '',
+                                    host: '',
+                                    fsid: '',
+                                    workspace: '',
+                                    project: '',
+                                };
+                            }
                         });
                         resolve(info);
                     }

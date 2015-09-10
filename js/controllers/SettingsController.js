@@ -183,8 +183,6 @@ define([
                 }).catch(function (e) {
                     reject(e);
                 });
-            }).catch(function (e) {
-                reject(e);
             });
         },
 
@@ -196,8 +194,6 @@ define([
                 }).catch(function (e) {
                     reject(e);
                 });
-            }).catch(function (e) {
-                reject(e);
             });
         },
 
@@ -209,8 +205,6 @@ define([
                 }).catch(function (e) {
                     reject(e);
                 });
-            }).catch(function (e) {
-                reject(e);
             });
         },
 
