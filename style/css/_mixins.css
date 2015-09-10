@@ -1,0 +1,9 @@
+.webida-hidden {
+  display: none;
+}
+.page-wrapper {
+  display: none;
+}
+.active-page {
+  display: block;
+}

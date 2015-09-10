@@ -1,0 +1,299 @@
+.container-main {
+  .header-box {
+    background-color: rgba(41,46,48,1);
+    height: 100px;
+    .header-logo {
+      background-image: url(@webida_logo);
+      background-repeat: no-repeat;
+      text-indent: -1000px;
+      overflow: hidden;
+      width: 58px;
+      height: 39px;
+      margin: 0;
+      cursor: pointer;
+    }
+    .container-box {
+      height: 100px;
+      .header-logo {
+        position: absolute;
+        top: 30px;
+        left: 0;
+      }
+      .header-nav {
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 80px;
+        margin-top: -22px;
+        li {
+          display: inline-block;
+          a {
+            font-size: 18px;
+            font-family: CoreSansN45;
+            color: rgba(138,144,147,1);
+            &:hover, &:active, &.active, &:focus {
+              color: rgba(0,154,231,1);
+              background: transparent;
+            }
+          }
+        }
+      }
+      .header-util {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -10px;
+        margin-bottom: 0;
+        list-style: none;
+        li {
+          a.member-name {
+            font-family: CoreSansN45;
+            color: rgba(217,255,252,1);
+            text-decoration: none;
+            &:link {
+              color: rgba(217,255,252,1);
+
+            }
+            &:hover {
+              color: rgba(1,254,233,1);
+            }
+            &:active {
+              color: rgba(85,94,98,1);
+            }
+          }
+        }
+      }
+    }
+  }
+  article{
+    background-color: rgba(236, 236, 236, 1);
+    .container-section {
+      .workspace-status {
+        background-color: rgba(221, 221, 221, 1);
+        padding: 2px 24px 2px 14px;
+        border-radius: 25px;
+        font-size: 15px;
+        margin-left: 13px;
+        color: rgba(142,142,142,1);
+        box-shadow: inset 1px 1px 2px #BBB;
+        i {
+          margin: 0 4px 0 10px;
+        }
+      }
+      .page-wrapper {
+        position: relative;
+        .new-workspace-button {
+          background-image: url(@icon_workspace);
+          background-color: rgba(141,150,154,1);
+          background-repeat: no-repeat;
+          background-position: 11px 50%;
+          width: 60px;
+          height: 60px;
+          overflow: hidden;
+          display: inline-block;
+          text-indent: -1000px;
+          border-radius: 50%;
+          position: absolute;
+          top: 100px;
+          left: 50px;
+          box-shadow: 1px 2px 4px #BBB;
+          &:hover, &:focus {background-color: rgba(113,125,131,1);}
+          &:active{background-color: rgba(107,118,124,1);}
+          &:disabled{background-color: rgba(188,193,195,1);}
+        }
+        .refresh-workspace-button {
+          background-image: url(@icon_workspace);
+          background-color: rgba(141,150,154,1);
+          background-repeat: no-repeat;
+          background-position: -43px 50%;
+          width: 60px;
+          height: 60px;
+          overflow: hidden;
+          display: inline-block;
+          text-indent: -1000px;
+          border-radius: 50%;
+          position: absolute;
+          top: 180px;
+          left: 50px;
+          box-shadow: 1px 2px 4px #BBB;
+          &:hover, &:focus {background-color: rgba(113,125,131,1);}
+          &:active{background-color: rgba(107,118,124,1);}
+          &:disabled{background-color: rgba(188,193,195,1);}
+        }
+      }
+      .page-header {
+        font-family: CoreSansN45;
+      }
+      .workspace-panel-box {
+        margin-left: 140px;
+        .panel {
+          border-radius: 10px;
+          border: 1px solid rgba(203,203,203,1);
+          color: #D6D6D6;
+          box-shadow: 0px 1px 9px #BBB;
+          .panel-heading {
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            color: rgba(0,0,0,1);
+            background-color: rgba(218,218,218,1);
+            border-bottom: 0;
+            font-size: 14px;
+            font-family: CoreSansN45;
+            .panel-title {
+              padding: 0 10px;
+            }
+            button{
+              font-size: 30px;
+              font-weight: normal;
+              line-height: 1;
+              opacity : 1;
+              text-shadow: none;
+              color: #ffffff;
+              font-family: CoreSansN45;
+            }
+          }
+          .panel-body {
+            .panel-title {
+              color: rgba(59,66,76,1);
+              font-size: 14px;
+              font-family: CoreSansN45;
+              font-weight: normal;
+            }
+            color: rgba(41,46,48,1);
+            .deploy {
+              color: rgba(1,141,211,1);
+              &:link, &:hover, &:active {
+                color: rgba(1,141,211,1);
+              }
+            }
+          }
+          .panel-footer {
+            color: rgba(120,126,128,1);
+            background-color: transparent;
+            border-top: 1px solid rgba(172,178,186,1);
+          }
+        }
+      }
+      .settings-panel-box {
+          .panel {
+          border-radius: 10px;
+          border: 1px solid rgba(203,203,203,1);
+          color: #D6D6D6;
+          box-shadow: 0px 1px 9px #BBB;
+          .panel-heading {
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            color: rgba(0,0,0,1);
+            background-color: rgba(218,218,218,1);
+            border-bottom: 0;
+            font-size: 14px;
+            font-family: CoreSansN45;
+            .panel-title {
+              padding: 0 10px;
+            }
+          }
+          .panel-body {
+            .panel-title {
+              color: rgba(59,66,76,1);
+              font-size: 14px;
+              font-family: CoreSansN45;
+              font-weight: normal;
+            }
+            color: rgba(41,46,48,1);
+            .button {
+              float: right;
+              margin: 10px 0 0 0;
+            }
+            textarea, input {width: 100%}
+            .personal-token-table {
+              margin: 0;
+              thead {
+                tr {
+                  th {
+                    border-top: 1px rgba(196,199,201,1) solid;
+                    border-left: 1px rgba(196,199,201,1) solid;
+                    border-right: 1px rgba(196,199,201,1) solid;
+                    border-bottom: 2px rgba(196,199,201,1) solid;
+                    background-color: rgba(232,233,233,1);
+                    font-size: 14px;
+                    text-align: center;
+                    font-family: CoreSansN45;
+                    font-weight: normal;
+                  }
+                }
+              }
+              tbody {
+                tr {
+                  td {
+                    border-top: 1px rgba(196,199,201,1) solid;
+                    border-left: 1px rgba(196,199,201,1) solid;
+                    border-right: 1px rgba(196,199,201,1) solid;
+                    border-bottom: 1px rgba(196,199,201,1) solid;
+                    background-color: rgba(246,246,246,1);
+                    font-size: 14px;
+                    text-align: center;
+                    font-family: CoreSansN45;
+                    font-weight: normal;
+                    a {display: inline-block;}
+                    .delete-token {
+                      background-image: url(@icon_delete);
+                      background-repeat: no-repeat;
+                      text-indent: -1000px;
+                      overflow: hidden;
+                      width: 14px;
+                      height: 14px;
+                      margin: 0;
+                      vertical-align: middle;
+                      cursor: pointer;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .panel-footer {
+            color: rgba(120,126,128,1);
+            background-color: transparent;
+            border-top: 1px solid rgba(172,178,186,1);
+          }
+        }
+      }
+    }
+  }
+  .container-dialog {
+    font-family: CoreSansN45;
+    .modal-content {
+      border-radius: 15px;
+      border: 1px solid #565656;
+      color: #D6D6D6;
+    }
+    .modal-header {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      color: rgba(255,255,255,1);
+      background-color: rgba(92,102,117,1);
+      border-bottom: 0;
+      font-size: 14px;
+      button{
+        font-size: 30px;
+        font-weight: normal;
+        line-height: 1;
+        opacity : 1;
+        text-shadow: none;
+        color: #ffffff;
+        font-family: CoreSansN45;
+      }
+    }
+    .modal-body {
+      .control-label {
+        color: rgba(59,66,76,1);
+        font-size: 14px;
+        font-family: CoreSansN45;
+        font-weight: normal;
+      }
+    }
+    .modal-footer {
+      border-top: 1px solid rgba(172,178,186,1);
+    }
+  }
+}

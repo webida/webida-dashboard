@@ -1,0 +1,12 @@
+.button {
+  border: 1px #000000 solid;
+  background: transparent;
+}
+.button.util {
+  font-family: CoreSansN45;
+  padding: 10px 20px;
+}
+.primary {
+  border: 1px solid #000000;
+  background: transparent;
+}

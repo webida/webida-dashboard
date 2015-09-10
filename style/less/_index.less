@@ -1,0 +1,187 @@
+.container-index {
+  .header-box {
+    background-image: url(@background_index);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    height: 494px;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .header-logo {
+      background-image: url(@webida_logo);
+      background-repeat: no-repeat;
+      text-indent: -1000px;
+      overflow: hidden;
+      width: 58px;
+      height: 39px;
+      margin: 0;
+      cursor: pointer;
+    }
+    .container-box {
+      height: 494px;
+      .header-logo {
+        position: absolute;
+        top: 30px;
+        left: 0;
+      }
+      .header-util {
+        position: absolute;
+        top: 30px;
+        right: 0;
+      }
+      .header-title {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin-top: -42px;
+        text-align: center;
+        font-size: 60px;
+        color: rgba(255, 255, 255, 1);
+        font-family: CoreSansN25;
+      }
+    }
+  }
+
+  .container-section {
+    background-color: rgba(218, 219, 228, 1);
+    .container-box {
+      p {
+        color: rgba(37, 38, 40, 1);
+        font-family: CoreSansN25;
+        text-align: center;
+        font-size: 18px;
+      }
+      h2 {
+        color: rgba(37, 38, 40, 1);
+        font-family: CoreSansN35;
+        text-align: center;
+        font-size: 36px;
+      }
+      .link-text {
+        margin: 40px auto 0px auto;
+        padding: 0;
+        text-align: center;
+        li {
+          display: inline-block;
+          font-family: CoreSansN45;
+          & + li:before {
+            content: '|';
+            font-size: 18px;
+          }
+          a {
+            font-size: 17px;
+            padding: 2px 10px;
+            color: rgba(52, 135, 212, 1);
+            &:hover {
+              color: rgba(51, 161, 255, 1);
+              text-decoration: none;
+            }
+            &:active {
+              color: rgba(35, 99, 159, 1);
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+    &.dark {
+      background-color: rgba(60, 63, 65, 1);
+      p {
+        color: rgba(137, 143, 147, 1);
+        font-family: CoreSansN25;
+        text-align: center;
+        font-size: 18px;
+      }
+      h2 {
+        color: rgba(255, 255, 255, 1);
+        font-family: CoreSansN35;
+        text-align: center;
+        font-size: 36px;
+      }
+      .browser {
+        width: 246px;
+        margin: 40px auto 0px auto;
+        padding: 0;
+        li {
+          width: 81px;
+          height: 79px;
+          margin: 0 20px;
+          background-image: url(@icon_browser);
+          background-position: 0 0;
+          background-repeat: no-repeat;
+          display: inline-block;
+          text-indent: -1000px;
+          overflow: hidden;
+          & + li {
+            background-position: -80px 0;
+          }
+        }
+      }
+    }
+    h2 {
+      &.top {
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+      &.bot {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .footer {
+    background-color: rgba(0, 0, 0, 1);
+    .container-box {
+      text-align: right;
+      color: rgba(155, 161, 165, 1);
+      font-family: CoreSansN45;
+    }
+  }
+
+  .container-dialog {
+    font-family: CoreSansN45;
+    .modal-content {
+      border-radius: 15px;
+      border: 1px solid #565656;
+      color: #D6D6D6;
+    }
+    .modal-header {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 15px;
+      color: rgba(255,255,255,1);
+      background-color: rgba(92,102,117,1);
+      border-bottom: 0;
+      font-size: 14px;
+      button{
+        font-size: 30px;
+        font-weight: normal;
+        line-height: 1;
+        opacity : 1;
+        text-shadow: none;
+        color: #ffffff;
+        font-family: CoreSansN45;
+      }
+    }
+    .modal-body {
+      .control-label {
+        color: rgba(59,66,76,1);
+        font-size: 14px;
+        font-family: CoreSansN45;
+        font-weight: normal;
+      }
+    }
+    .modal-footer {
+      border-top: 1px solid rgba(172,178,186,1);
+    }
+  }
+}
