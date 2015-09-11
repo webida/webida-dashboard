@@ -1,0 +1,17 @@
+.form-checkbox {
+  position: relative;
+}
+.form-checkbox label {
+  font-family: "CoreSansN45";
+  font-weight: normal;
+  color: #729ab6;
+}
+.form-checkbox label:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+.form-checkbox label input[type='checkbox'] {
+  display: none;
+}

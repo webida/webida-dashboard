@@ -1,0 +1,75 @@
+.icon20 {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  &.workspace {
+    background-image: url(@icon_menu);
+    background-position: 0 -1px;
+  }
+  &.settings {
+    background-image: url(@icon_menu);
+    background-position: -20px -1px;
+  }
+  &.community {
+    background-image: url(@icon_menu);
+    background-position: -60px -1px;
+  }
+  &.facebook {
+    background-image: url(@icon_menu);
+    background-position: -80px -1px;
+  }
+}
+.container-main .header-box .container-box .header-nav li a {
+  &:hover, &:active, &.active, &:focus {
+    .workspace {background-position: 0 19px;}
+    .settings {background-position: -20px 19px;}
+    .community {background-position: -60px 19px;}
+    .facebook {background-position: -80px 19px;}
+  }
+}
+
+.icon16 {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  &.workspace_card {
+    background-image: url(@icon_workspace_card);
+    background-position: 0 0px;
+  }
+  &.project_card {
+    background-image: url(@icon_workspace_card);
+    background-position: -16px -1px;
+  }
+  &.deploy_card {
+    background-image: url(@icon_workspace_card);
+    background-position: -32px 0px;
+  }
+  &.workspace {
+    background-image: url(@icon_display);
+    background-position: 0 0px;
+  }
+  &.project {
+    background-image: url(@icon_display);
+    background-position: -16px -1px;
+  }
+  &.deploy {
+    background-image: url(@icon_display);
+    background-position: -32px 0px;
+  }
+  &.quota {
+    background-image: url(@icon_display);
+    background-position: -48px 0px;
+  }
+  &.modify {
+    background-image: url(@icon_modify);
+    background-position: -13px 0px;
+  }
+  &.delete {
+    background-image: url(@icon_modify);
+    background-position: 2px 0px;
+  }
+}
