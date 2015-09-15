@@ -426,11 +426,11 @@ th {
 }
 .icon16.modify {
   background-image: url("../resource/icon_modify.png");
-  background-position: -13px 0px;
+  background-position: 2px 0px;
 }
 .icon16.delete {
   background-image: url("../resource/icon_modify.png");
-  background-position: 2px 0px;
+  background-position: -13px 0px;
 }
 .form-checkbox {
   position: relative;
