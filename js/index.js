@@ -18,7 +18,8 @@
 require([
     'services/Auth',
     'ModalFactory',
-], function (Auth, ModalFactory) {
+    'notify',
+], function (Auth, ModalFactory, notify) {
     'use strict';
 
     jQuery.fn.closeModal = function () {
@@ -86,7 +87,7 @@ require([
                     app.signingUpModal.popup();
                 }).catch(function (e) {
                     app.$newAccountCreateButton.removeAttr('disabled');
-                    alert(e);
+                    notify.alert(e);
                     console.log(e);
                 });
             });

@@ -19,7 +19,8 @@ require([
     'app-data',
     'router',
     'services/Auth',
-], function (appConfig, appData, router, Auth) {
+    'notify',
+], function (appConfig, appData, router, Auth, notify) {
     'use strict';
 
     console.log('required');
@@ -95,7 +96,7 @@ require([
                 Auth.logout().then(function() {
                     location.href = '/index.html';
                 }).catch(function(e){
-                    alert(e);
+                    notify.alert(e);
                 });
             });
         },

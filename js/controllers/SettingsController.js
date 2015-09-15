@@ -18,8 +18,9 @@ define([
     'app-config',
     'services/Auth',
     'services/SettingsManager',
-    'ModalFactory'
-], function (appConfig, Auth, SettingsManager, ModalFactory) {
+    'ModalFactory',
+    'notify'
+], function (appConfig, Auth, SettingsManager, ModalFactory, notify) {
     'use strict';
 
     var SettingsController = {
@@ -112,7 +113,7 @@ define([
                     self.settings.personalTokens = tokens;
                     self.renderPersonalTokenTable();
                 }).catch(function (e) {
-                    alert(e);
+                    notify.alert('Error', e, 'danger');
                 });
             });
 
@@ -123,7 +124,7 @@ define([
                 }).then(function () {
                     self.renderPersonalTokenTable();
                 }).catch(function (e) {
-                    alert(e);
+                    notify.alert('Error', e, 'danger');
                 });
             });
         },
@@ -139,11 +140,11 @@ define([
                                 ]).then(function (values) {
                         resolve();
                     }).catch(function (e) {
-                        alert(e);
+                        notify.alert('Error', e, 'danger');
                         reject(e);
                     });
                 }).catch(function (e) {
-                    alert(e);
+                    notify.alert('Error', e, 'danger');
                     reject(e);
                 });
             });
@@ -194,10 +195,9 @@ define([
                 console.log('key', key);
                 self.settings.publicSSHKey = key;
                 self.renderPublicSSHKey();
-                self.notify('Info', 'New public SSH key generated successfully');
+                notify.alert('Info', 'New public SSH key generated successfully');
             }).catch(function (e) {
-                self.notify('Error', e, 'danger');
-                alert(e);
+                notify.alert('Error', e, 'danger');
             }).then(function () {
                 buttonObj.removeAttr('disabled');
                 self.generateNewKeyModal.close();
@@ -213,9 +213,9 @@ define([
             }).then(function (token) {
                 self.settings.githubToken = token;
                 self.renderGithubToken();
-                self.notify('Info', 'GitHub token saved successfully');
+                notify.alert('Info', 'GitHub token saved successfully');
             }).catch(function (e) {
-                self.notify('Error', e, 'danger');
+                notify.alert('Error', e, 'danger');
             });
         },
 
@@ -237,12 +237,6 @@ define([
         renderPersonalTokenTable: function () {
             console.log('this.settings.personalTokens', this.settings.personalTokens);
             this.$personalTokenTable.html(this.$personalTokenTemplate(this.settings.personalTokens));
-        },
-
-        notify: function (title, message, type) {
-            // type: undefined | 'info' | 'success' | 'danger'
-            var duration = 3000 + (title.length + message.length) * 50;
-            $.toast('<h4>' + title + '</h4> ' + message, {duration: duration , type: type});
         },
     };
 
