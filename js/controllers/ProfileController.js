@@ -17,7 +17,8 @@
 define([
     'app-config',
     'services/Auth',
-], function (appConfig, Auth) {
+    'notify',
+], function (appConfig, Auth, notify) {
     'use strict';
 
     var ProfileController = {
@@ -28,6 +29,7 @@ define([
             this.eventBinding();
             this.renderProfile();
         },
+        
         cacheElement: function () {
             // templates
             // page widgets
@@ -42,6 +44,7 @@ define([
             this.$profileLocation = this.$userProfileModal.find('#profile-location');
             this.$profileGravatar = this.$userProfileModal.find('#profile-gravatar');
         },
+        
         eventBinding: function () {
             this.$openProfileButton.on('click', function(e) {
                 self.$userProfileModal.modal();
@@ -58,7 +61,7 @@ define([
                     self.$userProfileModal.closeModal();
                 }).catch(function(e) {
                     self.$applyButton.removeAttr('disabled');
-                    alert(e);
+                    notify.alert('Error', e, 'danger');
                     console.log(e);
                 });
                 self.$applyButton.attr('disabled', '');
@@ -72,6 +75,7 @@ define([
                 }
             });
         },
+        
         getModifiedProfile: function() {
             var profile = {};
             //$.extend(profile, this.userInfo);
@@ -83,17 +87,20 @@ define([
             profile.gravatar = this.$profileGravatar.val();
             return profile;
         },
+        
         setProfile: function (user) {
             this.userInfo = user || this.userInfo;
         },
+        
         loadProfile: function () {
             Auth.getMyInfo(true).then(function (user) {
                 self.userInfo = user;
             }).catch(function (e) {
-                alert(e);
+                notify.alert('Error', e, 'danger');
                 console.log(e);
             });
         },
+        
         renderProfile: function (user) {
             this.userInfo = user || this.userInfo;
             this.$profileEmail.text(this.userInfo.email);
@@ -104,6 +111,7 @@ define([
             this.$profileGravatar.val(this.userInfo.gravatar);
             this.$applyButton.attr('disabled', '');
         },
+        
         updateProfile: function (user, callback) {
             return new Promise(function (resolve, reject) {
                 Auth.updateUser(user).then(function (user) {

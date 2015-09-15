@@ -19,7 +19,8 @@ define([
     'webida-0.3',
     'services/Auth',
     'services/WorkspaceManager',
-], function (appConfig, webida, Auth, WorkspaceManager) {
+    'notify',
+], function (appConfig, webida, Auth, WorkspaceManager, notify) {
     'use strict';
 
     var Deploy = new Class();
@@ -333,9 +334,7 @@ define([
                 self.works.status.quotaLimit = quota.limit;
                 self.renderStatus();
             }).catch(function (e) {
-                if (e.toLowerCase().indexOf('no such file') < 0) {
-                    self.notify('error', e, 'danger');
-                }
+                notify.alert('error', e, 'danger');
                 console.log(e);
             });
         },
@@ -401,9 +400,7 @@ define([
                 self.renderWorkspaces();
                 if (callback) callback();
             }).catch(function (e) {
-                if (e.toLowerCase().indexOf('no such file') < 0) {
-                    self.notify('error', e, 'danger');
-                }
+                notify.alert('error', e, 'danger');
                 console.log('createWorkspace error', e);
                 if (callback) callback(e);
             });
@@ -418,9 +415,7 @@ define([
                 }
                 if (callback) callback();
             }).catch(function (e) {
-                if (e.toLowerCase().indexOf('no such file') < 0) {
-                    self.notify('error', e, 'danger');
-                }
+                notify.alert('error', e, 'danger');
                 if (callback) callback(e);
             });
         },
@@ -433,9 +428,7 @@ define([
                 self.renderWorkspaces();
                 if (callback) callback();
             }).catch(function (e) {
-                if (e.toLowerCase().indexOf('no such file') < 0) {
-                    self.notify('error', e, 'danger');
-                }
+                notify.alert('error', e, 'danger');
                 if (callback) callback(e);
             });
         },
@@ -443,12 +436,6 @@ define([
         setOnlineView: function () {
             self.$newWorkspaceButton.removeClass('webida-hidden');
             self.$refreshWorkspaceButton.removeClass('webida-hidden');
-        },
-
-        notify: function (title, message, type) {
-            // type: undefined | 'info' | 'success' | 'danger'
-            var duration = 3000 + (title.length + message.length) * 50;
-            $.toast('<h4>' + title + '</h4> ' + message, {duration: duration , type: type});
         },
     };
 
