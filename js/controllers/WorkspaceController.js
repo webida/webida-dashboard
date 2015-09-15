@@ -207,7 +207,7 @@ define([
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete modal', wsName, this);
                 self.$workspaceDeleteConfirmModal.find('button.delete').attr('data-workspace',
-                    wsName);
+                                                                             wsName);
                 self.$deleteConfirmLabel.text('Workspace name ("' + wsName + '")');
                 self.$deleteConfirmText.val('');
                 self.$deleteWorkspaceConfirmButton.attr('disabled', '');
@@ -321,18 +321,21 @@ define([
 
             var usageMB = parseInt(this.works.status.quotaUsage / (1024 * 1024), 10);
             var limitMB = parseInt(this.works.status.quotaLimit / (1024 * 1024), 10);
-            var percent = parseInt(+this.works.status.quotaUsage / +this.works.status.quotaLimit * 100, 10);
+            var percent = parseInt(+this.works.status.quotaUsage / +this.works.status.quotaLimit * 100,
+                                   10);
 
             this.$quotaUsage.text(usageMB + 'MB /' + limitMB + 'MB(' + percent + '%)');
         },
-        
-        loadQuata: function() {
-            WorkspaceManager.getQuota().then(function(quota) {
+
+        loadQuata: function () {
+            WorkspaceManager.getQuota().then(function (quota) {
                 self.works.status.quotaUsage = quota.usage;
                 self.works.status.quotaLimit = quota.limit;
                 self.renderStatus();
-            }).catch(function(e) {
-                alert(e);
+            }).catch(function (e) {
+                if (e.toLowerCase().indexOf('no such file') < 0) {
+                    self.notify('error', e, 'danger');
+                }
                 console.log(e);
             });
         },
@@ -355,9 +358,11 @@ define([
                     console.log('self.works.findWorkspace', workspace);
                     self.works.findWorkspace(workspace.name).fillFrom(workspace);
                     self.renderWorkspace(workspace);
-                    self.works.status.projectCount += (workspace.projects ? workspace.projects.length : 0);
-                    workspace.projects.forEach(function(project){
-                        self.works.status.deployCount += (project.deploys ? project.deploys.length : 0);
+                    self.works.status.projectCount += (workspace.projects ? workspace.projects
+                                                       .length : 0);
+                    workspace.projects.forEach(function (project) {
+                        self.works.status.deployCount += (project.deploys ?
+                                                          project.deploys.length : 0);
                     });
                     self.renderStatus();
                 });
@@ -396,7 +401,9 @@ define([
                 self.renderWorkspaces();
                 if (callback) callback();
             }).catch(function (e) {
-                alert(e);
+                if (e.toLowerCase().indexOf('no such file') < 0) {
+                    self.notify('error', e, 'danger');
+                }
                 console.log('createWorkspace error', e);
                 if (callback) callback(e);
             });
@@ -411,7 +418,9 @@ define([
                 }
                 if (callback) callback();
             }).catch(function (e) {
-                alert(e);
+                if (e.toLowerCase().indexOf('no such file') < 0) {
+                    self.notify('error', e, 'danger');
+                }
                 if (callback) callback(e);
             });
         },
@@ -424,7 +433,9 @@ define([
                 self.renderWorkspaces();
                 if (callback) callback();
             }).catch(function (e) {
-                alert(e);
+                if (e.toLowerCase().indexOf('no such file') < 0) {
+                    self.notify('error', e, 'danger');
+                }
                 if (callback) callback(e);
             });
         },
@@ -432,6 +443,12 @@ define([
         setOnlineView: function () {
             self.$newWorkspaceButton.removeClass('webida-hidden');
             self.$refreshWorkspaceButton.removeClass('webida-hidden');
+        },
+
+        notify: function (title, message, type) {
+            // type: undefined | 'info' | 'success' | 'danger'
+            var duration = 3000 + (title.length + message.length) * 50;
+            $.toast('<h4>' + title + '</h4> ' + message, {duration: duration , type: type});
         },
     };
 
