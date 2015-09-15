@@ -1,0 +1,63 @@
+.container-login {
+  background-image: url(@background_login);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .header-logo {
+    background-image: url(@webida_login_logo);
+    background-repeat: no-repeat;
+    text-indent: -1000px;
+    background-size: cover;
+    overflow: hidden;
+    width: 102px;
+    height: 68px;
+    margin: 0 auto;
+    cursor: pointer;
+    position: relative;
+    top: 82px;
+  }
+
+  .container-section {
+    .login-box {
+      width: 426px;
+      height: 312px;
+      background-color: rgba(0,0,0,0.45);
+      margin: 132px auto 0 auto;
+      border-radius: 4px;
+      .form-group {
+        margin: 0;
+        padding: 10px 6px;
+        .login {
+          width: 100%;
+          margin: 0;
+          font-family: CoreSansN45;
+        }
+      }
+    }
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 30px;
+    left:50%;
+    margin-left: -51px;
+    .container-box {
+      background-image: url(@webida_footer_logo);
+      width: 102px;
+      height: 23px;
+      position: relative;
+    }
+
+  }
+}

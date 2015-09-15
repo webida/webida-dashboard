@@ -1,0 +1,158 @@
+.button_group {
+  margin-top: 5px;
+  .left {
+    float: left;
+  }
+  .right {
+    float:right;
+  }
+}
+
+
+.button {
+  background: transparent;
+  &.util {
+    font-family: CoreSansN45;
+    padding: 4px 16px;
+    border-radius: 4px;
+    margin: 0 5px;
+  }
+  &.workspace {
+    font-family: CoreSansN45;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin: 0 5px;
+  }
+  &.dialog {
+    font-family: CoreSansN45;
+    padding: 4px 16px;
+    border-radius: 4px;
+    margin: 0 5px;
+  }
+  &.logtype {
+    font-family: CoreSansN55;
+    padding: 4px 16px;
+    border-radius: 4px;
+    width: 49%;
+    float: left;
+    & + .logtype {
+      float: right;
+    }
+    &.google {
+      &:before {
+        content: '';
+        background-image: url(@icon_connect);
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        width: 42px;
+        height: 42px;
+        display: block;
+        margin: 6px auto;
+      }
+    }
+    &.github {
+      &:before {
+        content: '';
+        background-image: url(@icon_connect);
+        background-position: -42px 0;
+        background-repeat: no-repeat;
+        width: 42px;
+        height: 42px;
+        display: block;
+        margin: 6px auto;
+      }
+    }
+  }
+  &:hover, &:focus {
+    outline: none;
+  }
+}
+
+.primary {
+  border: 1px solid @primary;
+  color: @primary;
+  &:hover {
+    background: @primary_over_bg;
+    border: 1px solid @primary_over;
+  }
+  &:active {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid @primary_over;
+  }
+  &:disabled {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid @primary_disable;
+  }
+  &.select {
+  }
+}
+
+.info {
+  border: 1px solid @info;
+  color: @info;
+  &:hover {
+    background: @info_over_bg;
+    border: 1px solid @info_over;
+  }
+  &:active {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid @info_over;
+  }
+  &:disabled {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid @info_disable;
+  }
+  &.select {
+  }
+}
+
+.default-box {
+  background: @default-box;
+  color: rgba(255,255,255,1);
+  border: 0;
+  &:hover {
+    background: @default-box_over;
+  }
+  &:active {
+    background: @default-box_active;
+  }
+  &:disabled {
+    background: @default-box_disable;
+  }
+  &.select {
+  }
+}
+
+.primary-box {
+  background: @primary-box;
+  color: rgba(255,255,255,1);
+  border: 0;
+  &:hover {
+    background: @primary-box_over;
+  }
+  &:active {
+    background: @primary-box_active;
+  }
+  &:disabled {
+    background: @primary-box_disable;
+  }
+  &.select {
+  }
+}
+
+.warning-box {
+  background: @warning-box;
+  color: rgba(255,255,255,1);
+  border: 0;
+  &:hover {
+    background: @warning-box_over;
+  }
+  &:active {
+    background: @warning-box_active;
+  }
+  &:disabled {
+    background: @warning-box_disable;
+  }
+  &.select {
+  }
+}

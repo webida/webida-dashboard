@@ -1,0 +1,86 @@
+.form-checkbox {
+  position: relative;
+  label {
+    font-family:"CoreSansN45";
+    font-size: 13px;
+    font-weight: normal;
+    color:rgba(114,154,182,1);
+    cursor: pointer;
+    &:hover {
+      color:rgba(91,188,255,1);
+    }
+    &:before {
+      content: '';
+      display: inline-block;
+      width:16px;
+      height:16px;
+      background-image: url(@icon_checkbox);
+      background-repeat: no-repeat;
+      margin-right: 6px;
+    }
+  }
+  input[type='checkbox'] {
+    display: none;
+    &:checked + label:before {
+      background-image: url(@icon_checkbox);
+      background-repeat: no-repeat;
+      background-position: -17px 0px;
+    }
+  }
+}
+
+.form-text {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: rgba(95,97,98,1);
+  border: 1px rgba(93,93,93,1) solid;
+  background-color: rgba(25,26,27,1);
+  font-family: CoreSansN55;
+  font-size: 15px;
+  outline: none;
+  &::-webkit-input-placeholder{color:rgba(95,97,98,1);}
+  &::-moz-placeholder {color:rgba(95,97,98,1);}
+  &:-ms-input-placeholder {color:rgba(95,97,98,1);}
+  &:hover, &:focus {
+    border: 1px rgba(110,110,110,1) solid;
+    background-color: rgba(14,18,20,1);
+    color: rgba(211,222,228,1);
+    box-shadow: none;
+  }
+  &:disabled {
+    border: 1px rgba(46,46,46,1) solid;
+    background-color: rgba(19,25,28,1);
+  }
+}
+
+.form-text-w {
+  &.height0 {height: inherit}
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: rgba(0,0,0,1);
+  border: 1px rgba(172,172,172,1) solid;
+  background-color: rgba(255,255,255,1);
+  font-family: CoreSansN55;
+  font-size: 15px;
+  outline: none;
+  box-shadow: inset 0px 1px 2px #BBB;
+  &::-webkit-input-placeholder{color:rgba(95,97,98,1);}
+  &::-moz-placeholder {color:rgba(95,97,98,1);}
+  &:-ms-input-placeholder {color:rgba(95,97,98,1);}
+  &:hover, &:focus {
+    box-shadow: inset 0px 1px 2px #BBB;
+  }
+  &:disabled {
+    background-color: rgba(239,239,239,1);
+    color: rgba(197,197,197,1);
+    border: 1px rgba(218,218,218,1) solid;
+    box-shadow: inset 0px 1px 2px rgba(210,210,210,1);
+  }
+}
+
