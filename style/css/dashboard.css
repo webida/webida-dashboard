@@ -369,25 +369,25 @@ th {
 .container-main .header-box .container-box .header-nav li a:active .workspace,
 .container-main .header-box .container-box .header-nav li a.active .workspace,
 .container-main .header-box .container-box .header-nav li a:focus .workspace {
-  background-position: 0 19px;
+  background-position: 0 -21px;
 }
 .container-main .header-box .container-box .header-nav li a:hover .settings,
 .container-main .header-box .container-box .header-nav li a:active .settings,
 .container-main .header-box .container-box .header-nav li a.active .settings,
 .container-main .header-box .container-box .header-nav li a:focus .settings {
-  background-position: -20px 19px;
+  background-position: -20px -21px;
 }
 .container-main .header-box .container-box .header-nav li a:hover .community,
 .container-main .header-box .container-box .header-nav li a:active .community,
 .container-main .header-box .container-box .header-nav li a.active .community,
 .container-main .header-box .container-box .header-nav li a:focus .community {
-  background-position: -60px 19px;
+  background-position: -60px -21px;
 }
 .container-main .header-box .container-box .header-nav li a:hover .facebook,
 .container-main .header-box .container-box .header-nav li a:active .facebook,
 .container-main .header-box .container-box .header-nav li a.active .facebook,
 .container-main .header-box .container-box .header-nav li a:focus .facebook {
-  background-position: -80px 19px;
+  background-position: -80px -21px;
 }
 .icon16 {
   width: 16px;
@@ -992,6 +992,8 @@ body {
   font-family: CoreSansN45;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body {
+  overflow-y: auto;
+  height: 78px;
   color: #292e30;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body .panel-title {
