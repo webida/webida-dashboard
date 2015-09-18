@@ -15,7 +15,7 @@
  */
 
 define([
-    'webida-0.3',
+    'webida',
     'q'
 ], function (webida, Q) {
     'use strict';

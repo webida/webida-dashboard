@@ -16,10 +16,10 @@
 
 define([
     'app-config',
-    'webida-0.3',
+    'webida',
     'services/FS',
     'services/App',
-    'lodash.min',
+    'lodash',
 ], function (appConfig, webida, FS, App, _) {
     'use strict';
 

@@ -15,7 +15,7 @@
  */
 
 define([
-    'webida-0.3',
+    'webida',
 ], function (webida) {
     'use strict';
     var App = function () {};

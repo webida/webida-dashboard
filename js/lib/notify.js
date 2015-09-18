@@ -21,6 +21,7 @@ define([], function () {
         alert: function(title, message, type) {
             // type: undefined | 'info' | 'success' | 'danger'
             var duration = 3000 + (title.length + message.length) * 50;
+            message = message.message | message;
             if (message.toLowerCase().indexOf('no such file') < 0) {
                 $.toast('<h4>' + title + '</h4> ' + message, {duration: duration , type: type});
             }

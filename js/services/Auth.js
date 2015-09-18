@@ -16,7 +16,7 @@
 
 define([
     'app-config',
-    'webida-0.3',
+    'webida',
 ], function (appConfig, webida) {
     'use strict';
 

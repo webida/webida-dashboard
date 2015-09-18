@@ -15,7 +15,7 @@
  */
 
 define([
-    'lodash.min',
+    'lodash',
     'services/FS',
     'services/Auth',
     'q'

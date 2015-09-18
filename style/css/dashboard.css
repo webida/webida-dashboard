@@ -992,9 +992,12 @@ body {
   font-family: CoreSansN45;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body {
-  overflow-y: auto;
-  height: 78px;
+  overflow-y: hidden;
+  height: 110px;
   color: #292e30;
+}
+.container-main article .container-section .workspace-panel-box .panel .panel-body:hover {
+    overflow-y: auto;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body .panel-title {
   color: #3b424c;

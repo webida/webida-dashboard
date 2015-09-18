@@ -17,10 +17,9 @@
 require([
     'app-config',
     'app-data',
-    'router',
     'services/Auth',
     'notify',
-], function (appConfig, appData, router, Auth, notify) {
+], function (appConfig, appData, Auth, notify) {
     'use strict';
 
     console.log('required');
@@ -55,7 +54,7 @@ require([
             this.cacheElements();
             this.bindEvents();
 
-            $.setPageContainer('#page-container');
+            router.init('#page-container');
             // for debugging
             window.app = this;
         },

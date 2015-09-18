@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="panel-footer">
                                     <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="button workspace primary-box" title="Open workspace with IDE">Open</a></span>
+                                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="button workspace workspace-open primary-box" title="Open workspace with IDE">Open</a></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                             </div>
                             <div class="panel-footer">
                                 <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                                <span class="pull-right"><button data-workspace="{{name}}" class="button workspace primary-box" title="Open workspace with IDE">Open</button></span>
+                                <span class="pull-right"><button data-workspace="{{name}}" class="button workspace workspace-open primary-box" title="Open workspace with IDE">Open</button></span>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -398,12 +398,13 @@
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <!-- Handlebar Template Library -->
-<script src="../js/handlebars-v3.0.3.js"></script>
+<script src="../bower_components/handlebars/handlebars.min.js"></script>
 
 <!-- Custom JavaScript -->
 <script src="../js/lib/jquery.toast/jquery.toast.min.js"></script>
 <script src="../js/config.js"></script>
-<script src="../js/require.min.js" data-main="../js/main"></script>
+<script src="../bower_components/requirejs/require.js" data-main="../js/main"></script>
+<script src="../js/lib/router.js"></script>
 <script src="../js/Class.js"></script>
 
 </body>

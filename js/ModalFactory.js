@@ -45,6 +45,8 @@ myAlert.popup();
 // */
 
 define([], function () {
+    'use strict';
+    
     var Modal = function (modalSelector, templateSelector) {
         this.modalSelector = modalSelector;
         this.modalObj = $(modalSelector);
@@ -52,6 +54,7 @@ define([], function () {
         this.templateObj = Handlebars.compile($(templateSelector).html());
         this.lastClickedButton = undefined;
     };
+    
     Modal.prototype.setup = function (data) {
         var _this = this;
         this.data = data;
