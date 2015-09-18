@@ -16,11 +16,10 @@
 
 define([
     'app-config',
-    'webida-0.3',
     'services/Auth',
     'services/WorkspaceManager',
     'notify',
-], function (appConfig, webida, Auth, WorkspaceManager, notify) {
+], function (appConfig, Auth, WorkspaceManager, notify) {
     'use strict';
 
     var Deploy = new Class();
@@ -35,9 +34,6 @@ define([
             }
         }
     });
-    // for debugging
-    window.WB = webida;
-
     var Project = new Class();
     Project.include({
         index: 0,
