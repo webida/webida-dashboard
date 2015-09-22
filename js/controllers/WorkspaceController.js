@@ -128,7 +128,7 @@ define([
             this.$workspaceItemTemplate = Handlebars.compile($('#workspace-item-template').html());
             // page widgets
             this.$wrapper = $('#wrapper');
-            this.$workspacePage = this.$wrapper.find('#workspace-page');
+            this.$workspacePage = this.$wrapper.find('#workspaces-page');
             this.$workspacePanel = this.$wrapper.find('#workspace-panel');
             this.$newWorkspaceButton = this.$wrapper.find('#new-workspace-button');
             this.$refreshWorkspaceButton = this.$wrapper.find('#refresh-workspace-button');
@@ -156,7 +156,7 @@ define([
 
         eventBinding: function () {
             this.$workspacePage.on('page-on', function (e, hash, param) {
-                console.log('page on', app, param);
+                console.log('page on', hash, param);
             });
             this.$newWorkspaceButton.on('click', function () {
                 //console.log('click');

@@ -62,6 +62,9 @@ define([
         },
 
         eventBinding: function () {
+            this.$settingsPage.on('page-on', function (e, hash, param) {
+                console.log('page on', hash, param);
+            });
 
             this.generateNewKeyModal.setup({
                 title: 'Generate New Key',
