@@ -35,7 +35,7 @@ require([
 
     var app = {
         checkLogin: function () {
-            Auth.initAuthOnce();
+            Auth.initAuth();
             Auth.getLoginStatusOnce().catch(function () {
                 location.href = '/index.html';
             }).then(function (user) {
@@ -49,12 +49,25 @@ require([
             });
         },
         
+        loadControllers: function () {
+            require(['controllers/WorkspaceController'], function (WorkspaceController) {
+                WorkspaceController.init();
+                // for debugging
+                window.WC = WorkspaceController;
+            });
+            require(['controllers/SettingsController'], function (settingsController) {
+                settingsController.init();
+                // for debugging
+                window.SC = settingsController;
+            });
+        },
+
         init: function () {
             this.checkLogin();
+            this.loadControllers();
             this.cacheElements();
             this.bindEvents();
 
-            router.init('#page-container');
             // for debugging
             window.app = this;
         },
@@ -64,33 +77,13 @@ require([
             // templates
             // widgets
             app.$wrapper = $('#wrapper');
-            app.$workspacePage = app.$wrapper.find('#workspace-page');
+            app.$workspacePage = app.$wrapper.find('#workspaces-page');
             app.$settingsPage = app.$wrapper.find('#settings-page');
             app.$logoutButton = app.$wrapper.find('#logout-button');
             // modals
         },
         
         bindEvents: function () {
-            app.$workspacePage.on('page-init', function (e, hash, param) {
-                require(['controllers/WorkspaceController'], function (WorkspaceController) {
-                    Auth.initAuthOnce().then(function () {
-                        WorkspaceController.init();
-                    });
-                    // for debugging
-                    window.WC = WorkspaceController;
-                });
-                console.log('page init', hash);
-            });
-            app.$settingsPage.on('page-init', function (e, hash, param) {
-                require(['controllers/SettingsController'], function (settingsController) {
-                    Auth.initAuthOnce().then(function () {
-                        settingsController.init();
-                    });
-                    // for debugging
-                    window.SC = settingsController;
-                });
-                console.log('page init', hash);
-            });
             app.$logoutButton.on('click', function(e) {
                 Auth.logout().then(function() {
                     location.href = '/index.html';
@@ -99,7 +92,7 @@ require([
                 });
             });
         },
-        
+
         setOnlineView: function () {
             $('#account-menu').removeClass('webida-hidden');
         },

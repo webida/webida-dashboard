@@ -39,7 +39,7 @@
             <nav class="header-nav">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="#workspace" title="Workspaces"><i class="icon20 workspace"></i> <span>Workspaces</span> </a>
+                        <a href="#workspaces" title="Workspaces"><i class="icon20 workspace"></i> <span>Workspaces</span> </a>
                     </li>
                     <li>
                         <a href="#settings" title="Settings"><i class="icon20 settings"></i> <span>Settings</span></a>
@@ -72,7 +72,7 @@
 
     <article>
         <section id="page-container" class="container-section page-container">
-            <div id="workspace-page" data-hash="#workspace" class="page-wrapper default-page">
+            <div id="workspaces-page" data-hash="# #workspaces" class="page-wrapper">
                 <div class="row">
                     <div>
                         <h3 class="page-header">Workspaces
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="panel-footer">
                                     <span class="pull-left">{{projects.length}} projects {{size}}</span>
-                                    <span class="pull-right"><a href="https://webida.org/apps/ide/src/?workspace=gyRDXirHox/webida" data-workspace="{{name}}" target="_blank" class="button workspace workspace-open primary-box" title="Open workspace with IDE">Open</a></span>
+                                    <span class="pull-right"><button data-workspace="{{name}}" class="button workspace workspace-open primary-box" title="Open workspace with IDE">Open</button></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -143,8 +143,8 @@
                 </div>
                 <!-- /.row -->
             </div>
-            <!-- /#workspace-page -->
-            <div id="settings-page" data-hash="#settings" class="page-wrapper">
+            <!-- /#workspaces-page -->
+            <div id="settings-page" data-hash="#settings">
                 <div class="row">
                     <div>
                         <h3 class="page-header">Settings</h3>

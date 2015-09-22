@@ -104,8 +104,8 @@ define([
                 console.log('promise initAuth');
                 webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl,
                     null,
-                    function () {
-                        resolve();
+                    function (sessionID) {
+                        resolve(sessionID);
                     });
             });
         },

@@ -20,11 +20,30 @@ define([], function () {
     return {
         alert: function(title, message, type) {
             // type: undefined | 'info' | 'success' | 'danger'
+            if (typeof(message) !== 'string') {
+                message = message.toString();
+            }
             var duration = 3000 + (title.length + message.length) * 50;
-            message = message.message | message;
+            
             if (message.toLowerCase().indexOf('no such file') < 0) {
                 $.toast('<h4>' + title + '</h4> ' + message, {duration: duration , type: type});
             }
-        }
+        },
+        
+        info: function(message) {
+            this.alert('Information', message, 'info');
+        },
+
+        success: function(message) {
+            this.alert('Success', message, 'success');
+        },
+        
+        warning: function(message) {
+            this.alert('Warning', message, 'danger');
+        },
+
+        error: function(message) {
+            this.alert('Error', message, 'danger');
+        },
     };
 });

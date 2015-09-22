@@ -17,9 +17,12 @@
 
 require([
     'services/Auth',
+    'services/FS',
     'ModalFactory',
     'notify',
-], function (Auth, ModalFactory, notify) {
+    'guest',
+    'webida',
+], function (Auth, FS, ModalFactory, notify, guest, webida) {
     'use strict';
 
     jQuery.fn.closeModal = function () {
@@ -37,8 +40,19 @@ require([
         },
 
         checkLogin: function () {
+            Auth.initAuth();
             Auth.getLoginStatusOnce().then(function (a) {
-                location.href = 'main.html';
+                Auth.getMyInfo(true).then(function(info) {
+                    if (info.isGuest) {
+                        FS.getFSId().then(function (fsid) {
+                            location.href = 'https://' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/guest';
+                        }).fail(function (e) {
+                            console.log('getFSId fail', e);
+                        });
+                    } else {
+                        location.href = 'main.html';
+                    }
+                });
             }).catch(function (e) {
                 console.log('not logged in.');
                 app.setOnlineView();
@@ -87,7 +101,7 @@ require([
                     app.signingUpModal.popup();
                 }).catch(function (e) {
                     app.$newAccountCreateButton.removeAttr('disabled');
-                    notify.alert(e);
+                    notify.error(e);
                     console.log(e);
                 });
             });
