@@ -101,7 +101,7 @@ require([
                     app.signingUpModal.popup();
                 }).catch(function (e) {
                     app.$newAccountCreateButton.removeAttr('disabled');
-                    notify.alert(e);
+                    notify.error(e);
                     console.log(e);
                 });
             });
