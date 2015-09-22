@@ -97,6 +97,8 @@ var ENV_TYPE;
     }
 
     var mod = {};
+    mod.getHostParam = getHostParam;
+    
     var webidaHost = (typeof window !== 'undefined' && window && window.webida_host) ||
         getParamByName('webida.host') || readCookie('webida.host') || getHostFromLocation() || 'https://webida.org';
     var fsServer = getHostParam('webida.fsHostUrl', 'fs', webidaHost);
@@ -413,6 +415,8 @@ var ENV_TYPE;
         isAnonymousMode = anonymousMode;
     };
 
+    
+    mod.ensureAuthorize = ensureAuthorize;
 
     /**
     * Callback function. If function finished successfully then error is undefined
@@ -1233,6 +1237,43 @@ var ENV_TYPE;
 
             ajaxCall({
                 url: mod.conf.fsApiBaseUrl + '/search/' + self.fsid + '/' + pattern,
+                data: data,
+                callback: callback
+            });
+        }
+
+        ensureAuthorize(restApi);
+    };
+
+    /**
+     * Search and replace files matching served pattern with a replace pattern
+     *
+     * @param {string} pattern - Search regular expression pattern. eg. <tt>a+b+c</tt>
+     * @param {string} replacePattern - Replace regular expression pattern.
+     * @param {module:webida.path[]} where - target path array to replace
+     * @param {module:webida.search_option} options - Search and replace option
+     * @param {module:webida.request_callback} callback -
+     *        (error:callback_error) → undefined
+     *        <br>If function finished successfully then error is undefined
+     * @memberOf module:webida.FSService.FileSystem
+     */
+    FileSystem.prototype.replaceFiles = function (pattern, replacePattern, where, options, callback) {
+        var self = this;
+        function restApi() {
+            var data = {};
+            if (options !== undefined) {
+                data = options;
+            }
+            if (where && where instanceof Array) {
+                where = where.map(encodeURIComponent);
+            }
+            data.where = where;
+            data.pattern = pattern;
+            data.replacePattern = replacePattern;
+
+            ajaxCall({
+                url: mod.conf.fsApiBaseUrl + '/replace/' + self.fsid,
+                type: 'POST',
                 data: data,
                 callback: callback
             });
@@ -3125,6 +3166,14 @@ var ENV_TYPE;
         ensureAuthorize(restApi);
     };
 
+    mod.AuthService.prototype.guestLogin = function (callback) {
+        ajaxCall({
+            url: mod.conf.authApiBaseUrl + '/guestlogin',
+            type: 'POST',
+            callback: callback
+        });
+    };
+
     //db
     //
 
@@ -3973,6 +4022,16 @@ var ENV_TYPE;
         ensureAuthorize(restApi);
     };
 
+    mod.getPluginSettingsPath = function (callback) {
+        var defaultPath = 'plugins/plugin-settings.json';
+        mod.auth.getMyInfo(function (err, myInfo) {
+            if (err) {
+                callback(defaultPath);
+            } else {
+                callback(myInfo.isGuest ? 'plugins/plugin-settings-guest.json' : defaultPath);
+            }
+        });
+    };
 
     /**
     * API helper function with callback function.
@@ -4219,6 +4278,9 @@ var ENV_TYPE;
      * @memberOf module:webida
      */
     mod.tokenGenerator = new mod.TokenGenerator();
+    
+    mod.ajaxCall = ajaxCall;
+
 
     /* Check whether the "personal_token" value is in url.
        If then, use that value as a access token.

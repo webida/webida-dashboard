@@ -35,7 +35,7 @@ require([
 
     var app = {
         checkLogin: function () {
-            Auth.initAuthOnce();
+            Auth.initAuth();
             Auth.getLoginStatusOnce().catch(function () {
                 location.href = '/index.html';
             }).then(function (user) {
@@ -51,16 +51,12 @@ require([
         
         loadControllers: function () {
             require(['controllers/WorkspaceController'], function (WorkspaceController) {
-                Auth.initAuthOnce().then(function () {
-                    WorkspaceController.init();
-                });
+                WorkspaceController.init();
                 // for debugging
                 window.WC = WorkspaceController;
             });
             require(['controllers/SettingsController'], function (settingsController) {
-                Auth.initAuthOnce().then(function () {
-                    settingsController.init();
-                });
+                settingsController.init();
                 // for debugging
                 window.SC = settingsController;
             });

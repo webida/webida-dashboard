@@ -25,6 +25,7 @@
     <link href="../public/css/router.css" rel="stylesheet">-->
 
     <link href="../style/css/dashboard.css" rel="stylesheet">
+    <link href="../style/css/guest.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -42,19 +43,20 @@
 
 <div id="wrapper" class="container-index">
 
-    <header class="header-box">
+    <header data-hash="* -#guest" class="header-box">
         <section class="container-box">
             <h1 class="header-logo" onclick="location.href='index.html'">webida</h1>
             <div id="account-menu" class="header-util webida-hidden">
                 <button class="button util primary login">Log in</button>
                 <button class="button util primary logout webida-hidden">Log out</button>
                 <button class="button util info new-account">New Account</button>
+                <a href="#guest" class="button util primary try-it">Try It</a>
             </div>
             <div class="header-title">Welcome to Webida</div>
         </section>
     </header>
 
-    <article>
+    <article data-hash="#">
 
         <section class="container-section">
             <div class="container-box">
@@ -88,6 +90,38 @@
         </section>
 
     </article>
+
+    <article id="guest-page" data-hash="#guest">
+        
+        <section class="container-section dark">
+            <div class="container_login">
+                <div class="left">
+                    <img class="webida-logo" alt="" src="../style/resource/webida-logo.png">
+                </div>
+                <div class="right">
+                    <div class="message">
+                        <h2>WARNING</h2>
+                        <ul>
+                            <li>In guest mode, your data is not maintained over 48 hours.</li>
+                            <li>And once you logout or your login session is timed out, you never come back into this service with the same user account.</li>
+                        </ul>
+                    </div>
+                    <div class="button-action-container guest-button-action-container">
+                        <input class="login-button" type="button" id="loginButton" name="submit" value="Start Guest Mode" />
+                        <a class="cancel-button" href="#">Or Cancel</a>
+                        <div class="progress hidden">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                0%
+                            </div>
+                        </div>
+                        <div class="message progress-message hidden">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </article>    
 
     <footer class="footer">
         <div class="container-box">
@@ -158,8 +192,10 @@
 <script src="../bower_components/handlebars/handlebars.min.js"></script>
 
 <!-- Custom JavaScript -->
+<script src="../js/lib/jquery.toast/jquery.toast.min.js"></script>
 <script src="../js/config.js"></script>
 <script src="../bower_components/requirejs/require.js" data-main="../js/index"></script>
+<script src="../js/lib/router.js"></script>
 </body>
 
 </html>
