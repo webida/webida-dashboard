@@ -19,6 +19,7 @@
     
     var ROUTING_PAGE_CLASS = 'routing-page';
     var ACTIVE_PAGE_CLASS = 'active-page';
+    var PAGE_INIT_EVENT = 'page-init';
     var PAGE_ON_EVENT = 'page-on';
     var PAGE_OFF_EVENT = 'page-off';
     
