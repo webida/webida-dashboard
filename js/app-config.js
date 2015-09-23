@@ -26,6 +26,7 @@ define([], function () {
         appRoute: {
             site: 'apps/desktop/index.html'
         },
-        redirectUrl: window.location.protocol + '//' + window.location.host + '/pages/auth.html'
+        guestMode: false,
+        redirectUrl: window.location.protocol + '//' + window.location.host + '/pages/auth.html'        
     };
 });
