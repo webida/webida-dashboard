@@ -35,6 +35,8 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../js/login.js"></script>
 </head>
 
 <body>
@@ -45,9 +47,13 @@
     </header>
 
     <article>
-        <section class="container-section">
+        <section class="container-section container_login">
             <div class="login-box">
                 <form role="form">
+                    <div class="login_failed hide">
+                        <div class="login_label">Log-in failed</div>
+                        <div class="login_failed_msg">Invalid user name or password</div>
+                    </div>
                     <fieldset>
                         <div class="form-group">
                             <input class="form-text" placeholder="E-mail" name="email" type="email" autofocus>
@@ -56,12 +62,15 @@
                             <input class="form-text" placeholder="Password" name="password" type="password" value="">
                         </div>
                         <div class="form-group">
-                            <button class="button util primary login" onclick="location.href='main.html'">Log in</button>
+                            <button class="button logbox primary login" onclick="location.href='main.html'">Log in</button>
                         </div>
                         <div class="form-group">
                             <div class="form-checkbox">
                                 <input id="remember" name="remember" type="checkbox" value="Remember Me">
                                 <label for="remember">Remember my email</label>
+                            </div>
+                            <div class="form-password">
+                                <a href="javascript:;" onclick="goFindPassword();">Forgot your password?</a>
                             </div>
                         </div>
                         <div class="button_group">
@@ -70,6 +79,39 @@
                         </div>
                     </fieldset>
                 </form>
+            </div>
+        </section>
+
+        <section class="container-section container_passwd">
+            <div class="login-box">
+                <fieldset>
+                    <div class="passwd_failed hide">
+                        <div class="passwd_failed_msg">Invalid user email !!</div>
+                    </div>
+                    <a class="go_login" href="#" tabindex="-1" onclick="goLogin();">Back</a>
+                    <div class="form-group pwtitle">
+                        Forgot your password?
+                    </div>
+                    <div class="form-group pwdesc">
+                        Please enter your email address below and<br>we'll email you instructions how to reset it.
+                    </div>
+                    <div class="form-group">
+                        <input class="form-text" placeholder="Email" id="email_pw" tabindex="-1" onkeydown="onSubmit(event);" type="text">
+                    </div>
+                    <div class="form-group">
+                        <input class="button logbox primary login" id="passwd_button" value="Submit" tabindex="-1" onclick="doFindPW();" type="button">
+                    </div>
+                    <form role="form">
+                        <div class="container_passwd_success hide">
+                            <div class="passwd_success_label">
+                                We've sent an email with instructions on how to reset your password.
+                            </div>
+                            <div class="passwd_success_label2">
+                                If you don't receive instructions within a few minutes, check your email's spam and junk filters.
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
             </div>
         </section>
     </article>
