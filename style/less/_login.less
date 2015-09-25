@@ -4,6 +4,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  overflow: hidden;
   &:before {
     content: '';
     position: absolute;
@@ -29,21 +30,108 @@
   }
 
   .container-section {
+    position: absolute;
+    top:70px;
+    left:50%;
+    margin-left: -211px;
+    transition: all 0.4s ease;
     .login-box {
       width: 426px;
-      height: 312px;
       background-color: rgba(0,0,0,0.45);
       margin: 132px auto 0 auto;
       border-radius: 4px;
+      position: relative;
+      .go_login {
+        color: #729ab6;
+        &:before {
+          content: '< ';
+          font-size: 20px;
+        }
+      }
+      .pwtitle {
+        font-family: CoreSansN55;
+        font-size: 20px;
+        color: #4bb5ff;
+        text-align: center;
+      }
+      .pwdesc {
+        font-family: CoreSansN55;
+        font-size: 16px;
+        color: #fff;
+        line-height: 150%;
+        text-align: center;
+        padding: 30px 0!important;
+      }
+      .container_passwd_success {
+        color: #fff;
+        font-family: CoreSansN45;
+        padding: 10px;
+      }
+      .login_label {
+        text-align: center;
+        left:0;
+        top: -44px;
+        width: 100%;
+        height: 20px;
+        position: absolute;
+        color: #fff;
+        font-size:16px;
+      }
+      .login_failed, .passwd_failed {
+        z-index:1000;
+        font-family: CoreSansN55;
+      }
+      .login_failed_msg, .passwd_failed_msg {
+        text-align: center;
+        color: #ff2b71;
+        font-size:14px;
+        left:0;
+        top: -24px;
+        width: 100%;
+        position: absolute;
+      }
       .form-group {
         margin: 0;
         padding: 10px 6px;
+        &:after{
+          clear:both;
+          display: block;
+          content: '';
+        }
+        .form-checkbox {
+          float: left;
+        }
+        .form-password {
+          float: right;
+          a {
+            color: #729ab6;
+            font-size: 14px;
+            font-style: italic;
+            text-decoration: underline;
+            outline: none;
+            &:hover {color: #5BBCFF;}
+          }
+        }
         .login {
           width: 100%;
           margin: 0;
           font-family: CoreSansN45;
         }
       }
+    }
+  }
+
+  .container_login {
+  }
+  .container_passwd {
+    left:150%;
+  }
+  &.active {
+    .container_login {
+      left:-150%;
+    }
+    .container_passwd {
+      left:50%;
     }
   }
 

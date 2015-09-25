@@ -222,6 +222,12 @@ th {
   border-radius: 4px;
   margin: 0 5px;
 }
+.button.logbox {
+  font-family: CoreSansN45;
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin: 0 5px;
+}
 .button.workspace {
   font-family: CoreSansN45;
   padding: 2px 10px;
@@ -770,6 +776,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  overflow: hidden;
 }
 .container-login:before {
   content: '';
@@ -794,21 +801,109 @@ body {
   position: relative;
   top: 82px;
 }
+.container-login .container-section {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  margin-left: -211px;
+  transition: all 0.4s ease;
+}
 .container-login .container-section .login-box {
   width: 426px;
-  height: 312px;
   background-color: rgba(0, 0, 0, 0.45);
   margin: 132px auto 0 auto;
   border-radius: 4px;
+  position: relative;
+}
+.container-login .container-section .login-box .go_login {
+  color: #729ab6;
+}
+.container-login .container-section .login-box .go_login:before {
+  content: '< ';
+  font-size: 20px;
+}
+.container-login .container-section .login-box .pwtitle {
+  font-family: CoreSansN55;
+  font-size: 20px;
+  color: #4bb5ff;
+  text-align: center;
+}
+.container-login .container-section .login-box .pwdesc {
+  font-family: CoreSansN55;
+  font-size: 16px;
+  color: #fff;
+  line-height: 150%;
+  text-align: center;
+  padding: 30px 0!important;
+}
+.container-login .container-section .login-box .container_passwd_success {
+  color: #fff;
+  font-family: CoreSansN45;
+  padding: 10px;
+}
+.container-login .container-section .login-box .login_label {
+  text-align: center;
+  left: 0;
+  top: -44px;
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  color: #fff;
+  font-size: 16px;
+}
+.container-login .container-section .login-box .login_failed,
+.container-login .container-section .login-box .passwd_failed {
+  z-index: 1000;
+  font-family: CoreSansN55;
+}
+.container-login .container-section .login-box .login_failed_msg,
+.container-login .container-section .login-box .passwd_failed_msg {
+  text-align: center;
+  color: #ff2b71;
+  font-size: 14px;
+  left: 0;
+  top: -24px;
+  width: 100%;
+  position: absolute;
 }
 .container-login .container-section .login-box .form-group {
   margin: 0;
   padding: 10px 6px;
 }
+.container-login .container-section .login-box .form-group:after {
+  clear: both;
+  display: block;
+  content: '';
+}
+.container-login .container-section .login-box .form-group .form-checkbox {
+  float: left;
+}
+.container-login .container-section .login-box .form-group .form-password {
+  float: right;
+}
+.container-login .container-section .login-box .form-group .form-password a {
+  color: #729ab6;
+  font-size: 14px;
+  font-style: italic;
+  text-decoration: underline;
+  outline: none;
+}
+.container-login .container-section .login-box .form-group .form-password a:hover {
+  color: #5BBCFF;
+}
 .container-login .container-section .login-box .form-group .login {
   width: 100%;
   margin: 0;
   font-family: CoreSansN45;
+}
+.container-login .container_passwd {
+  left: 150%;
+}
+.container-login.active .container_login {
+  left: -150%;
+}
+.container-login.active .container_passwd {
+  left: 50%;
 }
 .container-login .footer {
   position: absolute;
@@ -992,12 +1087,9 @@ body {
   font-family: CoreSansN45;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body {
-  overflow-y: hidden;
-  height: 110px;
+  overflow-y: auto;
+  height: 78px;
   color: #292e30;
-}
-.container-main article .container-section .workspace-panel-box .panel .panel-body:hover {
-    overflow-y: auto;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-body .panel-title {
   color: #3b424c;
