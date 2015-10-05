@@ -45,7 +45,7 @@ require([
                 Auth.getMyInfo(true).then(function(info) {
                     if (info.isGuest) {
                         FS.getFSId().then(function (fsid) {
-                            location.href = 'https://' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/guest';
+                            location.href = '//ide.' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/guest';
                         }).fail(function (e) {
                             console.log('getFSId fail', e);
                         });
