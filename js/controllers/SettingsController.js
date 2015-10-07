@@ -190,7 +190,8 @@ define([
             var buttonObj = $('#' + this.id);
             console.log('Yes');
             buttonObj.attr('disabled', '');
-            SettingsManager.removePublicSSHKey().then(function (info) {
+            SettingsManager.removePublicSSHKey().catch(function (e) {
+            }).then(function() {
                 return SettingsManager.generatePublicSSHKey();
             }).then(function (info) {
                 return SettingsManager.getPublicSSHKey();
