@@ -40,8 +40,8 @@ require([
         guestLogin: {
             method: webida.auth.guestLogin,
             prog: {
-                percent: 40,
-                message: '2/5 user and file system created...'
+                percent: 30,
+                message: '2/6 user and file system created...'
             },
             success: function () {
                 login = true;
@@ -50,8 +50,8 @@ require([
         getAllMyFsInfo: {
             method: webida.fs.getMyFSInfos,
             prog: {
-                percent: 50,
-                message: '3/5 initialize file system...'
+                percent: 40,
+                message: '3/6 initialize file system...'
             }
         },
         noMyFsFallback: {
@@ -60,12 +60,22 @@ require([
                 return !(err === ERR_NO_FS);
             },
             prog: {
-                percent: 60,
-                message: '3/5 initialize file system...'
+                percent: 50,
+                message: '3/6 initialize file system...'
             },
             success: function (fsInfo) {
                 fsid = fsInfo.fsid;
                 fsMount = webida.fs.mountByFSID(fsid);
+            }
+        },
+        createUserInfoDirectory: {
+            method: function () {
+                fsMount.createDirectory.apply(fsMount, arguments);
+            },
+            params: ['/.userinfo', true],
+            prog: {
+                percent: 70,
+                message: '4/6 workspace initialize...'
             }
         },
         createWorkspaceDirectory: {
@@ -75,7 +85,7 @@ require([
             params: ['/guest/.workspace', true],
             prog: {
                 percent: 80,
-                message: '4/5 workspace initialize...'
+                message: '5/6 workspace initialize...'
             }
         },
         createWorkspaceMetaFile: {
@@ -85,7 +95,7 @@ require([
             params: ['/guest/.workspace/workspace.json', ''],
             prog: {
                 percent: 100,
-                message: '5/5 workspace created...'
+                message: '6/6 workspace created...'
             }
         }
     };
@@ -189,6 +199,7 @@ require([
                 });
             })
             .catch(fsCatchable(STEPS.noMyFsFallback))
+            .then(thenable(STEPS.createUserInfoDirectory))
             .then(thenable(STEPS.createWorkspaceDirectory))
             .then(thenable(STEPS.createWorkspaceMetaFile))
             .then(function () {
