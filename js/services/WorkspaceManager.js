@@ -16,11 +16,11 @@
 
 define([
     'app-config',
-    'webida',
-    'services/FS',
-    'services/App',
     'lodash',
-], function (appConfig, webida, FS, App, _) {
+    'services/App',
+    'services/FS',
+    'webida',
+], function (appConfig, _, App, FS, webida) {
     'use strict';
 
     var WorkspaceManager = function () {

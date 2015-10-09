@@ -17,14 +17,14 @@
 var require = {
     baseUrl: '../js',
     paths:{
-        'webida': './lib/webida-0.3',
+        'async': '../bower_components/async/dist/async.min',
         'components': '../bower_components',
         'jquery': '../bower_components/jquery/dist/jquery.min',
-        'text': '../bower_components/requirejs-text/text',
         'lodash': '../bower_components/lodash/lodash',
-        'async': '../bower_components/async/dist/async.min',
         'notify': './lib/notify',
         'q': './lib/q',
         'router': './lib/router',
+        'text': '../bower_components/requirejs-text/text',
+        'webida': './lib/webida-0.3',
     },
 };

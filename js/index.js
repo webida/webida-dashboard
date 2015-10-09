@@ -16,13 +16,13 @@
 
 
 require([
-    'services/Auth',
-    'services/FS',
+    'guest',
     'ModalFactory',
     'notify',
-    'guest',
+    'services/Auth',
+    'services/FS',
     'webida',
-], function (Auth, FS, ModalFactory, notify, guest, webida) {
+], function (guest, ModalFactory, notify, Auth, FS, webida) {
     'use strict';
 
     jQuery.fn.closeModal = function () {

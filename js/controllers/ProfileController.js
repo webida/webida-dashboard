@@ -16,21 +16,21 @@
 
 define([
     'app-config',
-    'services/Auth',
     'notify',
-], function (appConfig, Auth, notify) {
+    'services/Auth',
+], function (appConfig, notify, Auth) {
     'use strict';
 
     var ProfileController = {
         userInfo: undefined,
         init: function (user) {
             this.userInfo = user;
-            this.cacheElement();
-            this.eventBinding();
+            this.cacheElements();
+            this.bindEvents();
             this.renderProfile();
         },
         
-        cacheElement: function () {
+        cacheElements: function () {
             // templates
             // page widgets
             this.$openProfileButton = $('#open-profile-button');
@@ -45,7 +45,7 @@ define([
             this.$profileGravatar = this.$userProfileModal.find('#profile-gravatar');
         },
         
-        eventBinding: function () {
+        bindEvents: function () {
             this.$openProfileButton.on('click', function(e) {
                 self.$userProfileModal.modal();
             });
