@@ -17,9 +17,9 @@
 define([
     'lodash',
     'services/FS',
-    'services/Auth',
-    'q'
-], function (_, FS, Auth, Q) {
+    'services/Auth'
+//    'q'
+], function (_, FS, Auth/*, Q*/) {
     'use strict';
     var PUBLIC_KEY_PATH = '.userinfo/id_rsa.pub';
     var RSA_KEY_PATH = '.userinfo/id_rsa';

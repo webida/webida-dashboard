@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+/*jshint -W079 */ 
+/*exported require */
+
 var require = {
     baseUrl: '../js',
-    paths:{
+    paths: {
         'webida': './lib/webida-0.3',
         'components': '../bower_components',
         'jquery': '../bower_components/jquery/dist/jquery.min',

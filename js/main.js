@@ -23,8 +23,8 @@ require([
     'use strict';
 
     console.log('required');
-    var WORKSPACE_PATH = '/';
-    var fsid = null;
+    //var WORKSPACE_PATH = '/';
+    //var fsid = null;
 
     jQuery.fn.closeModal = function () {
         if (this.attr('role') !== 'dialog') {
@@ -84,10 +84,10 @@ require([
         },
         
         bindEvents: function () {
-            app.$logoutButton.on('click', function(e) {
-                Auth.logout().then(function() {
+            app.$logoutButton.on('click', function () {
+                Auth.logout().then(function () {
                     location.href = '/index.html';
-                }).catch(function(e){
+                }).catch(function (e) {
                     notify.alert(e);
                 });
             });
