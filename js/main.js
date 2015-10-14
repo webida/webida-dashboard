@@ -17,9 +17,9 @@
 require([
     'app-config',
     'app-data',
-    'services/Auth',
     'notify',
-], function (appConfig, appData, Auth, notify) {
+    'services/Auth',
+], function (appConfig, appData, notify, Auth) {
     'use strict';
 
     console.log('required');

@@ -16,10 +16,10 @@
 
 define([
     'app-config',
+    'notify',
     'services/Auth',
     'services/WorkspaceManager',
-    'notify',
-], function (appConfig, Auth, WorkspaceManager, notify) {
+], function (appConfig, notify, Auth, WorkspaceManager) {
     'use strict';
 
     var Deploy = new Class();
@@ -117,12 +117,12 @@ define([
 
         init: function () {
             this.works = new Works();
-            this.cacheElement();
-            this.eventBinding();
+            this.cacheElements();
+            this.bindEvents();
             this.loadWorkspaces();
         },
 
-        cacheElement: function () {
+        cacheElements: function () {
             // templates
             this.$workspacePanelTemplate = Handlebars.compile($('#workspace-panel-template').html());
             this.$workspaceItemTemplate = Handlebars.compile($('#workspace-item-template').html());
@@ -154,7 +154,7 @@ define([
             this.$applyWorkspaceButton = this.$editWorkspaceModal.find('button.apply');
         },
 
-        eventBinding: function () {
+        bindEvents: function () {
             this.$workspacePage.on('page-on', function (e, hash, param) {
                 console.log('page on', hash, param);
             });

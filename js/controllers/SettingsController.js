@@ -16,11 +16,11 @@
 
 define([
     'app-config',
+    'ModalFactory',
+    'notify',
     'services/Auth',
     'services/SettingsManager',
-    'ModalFactory',
-    'notify'
-], function (appConfig, Auth, SettingsManager, ModalFactory, notify) {
+], function (appConfig, ModalFactory, notify, Auth, SettingsManager) {
     'use strict';
 
     var SettingsController = {
@@ -31,14 +31,14 @@ define([
         },
 
         init: function () {
-            this.cacheElement();
-            this.eventBinding();
+            this.cacheElements();
+            this.bindEvents();
             this.loadSettings().then(function () {
                 self.renderSettings();
             });
         },
 
-        cacheElement: function () {
+        cacheElements: function () {
             // templates
             this.$personalTokenTemplate = Handlebars.compile($('#personal-token-template').html());
             // page widgets
@@ -61,7 +61,7 @@ define([
             this.generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
         },
 
-        eventBinding: function () {
+        bindEvents: function () {
             this.$settingsPage.on('page-on', function (e, hash, param) {
                 console.log('page on', hash, param);
             });

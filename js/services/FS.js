@@ -15,9 +15,9 @@
  */
 
 define([
+    'q',
     'webida',
-    'q'
-], function (webida, Q) {
+], function (Q, webida) {
     'use strict';
     var FS = function () {};
 

@@ -22,11 +22,11 @@
  */
 
 require([
+    'notify',
     'webida',
-    'notify'
 ], function(
-    webida,
-    notify
+    notify,
+    webida
 ){
     'use strict';
 
