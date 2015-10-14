@@ -41,11 +41,12 @@ require([
 
         checkLogin: function () {
             Auth.initAuth();
-            Auth.getLoginStatusOnce().then(function (a) {
-                Auth.getMyInfo(true).then(function(info) {
+            Auth.getLoginStatusOnce().then(function () {
+                Auth.getMyInfo(true).then(function (info) {
                     if (info.isGuest) {
                         FS.getFSId().then(function (fsid) {
-                            location.href = '//ide.' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/guest';
+                            location.href = '//ide.' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + 
+                                fsid + '/guest';
                         }).fail(function (e) {
                             console.log('getFSId fail', e);
                         });
@@ -53,7 +54,7 @@ require([
                         location.href = 'main.html';
                     }
                 });
-            }).catch(function (e) {
+            }).catch(function () {
                 console.log('not logged in.');
                 app.setOnlineView();
             });
@@ -68,21 +69,22 @@ require([
             this.$newAccountModal = $('#new-account');
             this.$newAccountEmail = $('#new-account-email');
             this.$newAccountCreateButton = this.$newAccountModal.find('button.create');
-
+            /* jshint newcap:false */
             this.signingUpModal = ModalFactory('#common-modal', '#common-modal-template');
+            /* jshint newcap:true */
         },
 
         bindEvents: function () {
-            this.$loginButton.on('click', function (e) {
+            this.$loginButton.on('click', function () {
                 location.href = Auth.getLoginUrl();
             });
 
-            this.$newAccountModal.on('hidden.bs.modal', function (e) {
+            this.$newAccountModal.on('hidden.bs.modal', function () {
                 app.$newAccountEmail.val('');
                 app.$newAccountCreateButton.removeAttr('disabled');
             });
 
-            this.$newAccountButton.on('click', function (e) {
+            this.$newAccountButton.on('click', function () {
                 app.$newAccountModal.modal();
             });
 
@@ -92,7 +94,7 @@ require([
                 }
             });
 
-            this.$newAccountCreateButton.on('click', function (e) {
+            this.$newAccountCreateButton.on('click', function () {
                 app.$newAccountCreateButton.attr('disabled', '');
 
                 var email = app.$newAccountEmail.val();
@@ -108,7 +110,9 @@ require([
 
             this.signingUpModal.setup({
                 title: 'Thank you for signing up!',
-                message: 'Please check your email for the confirmation request with a link that will validate your account. Once you click the link, your registration will be complete. ',
+                message: 'Please check your email for the confirmation request with a link ' +
+                         'that will validate your account. ' +
+                         'Once you click the link, your registration will be complete. ',
                 buttons: [{
                     id: 'signingup-ok-button',
                     name: 'Ok',

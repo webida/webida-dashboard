@@ -58,7 +58,9 @@ define([
             this.$addNewPersonalTokenButton = this.$personalTokenPanel.find('button.add-new');
             // modal widgets
             // modal
+            /* jshint newcap: false */
             this.generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
+            /* jshint newcap: true */
         },
 
         eventBinding: function () {
@@ -73,7 +75,7 @@ define([
                     id: 'generate-yes-button',
                     name: 'Yes',
                     class: 'btn btn-danger',
-                    onclick: function (e) {
+                    onclick: function () {
                         self.generatePublicSSHKey();
                     }
                 }, {
@@ -83,7 +85,7 @@ define([
                 }]
             });
 
-            this.$generateNewKeyButton.on('click', function (e) {
+            this.$generateNewKeyButton.on('click', function () {
                 console.log('click');
                 self.generateNewKeyModal.popup().then(function (button) {
                     console.log(button);
@@ -96,20 +98,20 @@ define([
                 }
             });
 
-            this.$githubToken.on('keyup', function (e) {
-                if (self.$githubToken.val() == self.settings.githubToken) {
+            this.$githubToken.on('keyup', function () {
+                if (self.$githubToken.val() === self.settings.githubToken) {
                     self.$saveTokenButton.attr('disabled', '');
                 } else {
                     self.$saveTokenButton.removeAttr('disabled');
                 }
             });
 
-            this.$saveTokenButton.on('click', function (e) {
+            this.$saveTokenButton.on('click', function () {
                 self.saveGithubToken();
             });
 
-            this.$addNewPersonalTokenButton.on('click', function (e) {
-                SettingsManager.addNewPersonalToken().then(function (token) {
+            this.$addNewPersonalTokenButton.on('click', function () {
+                SettingsManager.addNewPersonalToken().then(function (/*token*/) {
                     return SettingsManager.getPersonalTokens();
                 }).then(function (tokens) {
                     console.log('tokens', tokens);
@@ -120,7 +122,7 @@ define([
                 });
             });
 
-            this.$personalTokenTable.delegate('a.delete-token', 'click', function (e) {
+            this.$personalTokenTable.delegate('a.delete-token', 'click', function () {
                 var token = $(this).attr('data-token');
                 SettingsManager.deletePersonalToken(token).then(function () {
                     return self.loadPersonalTokens();
@@ -140,7 +142,7 @@ define([
                     Promise.all([self.loadPublicSSHKey(),
                                  self.loadGitHubToken(),
                                  self.loadPersonalTokens()
-                                ]).then(function (values) {
+                                ]).then(function (/*values*/) {
                         resolve();
                     }).catch(function (e) {
                         notify.alert('Error', e, 'danger');
@@ -186,14 +188,14 @@ define([
             });
         },
 
-        generatePublicSSHKey: function() {
+        generatePublicSSHKey: function () {
             var buttonObj = $('#' + this.id);
             console.log('Yes');
             buttonObj.attr('disabled', '');
-            SettingsManager.removePublicSSHKey().catch(function (e) {
-            }).then(function() {
+            SettingsManager.removePublicSSHKey().catch(function () {
+            }).then(function () {
                 return SettingsManager.generatePublicSSHKey();
-            }).then(function (info) {
+            }).then(function (/*info*/) {
                 return SettingsManager.getPublicSSHKey();
             }).then(function (key) {
                 console.log('key', key);
@@ -208,7 +210,7 @@ define([
             });
         },
 
-        saveGithubToken: function() {
+        saveGithubToken: function () {
             self.$saveTokenButton.removeAttr('disabled');
             var token = self.$githubToken.val();
 

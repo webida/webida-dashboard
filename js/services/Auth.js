@@ -100,7 +100,7 @@ define([
         },
         
         initAuth: function () {
-            return new Promise(function (resolve, reject) {
+            return new Promise(function (resolve/*, reject*/) {
                 console.log('promise initAuth');
                 webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl,
                     null,
@@ -111,7 +111,7 @@ define([
         },
         
         getPersonalTokens: function () {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 webida.auth.getPersonalTokens(function (e, personalTokens) {
                     if (e) {
                         reject(e);
@@ -123,7 +123,7 @@ define([
         },
 
         addNewPersonalToken: function () {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 webida.auth.addNewPersonalToken(function (e, token) {
                     if (e) {
                         reject(e);
@@ -135,7 +135,7 @@ define([
         },
 
         deletePersonalToken: function (token) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 webida.auth.deletePersonalToken(token, function (e) {
                     if (e) {
                         reject(e);
@@ -146,9 +146,9 @@ define([
             });
         },
         
-        createAccount: function(email) {
-            return new Promise(function(resolve, reject) {
-                webida.auth.signup(email, function(err) {
+        createAccount: function (email) {
+            return new Promise(function (resolve, reject) {
+                webida.auth.signup(email, function (err) {
                     if (err) {
                         reject(new Error(err));
                     } else {

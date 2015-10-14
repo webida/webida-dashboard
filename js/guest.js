@@ -24,12 +24,14 @@
 require([
     'webida',
     'notify'
-], function(
+], function (
     webida,
     notify
-){
+) {
     'use strict';
-
+    
+    /*jshint validthis:true */
+    
     var fsid;
     var fsMount;
     var login = false;
@@ -57,7 +59,7 @@ require([
         noMyFsFallback: {
             method: webida.fs.addMyFS,
             bypass: function (err) {
-                return !(err === ERR_NO_FS);
+                return (err !== ERR_NO_FS);
             },
             prog: {
                 percent: 50,
@@ -126,7 +128,7 @@ require([
     function catchable(opt) {
         var self = this;
         return function (err) {
-            if(opt.bypass) {
+            if (opt.bypass) {
                 if (opt.bypass(err)) {
                     throw err;
                 }
@@ -136,7 +138,7 @@ require([
     }
 
     function _startRun(progress) {
-        if(progress) {
+        if (progress) {
             $('.login-button, .cancel-button').addClass('hidden');
             $('.progress, .progress-message').removeClass('hidden');
             $('.progress-bar').addClass('active');
@@ -228,4 +230,5 @@ require([
             _startRun(true);
         });
     });
+   /*jshint validthis:false */
 });

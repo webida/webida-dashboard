@@ -1,4 +1,8 @@
+/* jshint forin:false */
+/* exported Class */
+
 var Class = function (parent) {
+    'use strict';
     var klass = function () {
         this.init.apply(this, arguments);
     };
@@ -16,6 +20,7 @@ var Class = function (parent) {
                 (o.constructor.prototype.hasOwnProperty('fillFrom') && o.constructor.prototype.fillFrom.constructor ===
                     Function);
         }
+
         for (var i in obj) {
             if (this.hasOwnProperty(i) || this.constructor.prototype.hasOwnProperty(i)) {
                 if (isFillable(this[i])) {
@@ -24,13 +29,14 @@ var Class = function (parent) {
                     for (var j in obj[i]) {
                         this[i][j] = obj[i][j];
                     }
-                } else if (obj[i].constructor === Function) {
+                } /*else if (obj[i].constructor === Function) {
                     // ignore
-                } else {
+                } */else {
                     this[i] = obj[i];
                 }
             }
         }
+       
     };
 
     klass.fn = klass.prototype;
@@ -42,7 +48,7 @@ var Class = function (parent) {
         for (var i in obj) {
             klass[i] = obj[i];
         }
-        if (extended) extended(klass);
+        if (extended) { extended(klass); }
     };
 
     klass.include = function (obj) {
@@ -50,8 +56,9 @@ var Class = function (parent) {
         for (var i in obj) {
             klass.fn[i] = obj[i];
         }
-        if (included) included(klass);
+        if (included) { included(klass); }
     };
 
     return klass;
 };
+ /* jshint forin:true */

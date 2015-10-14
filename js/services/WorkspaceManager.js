@@ -84,17 +84,19 @@ define([
                 var apps = values[1];
                 console.log('workspaces', workspaces);
                 //console.log('apps', apps);
-
+                /* jshint forin:false */
                 function findApp(wsName, prjName) {
+                   
                     for (var i in apps) {
                         var app = apps[i];
-                        if (app.url.workspace === wsName && app.url.project == prjName) {
+                        if (app.url.workspace === wsName && app.url.project === prjName) {
                             return app;
                         }
                     }
+                    
                     return undefined;
                 }
-
+                /* jshint forin:true */
                 workspacesCallback(workspaces);
                 workspaces.forEach(function (workspace) {
                     console.log('workspace', workspace);

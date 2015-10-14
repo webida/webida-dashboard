@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+/* exported doFindPW, goLogin, goFindPassword, doLogin, onSubmit, onLogin */
+'use strict';
 function doFindPWFailed(msg) {
     console.log(msg);
     $('.passwd_failed_msg').toggleClass('hide');
-    document.getElementById("email_pw").value = '';
-    setTimeout(function () { $('.passwd_failed_msg').toggleClass('hide')}, 2000);
+    document.getElementById('email_pw').value = '';
+    setTimeout(function () { $('.passwd_failed_msg').toggleClass('hide'); }, 2000);
 }
 
 function doFindPW() {
-    var email = document.getElementById("email_pw").value;
+    var email = document.getElementById('email_pw').value;
 
     $.ajax({
         url: '/webida/api/oauth/forgotpassword',
@@ -36,7 +38,7 @@ function doFindPW() {
                 setTimeout(function () {
                     $('.container_passwd_success').toggleClass('hide');
                     $('.container_passwd_find').toggleClass('hide');
-                    document.getElementById("email_pw").value = '';
+                    document.getElementById('email_pw').value = '';
                 }, 5000);
             } else {
                 doFindPWFailed(data.reason);
@@ -61,14 +63,14 @@ function goFindPassword() {
 function doLoginFailed(msg) {
     console.log(msg);
     $('.login_failed').toggleClass('hide');
-    document.getElementById('password').value = "";
-    setTimeout(function () { $('.login_failed').toggleClass('hide')}, 2000);
+    document.getElementById('password').value = '';
+    setTimeout(function () { $('.login_failed').toggleClass('hide'); }, 2000);
 }
 
 function doLogin() {
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-    var remember = document.getElementById("rememberemail");
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var remember = document.getElementById('rememberemail');
     password = window.btoa(password);
 
     if (remember.checked) {
@@ -76,7 +78,9 @@ function doLogin() {
         date.setDate(date.getDate() + 30);
         document.cookie = 'email=' + escape(email) + '; expires=' + date.toGMTString();
     } else {
+        /*jshint -W004 */
         var date = new Date();
+        /*jshint +W004 */
         date.setDate(date.getDate() - 1);
         document.cookie = 'email=; expires=' + date.toGMTString();
     }
@@ -110,30 +114,31 @@ function doLogin() {
 
 function onSubmit(event) {
     var keyCode = event.keyCode ? event.keyCode : event.which;
-    if (keyCode == 13) { // check enter key
+    if (keyCode === 13) { // check enter key
         document.getElementById('passwd_button').click();
     }
 }
 
 function onLogin(event) {
     var keyCode = event.keyCode ? event.keyCode : event.which;
-    if (keyCode == 13) { // check enter key
+    if (keyCode === 13) { // check enter key
         document.getElementById('loginbutton').click();
     }
 }
 
-window.onload = function (event) {
+window.onload = function () {
     var cookie = document.cookie;
     var start = cookie.indexOf('email=');
     if (start !== -1) {
         var end = cookie.indexOf(';', start);
-        if (end == -1)
+        if (end === -1) {
             end = cookie.length;
+        }
 
         var email = cookie.substring(cookie.indexOf('=', start) + 1, end);
-        document.getElementById("email").value = unescape(email);
-        document.getElementById("password").focus();
-        document.getElementById("rememberemail").checked = true;
+        document.getElementById('email').value = unescape(email);
+        document.getElementById('password').focus();
+        document.getElementById('rememberemail').checked = true;
     }
-}
+};
 
