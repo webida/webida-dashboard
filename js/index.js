@@ -69,6 +69,8 @@ require([
             this.$newAccountEmail = $('#new-account-email');
             this.$newAccountCreateButton = this.$newAccountModal.find('button.create');
 
+            this.$denyNewAccountModal = $('#deny-new-account');
+
             this.signingUpModal = ModalFactory('#common-modal', '#common-modal-template');
         },
 
@@ -83,7 +85,7 @@ require([
             });
 
             this.$newAccountButton.on('click', function (e) {
-                app.$newAccountModal.modal();
+                app.$denyNewAccountModal.modal();
             });
 
             this.$newAccountEmail.on('keypress', function (e) {
