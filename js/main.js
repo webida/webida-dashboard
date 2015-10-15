@@ -40,6 +40,7 @@ require([
                 location.href = '/index.html';
             }).then(function (user) {
                 $('#user-email').text(user.email);
+                $('#user-email').attr('title', user.email);
                 require(['controllers/ProfileController'], function (ProfileController) {
                     ProfileController.init(user);
                     // for debugging
