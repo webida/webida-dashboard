@@ -4,6 +4,8 @@
     "jquery": true,
     "devel": true,
     "predef": [
+        "Promise",
+        "Handlebars",
         "jasmine",
         "spyOn",
         "it",
@@ -13,7 +15,6 @@
         "waits",
         "waitsFor",
         "runs",
-
         "define",
         "require",
         "requirejs",

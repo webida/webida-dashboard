@@ -1,12 +1,14 @@
 var Class = function (parent) {
+    'use strict';
+    
     var klass = function () {
         this.init.apply(this, arguments);
     };
 
     if (parent) {
-        var subclass = function () {};
-        subclass.prototype = parent.prototype;
-        klass.prototype = new subclass();
+        var Subclass = function () {};
+        Subclass.prototype = parent.prototype;
+        klass.prototype = new Subclass();
     }
 
     klass.prototype.init = function () {};
@@ -42,7 +44,9 @@ var Class = function (parent) {
         for (var i in obj) {
             klass[i] = obj[i];
         }
-        if (extended) extended(klass);
+        if (extended) {
+            extended(klass);
+        }
     };
 
     klass.include = function (obj) {
@@ -50,7 +54,9 @@ var Class = function (parent) {
         for (var i in obj) {
             klass.fn[i] = obj[i];
         }
-        if (included) included(klass);
+        if (included) {
+            included(klass);
+        }
     };
 
     return klass;
