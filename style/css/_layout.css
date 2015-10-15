@@ -30,7 +30,7 @@ body {
 }
 .container-main {
   height: 100%;
-  min-width: 600px;
+  min-width: 800px;
 }
 .container-main .header-box {
   position: relative;

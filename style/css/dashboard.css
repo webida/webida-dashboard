@@ -371,6 +371,10 @@ th {
   background-image: url("../resource/icon_menu.png");
   background-position: -80px -1px;
 }
+.icon20.github {
+  background-image: url("../resource/icon_menu.png");
+  background-position: -100px -1px;
+}
 .container-main .header-box .container-box .header-nav li a:hover .workspace,
 .container-main .header-box .container-box .header-nav li a:active .workspace,
 .container-main .header-box .container-box .header-nav li a.active .workspace,
@@ -394,6 +398,12 @@ th {
 .container-main .header-box .container-box .header-nav li a.active .facebook,
 .container-main .header-box .container-box .header-nav li a:focus .facebook {
   background-position: -80px -21px;
+}
+.container-main .header-box .container-box .header-nav li a:hover .github,
+.container-main .header-box .container-box .header-nav li a:active .github,
+.container-main .header-box .container-box .header-nav li a.active .github,
+.container-main .header-box .container-box .header-nav li a:focus .github {
+  background-position: -100px -21px;
 }
 .icon16 {
   width: 16px;
@@ -569,7 +579,7 @@ body {
 }
 .container-main {
   height: 100%;
-  min-width: 600px;
+  min-width: 800px;
 }
 .container-main .header-box {
   position: relative;
@@ -973,6 +983,13 @@ body {
   font-family: CoreSansN45;
   color: #d9fffc;
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  width: 280px;
+  display: block;
+  overflow: hidden;
+  text-align: right;
 }
 .container-main .header-box .container-box .header-util li a.member-name:link {
   color: #d9fffc;
@@ -1261,6 +1278,10 @@ body {
     background-image: url("../resource/icon_menu_large.png");
     background-position: -127px -1px;
   }
+  .container-main .icon20.github {
+    background-image: url("../resource/icon_menu_large.png");
+    background-position: -160px -1px;
+  }
   .container-main .header-box .container-box .header-nav li a:hover .workspace,
   .container-main .header-box .container-box .header-nav li a:active .workspace,
   .container-main .header-box .container-box .header-nav li a.active .workspace,
@@ -1284,6 +1305,12 @@ body {
   .container-main .header-box .container-box .header-nav li a.active .facebook,
   .container-main .header-box .container-box .header-nav li a:focus .facebook {
     background-position: -127px -33px;
+  }
+  .container-main .header-box .container-box .header-nav li a:hover .github,
+  .container-main .header-box .container-box .header-nav li a:active .github,
+  .container-main .header-box .container-box .header-nav li a.active .github,
+  .container-main .header-box .container-box .header-nav li a:focus .github {
+    background-position: -160px -33px;
   }
   .container-main .header-box .container-box .header-nav li a span {
     display: none;
