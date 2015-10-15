@@ -155,6 +155,28 @@
         </div>
     </div>
     <!--/#new-account-modal-->
+    <div class="modal fade container-dialog" id="deny-new-account" tabindex="-1" role="dialog" aria-labelledby="new-account-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deny-new-account-title">New Account</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#">
+                        <div class="form-group">
+                            <label for="new-account-email" class="control-label">Sorry. We do not issue a new account in this version.
+                                <br>For using as test Please use the guest mode. (Click 'Try It' button)</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button dialog primary-box create">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#deny-new-account-modal-->
     <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-labelledby="edit-workspace-title">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -182,6 +204,15 @@
 
 </div>
 
+<!-- google analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-68503782-1', 'auto');
+    ga('send', 'pageview');
+</script>
 <!-- jQuery -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -196,16 +227,6 @@
 <script src="../js/config.js"></script>
 <script src="../bower_components/requirejs/require.js" data-main="../js/index"></script>
 <script src="../js/lib/router.js"></script>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-68503782-1', 'auto');
-        ga('send', 'pageview');
-
-    </script>
     </body>
 
 </html>
