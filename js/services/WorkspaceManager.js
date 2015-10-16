@@ -88,7 +88,7 @@ define([
                 function findApp(wsName, prjName) {
                     for (var i in apps) {
                         var app = apps[i];
-                        if (app.url.workspace === wsName && app.url.project == prjName) {
+                        if (app.url.workspace === wsName && app.url.project === prjName) {
                             return app;
                         }
                     }
@@ -98,7 +98,7 @@ define([
                 workspacesCallback(workspaces);
                 workspaces.forEach(function (workspace) {
                     console.log('workspace', workspace);
-                    _this.getProjects(workspace.name).then(function (workspace) {
+                    _this.getProjects(workspace.name).then((function (workspace) {
                         return function (projects) {
                             //console.log('getProjects', workspace.name);
                             workspace.projects = projects;
@@ -118,7 +118,7 @@ define([
                             }); // foreach ws.projects
                             projectsCallback(workspace);
                         };
-                    }(workspace));
+                    })(workspace));
                 }); // foreach workspaces
             });
         },
