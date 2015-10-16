@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-(function($){
+(function ($) {
     'use strict';
     
     var ROUTING_PAGE_CLASS = 'routing-page';
@@ -24,8 +24,8 @@
     var PAGE_OFF_EVENT = 'page-off';
     
     var router = {
-        init: function() {
-            $('head').append('<style id="router-style">'+ 
+        init: function () {
+            $('head').append('<style id="router-style">' + 
                         '.' + ROUTING_PAGE_CLASS + '{display: none;}' +
                         '.' + ACTIVE_PAGE_CLASS + '{display: block;}' +
                         '</style>');
@@ -40,7 +40,7 @@
             router.route();
         },
         
-        route: function() {
+        route: function () {
             var hash = window.location.hash;
             var params = hash.split('/');
             var target = params[0];
@@ -60,11 +60,11 @@
             
             target = (target === '') ? '#' : target;  // '' and '#' are the same
             
-            pages.each(function(i, e){
+            pages.each(function (i, e) {
                 var eHashs = e.getAttribute('data-hash').split(' ');
                 var show = false;
                 
-                eHashs.forEach(function(eHash) {
+                eHashs.forEach(function (eHash) {
                     if (eHash === '*') {
                         show = true;
                     } else if (eHash.substr(0, 1) === '-') {
@@ -103,7 +103,7 @@
             
             console.log('changePage', hash, params);
             
-            for(var i in params) {
+            for (var i in params) {
                 hash += '/' + params[i];
             }
             

@@ -96,20 +96,20 @@ define([
                 }
             });
 
-            this.$githubToken.on('keyup', function (e) {
-                if (self.$githubToken.val() == self.settings.githubToken) {
+            this.$githubToken.on('keyup', function () {
+                if (self.$githubToken.val() === self.settings.githubToken) {
                     self.$saveTokenButton.attr('disabled', '');
                 } else {
                     self.$saveTokenButton.removeAttr('disabled');
                 }
             });
 
-            this.$saveTokenButton.on('click', function (e) {
+            this.$saveTokenButton.on('click', function () {
                 self.saveGithubToken();
             });
 
-            this.$addNewPersonalTokenButton.on('click', function (e) {
-                SettingsManager.addNewPersonalToken().then(function (token) {
+            this.$addNewPersonalTokenButton.on('click', function () {
+                SettingsManager.addNewPersonalToken().then(function () {
                     return SettingsManager.getPersonalTokens();
                 }).then(function (tokens) {
                     console.log('tokens', tokens);
@@ -120,7 +120,7 @@ define([
                 });
             });
 
-            this.$personalTokenTable.delegate('a.delete-token', 'click', function (e) {
+            this.$personalTokenTable.delegate('a.delete-token', 'click', function () {
                 var token = $(this).attr('data-token');
                 SettingsManager.deletePersonalToken(token).then(function () {
                     return self.loadPersonalTokens();
@@ -140,7 +140,7 @@ define([
                     Promise.all([self.loadPublicSSHKey(),
                                  self.loadGitHubToken(),
                                  self.loadPersonalTokens()
-                                ]).then(function (values) {
+                                ]).then(function () {
                         resolve();
                     }).catch(function (e) {
                         notify.alert('Error', e, 'danger');
@@ -186,14 +186,14 @@ define([
             });
         },
 
-        generatePublicSSHKey: function() {
+        generatePublicSSHKey: function () {
             var buttonObj = $('#' + this.id);
             console.log('Yes');
             buttonObj.attr('disabled', '');
-            SettingsManager.removePublicSSHKey().catch(function (e) {
-            }).then(function() {
+            SettingsManager.removePublicSSHKey().catch(function () {
+            }).then(function () {
                 return SettingsManager.generatePublicSSHKey();
-            }).then(function (info) {
+            }).then(function () {
                 return SettingsManager.getPublicSSHKey();
             }).then(function (key) {
                 console.log('key', key);
@@ -208,7 +208,7 @@ define([
             });
         },
 
-        saveGithubToken: function() {
+        saveGithubToken: function () {
             self.$saveTokenButton.removeAttr('disabled');
             var token = self.$githubToken.val();
 

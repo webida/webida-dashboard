@@ -163,7 +163,7 @@ define([
                 self.popupNewWorkspace();
                 return false;
             });
-            this.$refreshWorkspaceButton.on('click', function (e) {
+            this.$refreshWorkspaceButton.on('click', function () {
                 self.loadWorkspaces();
             });
 
@@ -174,14 +174,14 @@ define([
             this.$newWorkspaceModal.on('hidden.bs.modal', function () {
                 self.$createWorkspaceButton.removeAttr('disabled');
             });
-            this.$createWorkspaceButton.on('click', function (e) {
+            this.$createWorkspaceButton.on('click', function () {
                 if (self.$createWorkspaceButton.attr('disabled')) {
                     return false;
                 } else {
                     self.$createWorkspaceButton.attr('disabled', '');
                 }
                 var wsName = self.$newWorkspaceName.val();
-                self.createWorkspace(wsName, function (e) {
+                self.createWorkspace(wsName, function () {
                     self.$newWorkspaceModal.closeModal();
                     self.$createWorkspaceButton.removeAttr('disabled');
                 });
@@ -200,7 +200,7 @@ define([
             this.$workspaceDeleteConfirmModal.on('hidden.bs.modal', function () {
                 self.$deleteWorkspaceConfirmButton.attr('disabled', '');
             });
-            this.$workspacePanel.delegate('#delete-workspace-button', 'click', function (e) {
+            this.$workspacePanel.delegate('#delete-workspace-button', 'click', function () {
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete modal', wsName, this);
                 self.$workspaceDeleteConfirmModal.find('button.delete').attr('data-workspace',
@@ -217,16 +217,16 @@ define([
                     self.$deleteWorkspaceConfirmButton.click();
                 }
             });
-            this.$deleteConfirmText.on('keyup', function (e) {
+            this.$deleteConfirmText.on('keyup', function () {
                 var wsName = self.$deleteWorkspaceConfirmButton.attr('data-workspace');
                 //console.log('keyup', wsName, self.$deleteConfirmText.val());
-                if (self.$deleteConfirmText.val() == wsName) {
+                if (self.$deleteConfirmText.val() === wsName) {
                     self.$deleteWorkspaceConfirmButton.removeAttr('disabled');
                 } else {
                     self.$deleteWorkspaceConfirmButton.attr('disabled', '');
                 }
             });
-            this.$deleteWorkspaceConfirmButton.on('click', function (e) {
+            this.$deleteWorkspaceConfirmButton.on('click', function () {
                 if (self.$deleteWorkspaceConfirmButton.attr('disabled')) {
                     return false;
                 } else {
@@ -237,8 +237,6 @@ define([
                 self.deleteWorkspace(wsName, function (e) {
                     if (e) {
                         console.log(e);
-                    } else {
-                        //
                     }
                     self.$workspaceDeleteConfirmModal.closeModal();
                     self.$deleteConfirmText.val('');
@@ -248,13 +246,12 @@ define([
 
             // $editWorkspaceModal
             this.$editWorkspaceModal.on('shown.bs.modal', function () {
-                var wsName = $(this).attr('data-workspace');
                 self.$editWorkspaceName.focus().select();
             });
             this.$editWorkspaceModal.on('hidden.bs.modal', function () {
                 self.$applyWorkspaceButton.attr('disabled', '');
             });
-            this.$workspacePanel.delegate('#edit-workspace-button', 'click', function (e) {
+            this.$workspacePanel.delegate('#edit-workspace-button', 'click', function () {
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete modal', wsName, this);
                 self.$editWorkspaceModal.find('button.apply').attr('data-workspace', wsName);
@@ -267,16 +264,16 @@ define([
                     self.$applyWorkspaceButton.click();
                 }
             });
-            this.$editWorkspaceName.on('keyup', function (e) {
+            this.$editWorkspaceName.on('keyup', function () {
                 var wsName = self.$applyWorkspaceButton.attr('data-workspace');
                 //console.log('keyup', wsName, self.$editWorkspaceName.val());
-                if (self.$editWorkspaceName.val() == wsName) {
+                if (self.$editWorkspaceName.val() === wsName) {
                     self.$applyWorkspaceButton.attr('disabled', '');
                 } else {
                     self.$applyWorkspaceButton.removeAttr('disabled');
                 }
             });
-            this.$applyWorkspaceButton.on('click', function (e) {
+            this.$applyWorkspaceButton.on('click', function () {
                 if (self.$applyWorkspaceButton.attr('disabled')) {
                     return false;
                 } else {
@@ -361,7 +358,7 @@ define([
                     });
                     self.renderStatus();
                 });
-            }).catch(function (e) {
+            }).catch(function () {
                 location.href = '/index.html';
             });
         },
@@ -394,11 +391,15 @@ define([
                 });
                 self.works.addWorkspace(ws);
                 self.renderWorkspaces();
-                if (callback) callback();
+                if (callback) {
+                    callback();
+                }
             }).catch(function (e) {
                 notify.alert('error', e, 'danger');
                 console.log('createWorkspace error', e);
-                if (callback) callback(e);
+                if (callback) {
+                    callback(e);
+                }
             });
         },
 
@@ -409,10 +410,14 @@ define([
                 if (ws) {
                     self.renderWorkspaces();
                 }
-                if (callback) callback();
+                if (callback) {
+                    callback();
+                }
             }).catch(function (e) {
                 notify.alert('error', e, 'danger');
-                if (callback) callback(e);
+                if (callback) {
+                    callback(e);
+                }
             });
         },
 
@@ -422,10 +427,14 @@ define([
                 var ws = self.works.findWorkspace(oldName);
                 ws.name = newName;
                 self.renderWorkspaces();
-                if (callback) callback();
+                if (callback) {
+                    callback();
+                }
             }).catch(function (e) {
                 notify.alert('error', e, 'danger');
-                if (callback) callback(e);
+                if (callback) {
+                    callback(e);
+                }
             });
         },
 
