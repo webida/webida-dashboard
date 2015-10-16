@@ -33,12 +33,17 @@ define([
 
         getPublicSSHKey: function () {
             return new Promise(function (resolve, reject) {
-
-                FS.readFile(PUBLIC_KEY_PATH).then(function (key) {
-                    resolve(key);
-
-                }).fail(function (e) {
-                    reject(e);
+                FS.exists(PUBLIC_KEY_PATH).then(function () {
+                    return FS.readFile(PUBLIC_KEY_PATH)
+                    .then(function (key) {
+                        resolve(key);
+                    }).fail(function (e) {
+                        console.log('readFile error: ' + e);
+                        reject(e);
+                    });
+                }, function () {
+                    console.log('\'' + PUBLIC_KEY_PATH + '\' is not exists.');
+                    resolve();
                 });
             });
         },
@@ -77,13 +82,18 @@ define([
 
         getGitHubToken: function () {
             return new Promise(function (resolve, reject) {
-
-                FS.readFile(GITHUB_TOKEN_PATH).then(function (token) {
-                    resolve(JSON.parse(token).tokenKey);
-
-                }).fail(function (e) {
-                    console.log('readFile error: ' + e);
-                    reject(e);
+                FS.exists(GITHUB_TOKEN_PATH)
+                .then(function () {
+                    return FS.readFile(GITHUB_TOKEN_PATH)
+                    .then(function (token) {
+                        resolve(JSON.parse(token).tokenKey);
+                    }).fail(function (e) {
+                        console.log('readFile error: ' + e);
+                        reject(e);
+                    });
+                }, function () {
+                    console.log('\'' + GITHUB_TOKEN_PATH + '\' is not exists.');
+                    resolve();
                 });
             });
         },
