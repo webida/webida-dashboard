@@ -29,6 +29,20 @@ define([
 
     var WORKSPACE_PATH = '/';
     var fsid;
+    var WORKSPACE_DIR = '/.workspace';
+
+    function createCheckWorkspacePromise(workspace) {
+        return new Promise(function (resolve) {
+            // workspace must have '.workspace' directory
+            FS.exists(workspace.name + WORKSPACE_DIR)
+            .then(function () {
+                resolve(workspace);
+            }).fail(function () {
+                console.log('\'' + workspace.name + '\' is not workspace.');
+                resolve(null);
+            });
+        });
+    }
 
     $.extend(WorkspaceManager.prototype, {
         getWorkspaces: function () {
@@ -38,17 +52,19 @@ define([
                     if (err) {
                         reject(err);
                     } else {
-                        //console.log('data', data);
-                        var workspaces = _.chain(data).filter(function (file) {
+                        var workspaceJobs = [];
+                        _.chain(data).filter(function (file) {
                             if (!file.name.match(/^\./) && file.isDirectory) {
-                                // TODO it must have '.workspace' directory
+                                workspaceJobs.push(createCheckWorkspacePromise(file));
                                 return true;
                             }
                         }).value();
-                        workspaces.sort(function (a, b) {
-                            return (a.name > b.name) ? 1 : -1;
+
+                        Promise.all(workspaceJobs)
+                        .then(function (workspaces) {
+                            resolve(_.compact(workspaces));
                         });
-                        resolve(workspaces);
+
                     }
                 });
             });

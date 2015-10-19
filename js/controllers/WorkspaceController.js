@@ -16,10 +16,11 @@
 
 define([
     'app-config',
+    'lodash',
     'notify',
     'services/Auth',
     'services/WorkspaceManager',
-], function (appConfig, notify, Auth, WorkspaceManager) {
+], function (appConfig, _, notify, Auth, WorkspaceManager) {
     'use strict';
 
     var Deploy = new Class();
@@ -304,6 +305,7 @@ define([
 
         renderWorkspaces: function (workspaces) {
             workspaces = workspaces || self.works.workspaces;
+            workspaces = _.sortByOrder(workspaces, ['name']);
             self.$workspacePanel.html(self.$workspacePanelTemplate(workspaces));
         },
 
