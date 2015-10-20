@@ -42,7 +42,7 @@ define([
                         reject(e);
                     });
                 }, function () {
-                    console.log('\'' + PUBLIC_KEY_PATH + '\' is not exists.');
+                    console.log('\'' + PUBLIC_KEY_PATH + '\' does not exist.');
                     resolve();
                 });
             });
@@ -92,7 +92,7 @@ define([
                         reject(e);
                     });
                 }, function () {
-                    console.log('\'' + GITHUB_TOKEN_PATH + '\' is not exists.');
+                    console.log('\'' + GITHUB_TOKEN_PATH + '\' does not exist.');
                     resolve();
                 });
             });
