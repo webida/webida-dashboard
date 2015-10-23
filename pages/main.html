@@ -79,8 +79,8 @@
                 <div class="row">
                     <div>
                         <h3 class="page-header">Workspaces
-                            <a id="new-workspace-button" class="new-workspace-button webida-hidden" href="#">Create a new workspace</a>
-                            <a id="refresh-workspace-button" class="refresh-workspace-button webida-hidden" href="#">Refresh workspace</a>
+                            <a id="new-workspace-button" class="new-workspace-button webida-hidden" title="Create a new workspace" href="#">Create a new workspace</a>
+                            <a id="refresh-workspace-button" class="refresh-workspace-button webida-hidden" title="Refresh workspace" href="#">Refresh workspace</a>
                             <span id="workspace-status" class="workspace-status webida-hidden">
                                 <i class="icon16 workspace" title="Workspaces"></i><span id="workspace-usage" class="workspace-usage" title="Workspaces">0</span>
                                 <i class="icon16 project" title="Projects"></i><span id="project-usage" class="project-usage" title="Projects">0</span>
@@ -99,7 +99,7 @@
                             <div class="panel panel-default workspace-panel" data-workspace="{{name}}">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="panel-title col-xs-12 test-left"><i class="icon16 workspace_card"></i> {{name}}<a id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="icon16 delete pull-right"></i></a><a id="edit-workspace-button" data-workspace="{{name}}"
+                                        <div class="panel-title col-xs-12 test-left"><i class="icon16 workspace_card"></i> {{name}}<a title="Delete" id="delete-workspace-button" data-workspace="{{name}}" href="#"><i class="icon16 delete pull-right"></i></a><a title="Edit" id="edit-workspace-button" data-workspace="{{name}}"
                                                                                                                                                                                                                                                                         href="#"><i class="icon16 modify pull-right"></i></a></div>
                                     </div>
                                 </div>
@@ -259,31 +259,31 @@
                         <div class="form-group">
                             <label for="profile-name" class="col-sm-2 col-lg-2 control-label">Name</label>
                             <div class="col-sm-10 col-lg-10">
-                                <input type="text" class="form-control" id="profile-name">
+                                <input type="text" class="form-control" id="profile-name" placeholder="Enter name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="profile-url" class="col-sm-2 col-lg-2 control-label">Url</label>
+                            <label for="profile-url" class="col-sm-2 col-lg-2 control-label">URL</label>
                             <div class="col-sm-10 col-lg-10">
-                                <input type="text" class="form-control" id="profile-url">
+                                <input type="text" class="form-control" id="profile-url" placeholder="Enter URL">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="profile-company" class="col-sm-2 col-lg-2 control-label">Company</label>
                             <div class="col-sm-10 col-lg-10">
-                                <input type="text" class="form-control" id="profile-company">
+                                <input type="text" class="form-control" id="profile-company" placeholder="Enter company">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="profile-location" class="col-sm-2 col-lg-2 control-label">Location</label>
                             <div class="col-sm-10 col-lg-10">
-                                <input type="text" class="form-control" id="profile-location">
+                                <input type="text" class="form-control" id="profile-location" placeholder="Enter location">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="profile-gravatar" class="col-sm-2 col-lg-2 control-label">Gravatar</label>
                             <div class="col-sm-10 col-lg-10">
-                                <input type="text" class="form-control" id="profile-gravatar">
+                                <input type="text" class="form-control" id="profile-gravatar" placeholder="Enter Gravatar email">
                             </div>
                         </div>
                     </form>
