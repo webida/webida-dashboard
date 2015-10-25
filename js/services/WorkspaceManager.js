@@ -87,9 +87,11 @@ define([
 
                 function findApp(wsName, prjName) {
                     for (var i in apps) {
-                        var app = apps[i];
-                        if (app.url.workspace === wsName && app.url.project === prjName) {
-                            return app;
+                        if (apps.hasOwnProperty(i)) {
+                            var app = apps[i];
+                            if (app.url.workspace === wsName && app.url.project === prjName) {
+                                return app;
+                            }
                         }
                     }
                     return undefined;
