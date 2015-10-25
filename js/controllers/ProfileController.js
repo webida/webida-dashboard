@@ -46,8 +46,9 @@ define([
         },
         
         bindEvents: function () {
-            this.$openProfileButton.on('click', function(e) {
+            this.$openProfileButton.on('click', function () {
                 self.$userProfileModal.modal();
+                return false;
             });
             this.$userProfileModal.on('shown.bs.modal', function () {
                 //
@@ -55,11 +56,11 @@ define([
             this.$userProfileModal.on('hidden.bs.modal', function () {
                 self.renderProfile();
             });
-            this.$applyButton.on('click', function (e) {
-                self.updateProfile(self.getModifiedProfile()).then(function(user) {
+            this.$applyButton.on('click', function () {
+                self.updateProfile(self.getModifiedProfile()).then(function (user) {
                     self.renderProfile(user);
                     self.$userProfileModal.closeModal();
-                }).catch(function(e) {
+                }).catch(function (e) {
                     self.$applyButton.removeAttr('disabled');
                     notify.alert('Error', e, 'danger');
                     console.log(e);
@@ -76,7 +77,7 @@ define([
             });
         },
         
-        getModifiedProfile: function() {
+        getModifiedProfile: function () {
             var profile = {};
             //$.extend(profile, this.userInfo);
             profile.email = this.userInfo.email;
@@ -112,7 +113,7 @@ define([
             this.$applyButton.attr('disabled', '');
         },
         
-        updateProfile: function (user, callback) {
+        updateProfile: function (user) {
             return new Promise(function (resolve, reject) {
                 Auth.updateUser(user).then(function (user) {
                     self.userInfo = user;

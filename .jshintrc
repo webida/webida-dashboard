@@ -4,6 +4,7 @@
     "jquery": true,
     "devel": true,
     "predef": [
+        "Class",
         "Promise",
         "Handlebars",
         "jasmine",

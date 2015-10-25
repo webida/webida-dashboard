@@ -44,6 +44,11 @@ require([
                     // for debugging
                     window.PC = ProfileController;
                 });
+                require(['controllers/AccountController'], function (AccountController) {
+                    AccountController.init(user);
+                    // for debugging
+                    window.AC = AccountController;
+                });
                 app.setOnlineView();
             });
         },
@@ -76,8 +81,6 @@ require([
             // templates
             // widgets
             app.$wrapper = $('#wrapper');
-            app.$workspacePage = app.$wrapper.find('#workspaces-page');
-            app.$settingsPage = app.$wrapper.find('#settings-page');
             app.$logoutButton = app.$wrapper.find('#logout-button');
             // modals
         },
