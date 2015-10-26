@@ -696,6 +696,52 @@ body {
   color: #23639f;
   text-decoration: none;
 }
+.container-index .container-section.blue {
+  background-color: #5d8aa8;
+}
+.container-index .container-section.blue .community {
+  width: 320px;
+  margin: 0px auto 0px auto;
+  padding: 0;
+}
+.container-index .container-section.blue .community li {
+  width: 64px;
+  height: 64px;
+  margin: 0 20px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  display: inline-block;
+  text-indent: -1000px;
+  overflow: hidden;
+}
+.container-index .container-section.blue .community li.github {
+  background-image: url("../resource/main_link_icon_git.png");
+}
+.container-index .container-section.blue .community li.facebook {
+  background-image: url("../resource/main_link_icon_facebook.png");
+}
+.container-index .container-section.blue .community li.mailing {
+  background-image: url("../resource/main_link_icon_mailing.png");
+}
+.container-index .container-section.blue p {
+  color: #080c0f;
+  font-family: CoreSansN25;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 20px;
+}
+.container-index .container-section.blue p a.facebook:link,
+.container-index .container-section.blue p a.facebook:hover,
+.container-index .container-section.blue p a.facebook:visited {
+  text-decoration: underline;
+  color: #a4dbff;
+}
+.container-index .container-section.blue p a:link,
+.container-index .container-section.blue p a:hover,
+.container-index .container-section.blue p a:visited {
+  text-decoration: underline;
+  color: #080c0f;
+}
 .container-index .container-section.dark {
   background-color: #3c3f41;
 }
