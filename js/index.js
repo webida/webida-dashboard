@@ -86,7 +86,8 @@ require([
             });
 
             this.$newAccountButton.on('click', function () {
-                app.$denyNewAccountModal.modal();
+                app.$newAccountModal.modal();
+                //app.$denyNewAccountModal.modal();
             });
 
             this.$newAccountEmail.on('keypress', function (e) {
