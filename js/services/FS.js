@@ -20,6 +20,7 @@ define([
 ], function (Q, webida) {
     'use strict';
     var FS = function () {};
+    var USERINFO_PATH = '.userinfo';
 
     function convertToError(e) {
         if (!e) {
@@ -46,7 +47,11 @@ define([
 
                             } else {
                                 _this.fs = fs.mountByFSID(fsinfo.fsid);
-                                defer.resolve();
+                                _this.createDirectory(USERINFO_PATH, false).then(function () {
+                                    defer.resolve();
+                                }).fail(function (e) {
+                                    defer.reject(e);
+                                });
                             }
                         });
 
