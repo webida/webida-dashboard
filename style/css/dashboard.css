@@ -1147,12 +1147,12 @@ body {
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-heading .panel-title a#edit-workspace-button {
   position: absolute;
-  top: 0;
+  top: 3px;
   right: 24px;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-heading .panel-title a#delete-workspace-button {
   position: absolute;
-  top: 0;
+  top: 3px;
   right: 5px;
 }
 .container-main article .container-section .workspace-panel-box .panel .panel-heading button {
