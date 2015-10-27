@@ -147,7 +147,22 @@
             font-size: 14px;
             font-family: CoreSansN45;
             .panel-title {
-              padding: 0 10px;
+              padding: 0 40px 0 10px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-wrap: normal;
+              overflow: hidden;
+              position: relative;
+              a#edit-workspace-button {
+                position: absolute;
+                top:0;
+                right:24px;
+              }
+              a#delete-workspace-button {
+                position: absolute;
+                top:0;
+                right:5px;
+              }
             }
             button{
               font-size: 30px;
