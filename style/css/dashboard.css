@@ -590,9 +590,6 @@ body {
   margin: 0 auto;
   position: relative;
 }
-.container-main article {
-  height: 100%;
-}
 .container-main article .container-section {
   height: 100%;
   max-width: 1200px;
@@ -973,6 +970,9 @@ body {
   height: 23px;
   position: relative;
 }
+body.dashboard {
+  background-color: #ececec;
+}
 .container-main .header-box {
   background-color: #292e30;
   height: 100px;
@@ -1045,9 +1045,6 @@ body {
 }
 .container-main .header-box .container-box .header-util li a.member-name:active {
   color: #555e62;
-}
-.container-main article {
-  background-color: #ececec;
 }
 .container-main article .container-section .workspace-status {
   background-color: #dddddd;
