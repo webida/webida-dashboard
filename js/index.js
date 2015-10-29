@@ -33,6 +33,8 @@ require([
     };
 
     var app = {
+        isValidEmail: false,
+        
         init: function () {
             this.checkLogin();
             this.cacheElements();
@@ -91,7 +93,7 @@ require([
             });
 
             this.$newAccountEmail.on('keypress', function (e) {
-                if (e.keyCode === 13) { // Enter
+                if (e.keyCode === 13 && app.isValidEmail) { // Enter
                     app.$newAccountCreateButton.click();
                 }
             });
@@ -102,8 +104,10 @@ require([
                 
                 if (emailExp.test(email)) { // valid
                     app.$newAccountCreateButton.removeAttr('disabled');
+                    app.isValidEmail = true;
                 } else {
                     app.$newAccountCreateButton.attr('disabled', '');
+                    app.isValidEmail = false;
                 }
             });
 
