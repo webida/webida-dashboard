@@ -41,9 +41,6 @@ body {
   margin: 0 auto;
   position: relative;
 }
-.container-main article {
-  height: 100%;
-}
 .container-main article .container-section {
   height: 100%;
   max-width: 1200px;
