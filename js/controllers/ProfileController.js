@@ -63,12 +63,10 @@ define([
                 }).catch(function (e) {
                     self.$applyButton.removeAttr('disabled');
                     notify.alert('Error', e, 'danger');
-                    console.log(e);
                 });
                 self.$applyButton.attr('disabled', '');
             });
-            this.$userProfileModal.find('input.form-control').on('keypress', function (e) {
-                console.log('keypress', e);
+            this.$userProfileModal.find('input.form-control').on('keyup', function (e) {
                 if (e.keyCode === 13) { // Enter
                     self.$applyButton.click();
                 } else {
@@ -98,7 +96,6 @@ define([
                 self.userInfo = user;
             }).catch(function (e) {
                 notify.alert('Error', e, 'danger');
-                console.log(e);
             });
         },
         
@@ -119,7 +116,6 @@ define([
                     self.userInfo = user;
                     resolve(user);
                 }).catch(function (e) {
-                    console.log(e);
                     reject(e);
                 });
             });
