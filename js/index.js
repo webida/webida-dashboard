@@ -95,6 +95,17 @@ require([
                     app.$newAccountCreateButton.click();
                 }
             });
+            
+            this.$newAccountEmail.on('keyup', function () {
+                var email = app.$newAccountEmail.val();
+                var emailExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                
+                if (emailExp.test(email)) { // valid
+                    app.$newAccountCreateButton.removeAttr('disabled');
+                } else {
+                    app.$newAccountCreateButton.attr('disabled', '');
+                }
+            });
 
             this.$newAccountCreateButton.on('click', function () {
                 app.$newAccountCreateButton.attr('disabled', '');
@@ -106,7 +117,6 @@ require([
                 }).catch(function (e) {
                     app.$newAccountCreateButton.removeAttr('disabled');
                     notify.error(e);
-                    console.log(e);
                 });
             });
 
