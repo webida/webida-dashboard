@@ -23,6 +23,8 @@ define([
 
     var ProfileController = {
         userInfo: undefined,
+        canApplyProfile: false,
+        
         init: function (user) {
             this.userInfo = user;
             this.cacheElements();
@@ -50,12 +52,15 @@ define([
                 self.$userProfileModal.modal();
                 return false;
             });
+            
             this.$userProfileModal.on('shown.bs.modal', function () {
                 //
             });
+            
             this.$userProfileModal.on('hidden.bs.modal', function () {
                 self.renderProfile();
             });
+            
             this.$applyButton.on('click', function () {
                 self.updateProfile(self.getModifiedProfile()).then(function (user) {
                     self.renderProfile(user);
@@ -66,15 +71,19 @@ define([
                 });
                 self.$applyButton.attr('disabled', '');
             });
-            this.$userProfileModal.find('input.form-control').on('keyup', function (e) {
-                if (e.keyCode === 13) { // Enter
+            
+            this.$userProfileModal.find('input.form-control').on('keypress', function (e) {
+                if (e.keyCode === 13 && self.canApplyProfile) { // Enter
                     self.$applyButton.click();
-                } else {
-                    self.$applyButton.removeAttr('disabled');
                 }
             });
+
+            this.$userProfileModal.find('input.form-control').on('input', function () {
+                self.$applyButton.removeAttr('disabled');
+                self.canApplyProfile = true;
+            });
         },
-        
+
         getModifiedProfile: function () {
             var profile = {};
             //$.extend(profile, this.userInfo);

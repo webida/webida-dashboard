@@ -33,6 +33,8 @@ require([
     };
 
     var app = {
+        isValidEmail: false,
+        
         init: function () {
             this.checkLogin();
             this.cacheElements();
@@ -91,19 +93,21 @@ require([
             });
 
             this.$newAccountEmail.on('keypress', function (e) {
-                if (e.keyCode === 13) { // Enter
+                if (e.keyCode === 13 && app.isValidEmail) { // Enter
                     app.$newAccountCreateButton.click();
                 }
             });
             
-            this.$newAccountEmail.on('keyup', function () {
+            this.$newAccountEmail.on('input', function () {
                 var email = app.$newAccountEmail.val();
                 var emailExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                 
                 if (emailExp.test(email)) { // valid
                     app.$newAccountCreateButton.removeAttr('disabled');
+                    app.isValidEmail = true;
                 } else {
                     app.$newAccountCreateButton.attr('disabled', '');
+                    app.isValidEmail = false;
                 }
             });
 
@@ -122,7 +126,8 @@ require([
 
             this.signingUpModal.setup({
                 title: 'Thank you for signing up!',
-                message: 'Please check your email for the confirmation request with a link that will validate your account. Once you click the link, your registration will be complete. ',
+                message: 'Please check your email for the confirmation request with a link that' +
+                    ' will validate your account. Once you click the link, your registration will be complete. ',
                 buttons: [{
                     id: 'signingup-ok-button',
                     name: 'Ok',
