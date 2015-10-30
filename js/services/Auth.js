@@ -168,6 +168,18 @@ define([
                     }
                 });
             });
+        },
+        
+        deleteMyAccount: function () {
+            return new Promise(function (resolve, reject) {
+                webida.auth.deleteMyAccount(function (err) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
         }
     };
 

@@ -52,31 +52,58 @@ define([
                 self.$userAccountModal.modal();
                 return false;
             });
+            
             this.$userAccountModal.on('shown.bs.modal', function () {
                 //
             });
+            
             this.$userAccountModal.on('hidden.bs.modal', function () {
                 self.renderAccount();
                 self.verifyAllPasswordInputs();
             });
+            
             this.$accountUpdatePasswordButton.on('click', function () {
-                var oldPassword = self.accountOldPassword.val();
-                var newPassword = self.accountNewPassword.val();
+                var oldPassword = self.$accountOldPassword.val();
+                var newPassword = self.$accountNewPassword.val();
                 Auth.changeMyPassword(oldPassword, newPassword).then(function () {
                     notify.success('Password successfully changed');
                 }).catch(function (err) {
                     console.log(err);
-                    notify.err(err);
+                    notify.error(err);
                 });
+                
+                return false;
             });
+            
             this.$accountOldPassword.on('keyup', function () {
                 self.verifyAllPasswordInputs();
             });
+            
             this.$accountNewPassword.on('keyup', function () {
                 self.verifyAllPasswordInputs();
             });
+            
             this.$accountConfirmPassword.on('keyup', function () {
                 self.verifyAllPasswordInputs();
+            });
+            
+            this.$accountDeleteEmail.on('input', function () {
+                self.verifyAccountEmail();
+            });
+            
+            this.$accountDeleteButton.on('click', function () {
+                Auth.deleteMyAccount().then(function () {
+                    notify.success('');
+                    Auth.logout().then(function () {
+                        location.href = '/index.html';
+                    }).catch(function (e) {
+                        notify.alert(e);
+                    });
+                }).catch(function (err) {
+                    notify.error(err);
+                });
+
+                return false;
             });
         },
 
@@ -91,6 +118,10 @@ define([
                 msg = 'Enter new password';
                 valid = false;
             }
+            if (self.$accountOldPassword.val() === self.$accountNewPassword.val()) {
+                msg = 'Enter new password differently from the old.';
+                valid = false;
+            }
             if (self.$accountOldPassword.val().length === 0) {
                 msg = 'Enter old password';
                 valid = false;
@@ -101,6 +132,16 @@ define([
                 self.enableUpdatePasswordButton();
             } else {
                 self.disableUpdatePasswordButton();
+            }
+        },
+        
+        verifyAccountEmail: function () {
+            var email = self.$accountDeleteEmail.val();
+            
+            if (email === self.userInfo.email) {
+                self.$accountDeleteButton.removeAttr('disabled');
+            } else {
+                self.$accountDeleteButton.attr('disabled', '');
             }
         },
         
