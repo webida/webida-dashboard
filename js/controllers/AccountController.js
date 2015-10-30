@@ -93,12 +93,7 @@ define([
             
             this.$accountDeleteButton.on('click', function () {
                 Auth.deleteMyAccount().then(function () {
-                    notify.success('');
-                    Auth.logout().then(function () {
-                        location.href = '/index.html';
-                    }).catch(function (e) {
-                        notify.alert(e);
-                    });
+                    location.href = '/index.html';
                 }).catch(function (err) {
                     notify.error(err);
                 });
