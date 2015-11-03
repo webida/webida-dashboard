@@ -22,7 +22,7 @@ define([], function () {
     );
 
     return {
-        clientId: 'E9CXCte9dnUU1GID',
+        clientId: 'DASHBOARD_CLIENT_ID',
         appRoute: {
             site: 'apps/desktop/index.html'
         },
