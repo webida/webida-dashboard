@@ -96,8 +96,6 @@ require([
                 if (e.keyCode === 13 && app.isValidEmail) { // Enter
                     app.$newAccountCreateButton.click();
                 }
-                
-                return false;
             });
             
             this.$newAccountEmail.on('input', function () {
