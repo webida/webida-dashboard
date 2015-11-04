@@ -174,7 +174,7 @@ define([
 
         getQuotaLimit: function () {
             var _this = this;
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 console.log('limit this', _this);
                 _this.fs.getQuotaLimit(function (e, limit) {
                     if (e) {
@@ -188,7 +188,7 @@ define([
 
         getQuotaUsage: function () {
             var _this = this;
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 console.log('usage this', _this);
                 _this.fs.getQuotaUsage(function (e, usage) {
                     if (e) {
@@ -226,9 +226,9 @@ define([
         
         rename: function (oldPath, newPath) {
             var _this = this;
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 console.log('rename this', this);
-                _this.fs.move(oldPath, newPath, function(e) {
+                _this.fs.move(oldPath, newPath, function (e) {
                     if (e) {
                         reject(convertToError(e));
                     } else {

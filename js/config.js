@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+/* global require:true */
+/* exported require */
 var require = {
     baseUrl: '../js',
-    paths:{
+    paths: {
         'async': '../bower_components/async/dist/async.min',
         'components': '../bower_components',
         'jquery': '../bower_components/jquery/dist/jquery.min',

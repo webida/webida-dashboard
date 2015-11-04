@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global Class */
+
 define([
     'app-config',
     'lodash',
@@ -95,18 +97,22 @@ define([
         },
         findWorkspace: function (name) {
             for (var i in this.workspaces) {
-                var ws = this.workspaces[i];
-                if (ws.name === name) {
-                    return ws;
+                if (this.workspaces.hasOwnProperty(i)) {
+                    var ws = this.workspaces[i];
+                    if (ws.name === name) {
+                        return ws;
+                    }
                 }
             }
             return undefined;
         },
         deleteWorkspace: function (name) {
             for (var i in this.workspaces) {
-                var ws = this.workspaces[i];
-                if (ws.name === name) {
-                    return this.workspaces.splice(i, 1);
+                if (this.workspaces.hasOwnProperty(i)) {
+                    var ws = this.workspaces[i];
+                    if (ws.name === name) {
+                        return this.workspaces.splice(i, 1);
+                    }
                 }
             }
             return undefined;
