@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-
-define([], function () {
+define([
+    '/webida/api/app/configs?callback=define'
+], function (
+    serverConf
+) {
     'use strict';
-    /* jshint unused:false */
-    var serverDomain = decodeURIComponent(
-        document.cookie.replace(/(?:(?:^|.*;\s*)webida\.host\s*\=\s*([^;]*).*$)|^.*$/, '$1')
-    );
-
+    var APP_ID = 'app-dashboard';
     return {
+        appId: APP_ID,
         clientId: 'DASHBOARD_CLIENT_ID',
-        appRoute: {
-            site: 'apps/desktop/index.html'
-        },
-        guestMode: false,
-        redirectUrl: window.location.protocol + '//' + window.location.host + '/pages/auth.html'        
+        signUpEnable: !!serverConf.featureEnables.signUp,
+        guestMode: !!serverConf.featureEnables.guestMode,
+        redirectUrl: serverConf.systemApps[APP_ID].baseUrl + '/pages/auth.html'
     };
 });
