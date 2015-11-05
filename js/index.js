@@ -74,7 +74,9 @@ require([
 
             this.$denyNewAccountModal = $('#deny-new-account');
 
+            /* jshint newcap: false */
             this.signingUpModal = ModalFactory('#common-modal', '#common-modal-template');
+            /* jshint newcap: true */
         },
 
         bindEvents: function () {

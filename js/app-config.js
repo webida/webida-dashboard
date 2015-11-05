@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+
 define([], function () {
     'use strict';
-
+    /* jshint unused:false */
     var serverDomain = decodeURIComponent(
         document.cookie.replace(/(?:(?:^|.*;\s*)webida\.host\s*\=\s*([^;]*).*$)|^.*$/, '$1')
     );

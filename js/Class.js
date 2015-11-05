@@ -1,3 +1,4 @@
+/* exported Class */
 var Class = function (parent) {
     'use strict';
     
@@ -24,11 +25,13 @@ var Class = function (parent) {
                     this[i].fillFrom(obj[i]);
                 } else if (obj[i].constructor === Array && this[i].constructor === Array) {
                     for (var j in obj[i]) {
-                        this[i][j] = obj[i][j];
+                        if (obj[i].hasOwnProperty(j)) {
+                            this[i][j] = obj[i][j];
+                        }
                     }
-                } else if (obj[i].constructor === Function) {
+                } /*else if (obj[i].constructor === Function) {
                     // ignore
-                } else {
+                } */else {
                     this[i] = obj[i];
                 }
             }
@@ -42,7 +45,9 @@ var Class = function (parent) {
     klass.extend = function (obj) {
         var extended = obj.extended;
         for (var i in obj) {
-            klass[i] = obj[i];
+            if (obj.hasOwnProperty(i)) {
+                klass[i] = obj[i];
+            }
         }
         if (extended) {
             extended(klass);
@@ -52,7 +57,9 @@ var Class = function (parent) {
     klass.include = function (obj) {
         var included = obj.included;
         for (var i in obj) {
-            klass.fn[i] = obj[i];
+            if (obj.hasOwnProperty(i)) {
+                klass.fn[i] = obj[i];
+            }
         }
         if (included) {
             included(klass);

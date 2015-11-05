@@ -58,7 +58,10 @@ define([
             this.$addNewPersonalTokenButton = this.$personalTokenPanel.find('button.add-new');
             // modal widgets
             // modal
+            /* jshint newcap: false */
             this.generateNewKeyModal = ModalFactory('#common-modal', '#common-modal-template');
+            /* jshint newcap: true */
+
         },
 
         bindEvents: function () {
@@ -73,7 +76,7 @@ define([
                     id: 'generate-yes-button',
                     name: 'Yes',
                     class: 'btn btn-danger',
-                    onclick: function (e) {
+                    onclick: function () {
                         self.generatePublicSSHKey();
                     }
                 }, {
@@ -83,7 +86,7 @@ define([
                 }]
             });
 
-            this.$generateNewKeyButton.on('click', function (e) {
+            this.$generateNewKeyButton.on('click', function () {
                 console.log('click');
                 self.generateNewKeyModal.popup().then(function (button) {
                     console.log(button);

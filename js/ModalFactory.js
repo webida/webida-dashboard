@@ -98,7 +98,7 @@ define([], function () {
 
     Modal.prototype.popup = function () {
         var _this = this;
-        var promise = new Promise(function (resolve, reject) {
+        var promise = new Promise(function (resolve/*, reject*/) {
             _this.modalObj.one('hidden.bs.modal', function () {
                 resolve(_this.lastClickedButton);
                 _this.lastClickedButton = undefined;
