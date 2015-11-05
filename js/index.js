@@ -16,13 +16,14 @@
 
 
 require([
+    'app-config',
     'guest',
     'ModalFactory',
     'notify',
     'services/Auth',
     'services/FS',
     'webida',
-], function (guest, ModalFactory, notify, Auth, FS, webida) {
+], function (appConfig, guest, ModalFactory, notify, Auth, FS, webida) {
     'use strict';
 
     jQuery.fn.closeModal = function () {
@@ -90,8 +91,11 @@ require([
             });
 
             this.$newAccountButton.on('click', function () {
-                app.$newAccountModal.modal();
-                //app.$denyNewAccountModal.modal();
+                if (appConfig.signUpEnable) {
+                    app.$newAccountModal.modal();
+                } else {
+                    app.$denyNewAccountModal.modal();
+                }
             });
 
             this.$newAccountEmail.on('keypress', function (e) {
