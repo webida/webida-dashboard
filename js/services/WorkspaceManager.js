@@ -142,7 +142,7 @@ define([
         },
 
         getWorkspaceOpenUrl: function (wsName) {
-            return '//ide.' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/' + wsName;
+            return appConfig.ideBaseUrl + '/apps/ide/src/index.html?workspace=' + fsid + '/' + wsName;
         },
 
         createWorkspace: function (name /*, desc*/ ) {

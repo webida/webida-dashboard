@@ -26,6 +26,7 @@ define([
         clientId: 'DASHBOARD_CLIENT_ID',
         signUpEnable: !!serverConf.featureEnables.signUp,
         guestMode: !!serverConf.featureEnables.guestMode,
-        redirectUrl: serverConf.systemApps[APP_ID].baseUrl + '/pages/auth.html'
+        redirectUrl: serverConf.systemApps[APP_ID].baseUrl + '/pages/auth.html',
+        ideBaseUrl: serverConf.systemApps['webida-client'].baseUrl
     };
 });
