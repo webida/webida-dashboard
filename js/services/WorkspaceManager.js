@@ -18,9 +18,8 @@ define([
     'app-config',
     'lodash',
     'services/App',
-    'services/FS',
-    'webida',
-], function (appConfig, _, App, FS, webida) {
+    'services/FS'
+], function (appConfig, _, App, FS) {
     'use strict';
 
     var WorkspaceManager = function () {
@@ -142,7 +141,7 @@ define([
         },
 
         getWorkspaceOpenUrl: function (wsName) {
-            return '//ide.' + webida.conf.webidaHost + '/apps/ide/src/index.html?workspace=' + fsid + '/' + wsName;
+            return appConfig.ideBaseUrl + '/apps/ide/src/index.html?workspace=' + fsid + '/' + wsName;
         },
 
         createWorkspace: function (name /*, desc*/ ) {
