@@ -15,12 +15,31 @@
  */
 
 define([
-    '/webida/api/app/configs?callback=define'
+    'webida'
 ], function (
-    serverConf
+    webida
 ) {
     'use strict';
     var APP_ID = 'app-dashboard';
+    var serverConf;
+
+    try {
+        serverConf = JSON.parse($.ajax({
+            type: 'GET',
+            url: webida.conf.appApiBaseUrl + '/configs',
+            async: false
+        }).responseText);
+    } catch (e) {
+        console.warn('Failed to load configs. Using default one: ' + e.message);
+        serverConf = {
+            systemApps: {
+                'webida-client': { baseUrl: window.location.protocol + '//ide.' + window.location.host },
+                'app-dashboard': { baseUrl: window.location.protocol + '//' + window.location.host }
+            },
+            featureEnables: { signUp: true, guestMode: false }
+        };
+    }
+
     return {
         appId: APP_ID,
         clientId: 'DASHBOARD_CLIENT_ID',
