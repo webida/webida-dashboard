@@ -179,71 +179,62 @@ define([
                 self.$newWorkspaceName.focus().select();
             });
             this.$newWorkspaceModal.on('hidden.bs.modal', function () {
-                self.$createWorkspaceButton.removeAttr('disabled');
+                self.$createWorkspaceButton.prop('disabled', false);
+            });
+            this.$newWorkspaceName.on('keyup', function (evt) {
+                var wsName = evt.target.value.trim();
+                if (_.isEmpty(wsName) || self.checkWorkspace(wsName)) {
+                    self.$createWorkspaceButton.prop('disabled', true);
+                } else {
+                    self.$createWorkspaceButton.prop('disabled', false);
+                    if (evt.keyCode === 13) { // Enter
+                        self.$createWorkspaceButton.click();
+                    }
+                }
             });
             this.$createWorkspaceButton.on('click', function () {
-                if (self.$createWorkspaceButton.attr('disabled')) {
-                    return false;
-                } else {
-                    self.$createWorkspaceButton.attr('disabled', '');
-                }
-                var wsName = self.$newWorkspaceName.val();
+                var wsName = self.$newWorkspaceName.val().trim();
                 self.createWorkspace(wsName, function () {
                     self.$newWorkspaceModal.closeModal();
-                    self.$createWorkspaceButton.removeAttr('disabled');
                 });
                 return false;
             });
-            this.$newWorkspaceName.on('keypress', function (e) {
-                //console.log('keypress', e);
-                if (e.keyCode === 13) { // Enter
-                    self.$createWorkspaceButton.click();
-                }
-            });
+
             // $workspaceDeleteConfirmModal
             this.$workspaceDeleteConfirmModal.on('shown.bs.modal', function () {
                 self.$deleteConfirmText.focus().select();
             });
             this.$workspaceDeleteConfirmModal.on('hidden.bs.modal', function () {
-                self.$deleteWorkspaceConfirmButton.attr('disabled', '');
+                self.$deleteWorkspaceConfirmButton.prop('disabled', true);
             });
             this.$workspacePanel.delegate('#delete-workspace-button', 'click', function () {
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete modal', wsName, this);
-                self.$workspaceDeleteConfirmModal.find('button.delete').attr('data-workspace',
-                                                                             wsName);
+                self.$workspaceDeleteConfirmModal.find('button.delete').attr('data-workspace', wsName);
                 self.$deleteConfirmLabel.text('Workspace name ("' + wsName + '")');
                 self.$deleteConfirmText.val('');
-                self.$deleteWorkspaceConfirmButton.attr('disabled', '');
                 self.$workspaceDeleteConfirmModal.modal();
                 return false;
             });
-            this.$deleteConfirmText.on('keypress', function (e) {
-                //console.log('keypress', e);
-                if (e.keyCode === 13) { // Enter
-                    self.$deleteWorkspaceConfirmButton.click();
-                }
-            });
-            this.$deleteConfirmText.on('keyup', function () {
+            this.$deleteConfirmText.on('keyup', function (evt) {
                 var wsName = self.$deleteWorkspaceConfirmButton.attr('data-workspace');
-                //console.log('keyup', wsName, self.$deleteConfirmText.val());
-                if (self.$deleteConfirmText.val() === wsName) {
-                    self.$deleteWorkspaceConfirmButton.removeAttr('disabled');
+                var inputName = evt.target.value.trim();
+                if (inputName === wsName) {
+                    self.$deleteWorkspaceConfirmButton.prop('disabled', false);
+                    if (evt.keyCode === 13) { // Enter
+                        self.$deleteWorkspaceConfirmButton.click();
+                    }
                 } else {
-                    self.$deleteWorkspaceConfirmButton.attr('disabled', '');
+                    self.$deleteWorkspaceConfirmButton.prop('disabled', true);
                 }
             });
             this.$deleteWorkspaceConfirmButton.on('click', function () {
-                if (self.$deleteWorkspaceConfirmButton.attr('disabled')) {
-                    return false;
-                } else {
-                    self.$deleteWorkspaceConfirmButton.attr('disabled', '');
-                }
                 var wsName = $(this).attr('data-workspace');
                 console.log('delete', this);
                 self.deleteWorkspace(wsName, function (e) {
                     if (e) {
                         console.log(e);
+                        notify.alert('error', e, 'danger');
                     }
                     self.$workspaceDeleteConfirmModal.closeModal();
                     self.$deleteConfirmText.val('');
@@ -256,7 +247,7 @@ define([
                 self.$editWorkspaceName.focus().select();
             });
             this.$editWorkspaceModal.on('hidden.bs.modal', function () {
-                self.$applyWorkspaceButton.attr('disabled', '');
+                self.$applyWorkspaceButton.prop('disabled', false);
             });
             this.$workspacePanel.delegate('#edit-workspace-button', 'click', function () {
                 var wsName = $(this).attr('data-workspace');
@@ -265,33 +256,24 @@ define([
                 self.$editWorkspaceName.val(wsName);
                 self.$editWorkspaceModal.modal();
             });
-            this.$editWorkspaceName.on('keypress', function (e) {
-                //console.log('keypress', e);
-                if (e.keyCode === 13) { // Enter
-                    self.$applyWorkspaceButton.click();
-                }
-            });
-            this.$editWorkspaceName.on('keyup', function () {
-                var wsName = self.$applyWorkspaceButton.attr('data-workspace');
-                //console.log('keyup', wsName, self.$editWorkspaceName.val());
-                if (self.$editWorkspaceName.val() === wsName) {
-                    self.$applyWorkspaceButton.attr('disabled', '');
+            this.$editWorkspaceName.on('keyup', function (evt) {
+                var wsName = evt.target.value.trim();
+                if (_.isEmpty(wsName) || self.checkWorkspace(wsName)) {
+                    self.$applyWorkspaceButton.prop('disabled', true);
                 } else {
-                    self.$applyWorkspaceButton.removeAttr('disabled');
+                    self.$applyWorkspaceButton.prop('disabled', false);
+                    if (evt.keyCode === 13) { // Enter
+                        self.$applyWorkspaceButton.click();
+                    }
                 }
             });
             this.$applyWorkspaceButton.on('click', function () {
-                if (self.$applyWorkspaceButton.attr('disabled')) {
-                    return false;
-                } else {
-                    self.$applyWorkspaceButton.attr('disabled', '');
-                }
-                console.log('apply');
                 var oldName = self.$applyWorkspaceButton.attr('data-workspace');
-                var newName = self.$editWorkspaceName.val();
+                var newName = self.$editWorkspaceName.val().trim();
                 self.editWorkspace(oldName, newName, function (e) {
                     if (e) {
                         console.log(e);
+                        notify.alert('error', e, 'danger');
                     }
                     self.$editWorkspaceModal.closeModal();
                 });
@@ -450,6 +432,10 @@ define([
             self.$newWorkspaceButton.removeClass('webida-hidden');
             self.$refreshWorkspaceButton.removeClass('webida-hidden');
         },
+
+        checkWorkspace: function (wsName) {
+            return _.some(self.works.workspaces, {'name': wsName});
+        }
     };
 
     var self = WorkspaceController;
