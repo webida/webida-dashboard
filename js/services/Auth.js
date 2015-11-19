@@ -22,7 +22,19 @@ define([
 
     var Auth = {
         userInfo: undefined,
-        
+
+        init: function () {
+            if (!Auth._initialized) {
+                Auth._initialized = new Promise(function (resolve) {
+                    console.log('promise initAuth');
+                    webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl, null, function (sessionID) {
+                        resolve(sessionID);
+                    });
+                });
+            }
+            return Auth._initialized;
+        },
+
         getLoginUrl: function () {
             return webida.conf.authApiBaseUrl + '/authorize?response_type=token' +
                 '&redirect_uri=' + encodeURIComponent(appConfig.redirectUrl) +
@@ -44,69 +56,50 @@ define([
             });
         },
         
-        getLoginStatusOnce: function () {
-            return (this._getLoginStatus = this._getLoginStatus || this.getLoginStatus());
-        },
-        
         getLoginStatus: function () {
-            var that = this;
-            return new Promise(function (resolve, reject) {
-                webida.auth.getLoginStatus(function (err, user) {
-                    if (err || !user) {
-                        reject(new Error('need to login'));
-                    } else {
-                        that.userInfo = user;
-                        resolve(user);
-                    }
+            if (!Auth._getLoginStatus) {
+                Auth._getLoginStatus = new Promise(function (resolve, reject) {
+                    webida.auth.getLoginStatus(function (err, user) {
+                        if (err || !user) {
+                            reject(new Error('need to login'));
+                        } else {
+                            Auth.userInfo = user;
+                            resolve(user);
+                        }
+                    });
                 });
-            });
+            }
+            return Auth._getLoginStatus;
         },
         
         getMyInfo: function (isForceReload) {
-            var reload = !this.userInfo || isForceReload;
+            var reload = !Auth.userInfo || isForceReload;
             if (reload) {
-                var that = this;
                 return new Promise(function (resolve, reject) {
                     webida.auth.getMyInfo(function (err, user) {
                         if (err || !user) {
                             reject(new Error('fail to get myInfo'));
                         } else {
-                            that.userInfo = user;
+                            Auth.userInfo = user;
                             resolve(user);
                         }
                     });
                 });
             } else {
-                return Promise.resolve(this.userInfo);
+                return Promise.resolve(Auth.userInfo);
             }
         },
         
         updateUser: function (user) {
-            var that = this;
             return new Promise(function (resolve, reject) {
                 webida.auth.updateUser(user, function (err, user) {
                     if (err || !user) {
                         reject(new Error('fail to update userInfo'));
                     } else {
-                        that.userInfo = user;
+                        Auth.userInfo = user;
                         resolve(user);
                     }
                 });
-            });
-        },
-        
-        initAuthOnce: function () {
-            return (this._initAuth = this._initAuth || this.initAuth());
-        },
-        
-        initAuth: function () {
-            return new Promise(function (resolve) {
-                console.log('promise initAuth');
-                webida.auth.initAuth(appConfig.clientId, appConfig.redirectUrl,
-                    null,
-                    function (sessionID) {
-                        resolve(sessionID);
-                    });
             });
         },
         

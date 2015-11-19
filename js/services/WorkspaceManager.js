@@ -30,113 +30,41 @@ define([
     var fsid;
     var WORKSPACE_DIR = '/.workspace';
 
-    function createCheckWorkspacePromise(workspace) {
-        return new Promise(function (resolve) {
-            // workspace must have '.workspace' directory
-            FS.exists(workspace.name + WORKSPACE_DIR)
-            .then(function () {
-                resolve(workspace);
-            }).fail(function () {
-                console.log('\'' + workspace.name + '\' is not workspace.');
-                resolve(null);
-            });
-        });
-    }
-
     $.extend(WorkspaceManager.prototype, {
-        getWorkspaces: function () {
-            return new Promise(function (resolve, reject) {
-                console.log('promise getWorkspaces');
-                FS.list(WORKSPACE_PATH, function (err, data) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        var workspaceJobs = [];
-                        _.chain(data).filter(function (file) {
-                            if (!file.name.match(/^\./) && file.isDirectory) {
-                                workspaceJobs.push(createCheckWorkspacePromise(file));
-                                return true;
+
+        loadWorkspaces: function (callback) {
+            var workspaces = [];
+            function _isWorkspace(item) {
+                return (!item.name.match(/^\./) && item.children &&
+                    _.findIndex(item.children, {name: '.workspace'}) > -1);
+            }
+            function _isProject(item) {
+                return (!item.name.match(/^\./) && item.children &&
+                _.findIndex(item.children, {name: '.project'}) > -1);
+            }
+            function _traverse(tree, type, listToPush) {
+                var checkType = (type === 'workspace') ? _isWorkspace : _isProject;
+                _.forEach(tree, function (item) {
+                    if (checkType(item)) {
+                        listToPush.push(item);
+                        if(type === 'workspace' && item.children) {
+                            if (!item.projects) {
+                                item.projects = [];
                             }
-                        }).value();
-
-                        Promise.all(workspaceJobs)
-                        .then(function (workspaces) {
-                            resolve(_.compact(workspaces));
-                        });
-
-                    }
-                });
-            });
-        },
-
-        getProjects: function (wsName) {
-            return new Promise(function (resolve, reject) {
-                //console.log('promise getProjects', wsName);
-                FS.list(wsName, function (err, data) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        //console.log('data', data);
-                        var projects = _.chain(data).filter(function (file) {
-                            if (!file.name.match(/^\./) && file.isDirectory) {
-                                // TODO it must have '.workspace' directory
-                                return true;
-                            }
-                        }).value();
-                        projects.sort(function (a, b) {
-                            return (a.name > b.name) ? 1 : -1;
-                        });
-                        resolve(projects);
-                    }
-                });
-            });
-        },
-
-        loadWorkspaces: function (workspacesCallback, projectsCallback) {
-            var _this = this;
-            Promise.all([this.getWorkspaces(), App.getMyAppInfo()]).then(function (values) {
-                var workspaces = values[0];
-                var apps = values[1];
-                console.log('workspaces', workspaces);
-                //console.log('apps', apps);
-
-                function findApp(wsName, prjName) {
-                    for (var i in apps) {
-                        if (apps.hasOwnProperty(i)) {
-                            var app = apps[i];
-                            if (app.url.workspace === wsName && app.url.project === prjName) {
-                                return app;
-                            }
+                            _traverse(item.children, 'project', item.projects);
                         }
                     }
-                    return undefined;
+                });
+            }
+            FS.list(WORKSPACE_PATH, {
+                recursive: true, maxDepth: 3, dirOnly: true
+            }).then(function (dirTree) {
+                if (dirTree && dirTree.length > 0) {
+                    _traverse(dirTree, 'workspace', workspaces);
                 }
-
-                workspacesCallback(workspaces);
-                workspaces.forEach(function (workspace) {
-                    console.log('workspace', workspace);
-                    _this.getProjects(workspace.name).then((function (workspace) {
-                        return function (projects) {
-                            //console.log('getProjects', workspace.name);
-                            workspace.projects = projects;
-                            workspace.projects.forEach(function (proj) {
-                                //console.log('project', proj);
-                                proj.deploys = [];
-                                var app = findApp(workspace.name,
-                                    proj.name);
-                                if (app) {
-                                    proj.deploys.push({
-                                        name: app.name,
-                                        url: App.getDeployedAppUrl(
-                                            app.domain
-                                        ),
-                                    });
-                                }
-                            }); // foreach ws.projects
-                            projectsCallback(workspace);
-                        };
-                    })(workspace));
-                }); // foreach workspaces
+                callback(workspaces);
+            }).catch(function (e) {
+                console.error(e);
             });
         },
 
@@ -157,11 +85,11 @@ define([
                         .then(function () {
                             resolve();
                         })
-                        .fail(function (e) {
+                        .catch(function (e) {
                             FS.delete(name, true);
                             reject(e);
                         });
-                }).fail(function (e) {
+                }).catch(function (e) {
                     reject(e);
                 });
             });
@@ -171,7 +99,7 @@ define([
             return new Promise(function (resolve, reject) {
                 FS.delete(name, true).then(function () {
                     resolve();
-                }).fail(function () {
+                }).catch(function () {
                     reject(new Error('fail to remove workspace ' + name));
                 });
             });
@@ -208,7 +136,7 @@ define([
 
         FS.getFSId().then(function (id) {
             fsid = id;
-        }).fail(function (e) {
+        }).catch(function (e) {
             console.log(e);
         });
     }
