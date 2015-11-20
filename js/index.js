@@ -22,7 +22,7 @@ require([
     'notify',
     'services/Auth',
     'services/FS'
-], function (appConfig, guest, ModalFactory, notify, Auth, FS) {
+], function (appConfig, guest, ModalFactory, notify, Auth, Fs) {
     'use strict';
 
     jQuery.fn.closeModal = function () {
@@ -36,20 +36,19 @@ require([
         isValidEmail: false,
         
         init: function () {
-            this.checkLogin();
             this.cacheElements();
+            this.checkLogin();
             this.bindEvents();
         },
 
         checkLogin: function () {
-            Auth.initAuth();
-            Auth.getLoginStatusOnce().then(function () {
+            Auth.getLoginStatus().then(Auth.init).then(Fs.init).then(function () {
                 Auth.getMyInfo(true).then(function (info) {
                     if (info.isGuest) {
-                        FS.getFSId().then(function (fsid) {
+                        Fs.getFSId().then(function (fsid) {
                             location.href = appConfig.ideBaseUrl + '/apps/ide/src/index.html?workspace=' +
                                 fsid + '/guest';
-                        }).fail(function (e) {
+                        }).catch(function (e) {
                             console.log('getFSId fail', e);
                         });
                     } else {

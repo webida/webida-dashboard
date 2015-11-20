@@ -15,78 +15,68 @@
  */
 
 define([
-    'q',
     'webida',
-], function (Q, webida) {
+], function (webida) {
     'use strict';
-    var FS = function () {};
     var USERINFO_PATH = '.userinfo';
 
     function convertToError(e) {
         if (!e) {
             e = '{ reason: "Unknown error!" }';
         }
-
         return new Error(e);
     }
 
-    $.extend(FS.prototype, {
+    var Fs = {
         init: function () {
-            var _this = this;
             var fs = webida.fs;
-            var defer = Q.defer();
-
-            if (_this.fs) {
-                defer.resolve();
-            } else {
-                fs.getMyFSInfos(function (e, fsInfos) {
-                    if (e || fsInfos.length === 0) {
-                        fs.addMyFS(function (err, fsinfo) {
-                            if (err || !fsinfo) {
-                                defer.reject(convertToError(e));
-
-                            } else {
-                                _this.fs = fs.mountByFSID(fsinfo.fsid);
-                                _this.createDirectory(USERINFO_PATH, false).then(function () {
-                                    defer.resolve();
-                                }).fail(function (e) {
-                                    defer.reject(e);
+            if (!Fs._initialized) {
+                Fs._initialized = new Promise(function (resolve, reject) {
+                    if (Fs.fs) {
+                        resolve();
+                    } else {
+                        fs.getMyFSInfos(function (e, fsInfos) {
+                            if (e || fsInfos.length === 0) {
+                                fs.addMyFS(function (err, fsinfo) {
+                                    if (err || !fsinfo) {
+                                        reject(convertToError(e));
+                                    } else {
+                                        Fs.fs = fs.mountByFSID(fsinfo.fsid);
+                                        Fs.createDirectory(USERINFO_PATH, false).then(function () {
+                                            resolve();
+                                        }).catch(function (e) {
+                                            reject(e);
+                                        });
+                                    }
                                 });
+                            } else {
+                                Fs.fs = fs.mountByFSID(fsInfos[0].fsid);
+                                resolve();
                             }
                         });
-
-                    } else {
-                        _this.fs = fs.mountByFSID(fsInfos[0].fsid);
-                        defer.resolve();
                     }
                 });
             }
-
-            return defer.promise;
+            return Fs._initialized;
         },
 
         _wrapFunction: function (func) {
-            var _this = this;
-            var defer = Q.defer();
             var args = Array.prototype.slice.call(arguments, 1);
-            args.unshift(defer);
-
-            _this.init().then(function () {
-                func.apply(_this, args);
+            return new Promise(function (resolve, reject) {
+                args.unshift({resolve: resolve, reject: reject});
+                func.apply(Fs, args);
             });
-
-            return defer.promise;
         },
 
         getFSId: function () {
-            return this._wrapFunction(function (defer) {
-                defer.resolve(this.fs.fsid);
+            return Fs._wrapFunction(function (defer) {
+                defer.resolve(Fs.fs.fsid);
             });
         },
 
         readFile: function (filePath) {
-            return this._wrapFunction(function (defer, filePath) {
-                this.fs.readFile(filePath, function (e, data) {
+            return Fs._wrapFunction(function (defer, filePath) {
+                Fs.fs.readFile(filePath, function (e, data) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -96,21 +86,22 @@ define([
             }, filePath);
         },
 
-        list: function (filePath, isRecursive) {
-            return this._wrapFunction(function (defer, filePath, isRecursive) {
-                this.fs.list(filePath, isRecursive, function (e, data) {
+        list: function (filePath, options) {
+            var listFn = (options ? Fs.fs.listEx : Fs.fs.list).bind(Fs.fs);
+            return new Promise(function (resolve, reject) {
+                listFn(filePath, options, function (e, data) {
                     if (e) {
-                        defer.reject(convertToError(e));
+                        reject(convertToError(e));
                     } else {
-                        defer.resolve(data);
+                        resolve(data);
                     }
                 });
-            }, filePath, isRecursive);
+            });
         },
 
         addAlias: function (projPath, expire) {
-            return this._wrapFunction(function (defer, projPath, expire) {
-                this.fs.addAlias(projPath, expire, function (e, info) {
+            return Fs._wrapFunction(function (defer, projPath, expire) {
+                Fs.fs.addAlias(projPath, expire, function (e, info) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -121,8 +112,8 @@ define([
         },
 
         createDirectory: function (path, isRecursive) {
-            return this._wrapFunction(function (defer, path, isRecursive) {
-                this.fs.createDirectory(path, isRecursive, function (e) {
+            return Fs._wrapFunction(function (defer, path, isRecursive) {
+                Fs.fs.createDirectory(path, isRecursive, function (e) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -133,8 +124,8 @@ define([
         },
 
         writeFile: function (path, data) {
-            return this._wrapFunction(function (defer, path, data) {
-                this.fs.writeFile(path, data, function (e) {
+            return Fs._wrapFunction(function (defer, path, data) {
+                Fs.fs.writeFile(path, data, function (e) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -145,8 +136,8 @@ define([
         },
 
         stat: function (pathList) {
-            return this._wrapFunction(function (defer, pathList) {
-                this.fs.stat(pathList, function (e, data) {
+            return Fs._wrapFunction(function (defer, pathList) {
+                Fs.fs.stat(pathList, function (e, data) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -157,15 +148,15 @@ define([
         },
 
         exists: function (path) {
-            return this._wrapFunction(function (defer, path) {
-                this.fs.exists(path, function (e, flag) {
+            return Fs._wrapFunction(function (defer, path) {
+                Fs.fs.exists(path, function (e, flag) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
                         if (flag) {
                             defer.resolve();
                         } else {
-                            defer.reject();
+                            defer.reject(path + ' is not exist');
                         }
                     }
                 });
@@ -173,10 +164,8 @@ define([
         },
 
         getQuotaLimit: function () {
-            var _this = this;
             return new Promise(function (resolve, reject) {
-                console.log('limit this', _this);
-                _this.fs.getQuotaLimit(function (e, limit) {
+                Fs.fs.getQuotaLimit(function (e, limit) {
                     if (e) {
                         reject(convertToError(e));
                     } else {
@@ -187,10 +176,8 @@ define([
         },
 
         getQuotaUsage: function () {
-            var _this = this;
             return new Promise(function (resolve, reject) {
-                console.log('usage this', _this);
-                _this.fs.getQuotaUsage(function (e, usage) {
+                Fs.fs.getQuotaUsage(function (e, usage) {
                     if (e) {
                         reject(convertToError(e));
                     } else {
@@ -201,8 +188,8 @@ define([
         },
 
         exec: function (path, opts) {
-            return this._wrapFunction(function (defer, path, opts) {
-                this.fs.exec(path, opts, function (e, data) {
+            return Fs._wrapFunction(function (defer, path, opts) {
+                Fs.fs.exec(path, opts, function (e, data) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -213,8 +200,8 @@ define([
         },
 
         delete: function (path, isRecursive) {
-            return this._wrapFunction(function (defer, path, isRecursive) {
-                this.fs.delete(path, isRecursive, function (e) {
+            return Fs._wrapFunction(function (defer, path, isRecursive) {
+                Fs.fs.delete(path, isRecursive, function (e) {
                     if (e) {
                         defer.reject(convertToError(e));
                     } else {
@@ -223,25 +210,20 @@ define([
                 });
             }, path, isRecursive);
         },
-        
+
         rename: function (oldPath, newPath) {
-            var _this = this;
             return new Promise(function (resolve, reject) {
-                console.log('rename this', this);
-                _this.fs.move(oldPath, newPath, function (e) {
+                Fs.fs.move(oldPath, newPath, function (e) {
                     if (e) {
                         reject(convertToError(e));
                     } else {
                         resolve();
-                    }                        
+                    }
                 });
             });
-        },
-    });
+        }
 
-    if (FS.instance === undefined) {
-        FS.instance = new FS();
-    }
+    };
 
-    return FS.instance;
+    return Fs;
 });

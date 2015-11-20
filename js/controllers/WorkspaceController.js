@@ -323,34 +323,29 @@ define([
         },
 
         loadWorkspaces: function () {
-            self.works = new Works();
-            Auth.getLoginStatusOnce().then(function () {
-                return Auth.initAuthOnce();
-            }).then(function () {
-                WorkspaceManager.loadWorkspaces(function (workspaces) {
-                    self.works.fillWorkspaces(workspaces);
-                    self.renderWorkspaces();
-                    self.setOnlineView();
-                    self.loadQuata();
-                    self.works.status.workspaceCount = workspaces.length;
-                    self.works.status.projectCount = 0;
-                    self.works.status.deployCount = 0;
-                    self.renderStatus();
-                }, function (workspace) {
-                    console.log('self.works.findWorkspace', workspace);
-                    self.works.findWorkspace(workspace.name).fillFrom(workspace);
-                    self.renderWorkspace(workspace);
-                    self.works.status.projectCount += (workspace.projects ? workspace.projects
-                                                       .length : 0);
-                    workspace.projects.forEach(function (project) {
-                        self.works.status.deployCount += (project.deploys ?
-                                                          project.deploys.length : 0);
-                    });
-                    self.renderStatus();
+            function _renderProjects (workspace) {
+                console.log('self.works.findWorkspace', workspace);
+                self.works.findWorkspace(workspace.name).fillFrom(workspace);
+                self.renderWorkspace(workspace);
+                self.works.status.projectCount += (workspace.projects ? workspace.projects.length : 0);
+                workspace.projects.forEach(function (project) {
+                    self.works.status.deployCount += (project.deploys ?
+                        project.deploys.length : 0);
                 });
-            }).catch(function () {
-                location.href = '/index.html';
-            });
+            }
+            function _renderWorkspaces(workspaces) {
+                self.works = new Works();
+                self.works.fillWorkspaces(workspaces);
+                self.renderWorkspaces();
+                self.setOnlineView();
+                self.loadQuata();
+                self.works.status.workspaceCount = workspaces.length;
+                self.works.status.projectCount = 0;
+                self.works.status.deployCount = 0;
+                _.forEach(workspaces, _renderProjects);
+                self.renderStatus();
+            }
+            WorkspaceManager.loadWorkspaces(_renderWorkspaces);
         },
 
         popupNewWorkspace: function () {

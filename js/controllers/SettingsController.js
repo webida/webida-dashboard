@@ -136,23 +136,11 @@ define([
         },
 
         loadSettings: function () {
-            return new Promise(function (resolve, reject) {
-                Auth.getLoginStatusOnce().then(function () {
-                    return Auth.initAuthOnce();
-                }).then(function () {
-                    Promise.all([self.loadPublicSSHKey(),
-                                 self.loadGitHubToken(),
-                                 self.loadPersonalTokens()
-                                ]).then(function () {
-                        resolve();
-                    }).catch(function (e) {
-                        notify.alert('Error', e, 'danger');
-                        reject(e);
-                    });
-                }).catch(function (e) {
-                    notify.alert('Error', e, 'danger');
-                    reject(e);
-                });
+            return Promise.all([self.loadPublicSSHKey(),
+                self.loadGitHubToken(),
+                self.loadPersonalTokens()
+            ]).catch(function (e) {
+                notify.alert('Error', e, 'danger');
             });
         },
 

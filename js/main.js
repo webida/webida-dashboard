@@ -19,7 +19,8 @@ require([
     'app-data',
     'notify',
     'services/Auth',
-], function (appConfig, appData, notify, Auth) {
+    'services/FS'
+], function (appConfig, appData, notify, Auth, Fs) {
     'use strict';
 
     console.log('required');
@@ -32,9 +33,24 @@ require([
     };
 
     var app = {
+        init: function () {
+            var self = this;
+            Auth.init().then(function () {
+                Fs.init().then(function () {
+                    console.log('FS initialized');
+                    self.checkLogin();
+                    self.loadControllers();
+                    self.cacheElements();
+                    self.bindEvents();
+
+                    // for debugging
+                    window.app = self;
+                });
+            });
+        },
+
         checkLogin: function () {
-            Auth.initAuth();
-            Auth.getLoginStatusOnce().catch(function () {
+            Auth.getLoginStatus().catch(function () {
                 location.href = '/index.html';
             }).then(function (user) {
                 $('#user-email').text(user.email);
@@ -66,16 +82,6 @@ require([
             });
         },
 
-        init: function () {
-            this.checkLogin();
-            this.loadControllers();
-            this.cacheElements();
-            this.bindEvents();
-
-            // for debugging
-            window.app = this;
-        },
-        
         cacheElements: function () {
             console.log('cacheElements');
             // templates

@@ -35,14 +35,14 @@ define([
             return new Promise(function (resolve, reject) {
                 FS.exists(PUBLIC_KEY_PATH).then(function () {
                     return FS.readFile(PUBLIC_KEY_PATH)
-                    .then(function (key) {
-                        resolve(key);
-                    }).fail(function (e) {
-                        console.log('readFile error: ' + e);
-                        reject(e);
-                    });
-                }, function () {
-                    console.log('\'' + PUBLIC_KEY_PATH + '\' does not exist.');
+                        .then(function (key) {
+                            resolve(key);
+                        }).catch(function (e) {
+                            console.log('readFile error: ' + e);
+                            reject(e);
+                        });
+                }).catch(function (e) {
+                    console.log('\'' + PUBLIC_KEY_PATH + '\' does not exist.', e);
                     resolve();
                 });
             });
@@ -74,7 +74,7 @@ define([
                     .then($.proxy(FS.delete, FS, RSA_KEY_PATH, false))
                     .then(function () {
                         resolve();
-                    }).fail(function (e) {
+                    }).catch(function (e) {
                         reject(e);
                     });
             });
@@ -87,7 +87,7 @@ define([
                     return FS.readFile(GITHUB_TOKEN_PATH)
                     .then(function (token) {
                         resolve(JSON.parse(token).tokenKey);
-                    }).fail(function (e) {
+                    }).catch(function (e) {
                         console.log('readFile error: ' + e);
                         reject(e);
                     });
@@ -107,7 +107,7 @@ define([
                 FS.writeFile(GITHUB_TOKEN_PATH, JSON.stringify(obj)).then(function () {
                     resolve();
 
-                }).fail(function (e) {
+                }).catch(function (e) {
                     console.log('writeFile error: ' + e);
                     reject(e);
                 });
