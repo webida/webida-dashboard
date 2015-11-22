@@ -24,9 +24,11 @@
 require([
     'notify',
     'webida',
+    './services/Auth'
 ], function (
     notify,
-    webida
+    webida,
+    Auth
 ) {
     'use strict';
 
@@ -45,6 +47,7 @@ require([
             },
             success: function () {
                 login = true;
+                Auth.init();
             }
         },
         getAllMyFsInfo: {
