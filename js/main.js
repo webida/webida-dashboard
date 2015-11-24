@@ -19,8 +19,9 @@ require([
     'app-data',
     'notify',
     'services/Auth',
-    'services/FS'
-], function (appConfig, appData, notify, Auth, Fs) {
+    'services/FS',
+    'load-polyfills'
+], function (appConfig, appData, notify, Auth, Fs, loadPolyfills) {
     'use strict';
 
     console.log('required');
@@ -107,7 +108,8 @@ require([
     };
 
     $(function () {
-        console.log('onload');
-        app.init();
+        loadPolyfills.load(function () {
+            app.init();
+        });
     });
 });

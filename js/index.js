@@ -21,8 +21,9 @@ require([
     'ModalFactory',
     'notify',
     'services/Auth',
-    'services/FS'
-], function (appConfig, guest, ModalFactory, notify, Auth, Fs) {
+    'services/FS',
+    'load-polyfills'
+], function (appConfig, guest, ModalFactory, notify, Auth, Fs, loadPolyfills) {
     'use strict';
 
     jQuery.fn.closeModal = function () {
@@ -148,8 +149,10 @@ require([
 
 
     $(function () {
-        app.init();
-        // for debugging
-        window.app = app;
+        loadPolyfills.load(function () {
+            app.init();
+            // for debugging
+            window.app = app;
+        });
     });
 });
