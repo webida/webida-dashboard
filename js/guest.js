@@ -24,11 +24,13 @@
 require([
     'notify',
     'webida',
-    './services/Auth'
+    './services/Auth',
+    'load-polyfills'
 ], function (
     notify,
     webida,
-    Auth
+    Auth,
+    loadPolyfills
 ) {
     'use strict';
 
@@ -227,9 +229,17 @@ require([
             });
     }
 
-    $(document).ready(function () {
-        $('#loginButton').click(function () {
-            _startRun(true);
+    function _init() {
+        $(document).ready(function () {
+            $('#loginButton').click(function () {
+                _startRun(true);
+            });
+        });
+    }
+
+    $(function () {
+        loadPolyfills.load(function () {
+            _init();
         });
     });
 });
