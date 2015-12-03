@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
+/**
+ * @file Get server-side configuration in advance of bootstrapping the app
+ *
+ * This is a kind of loader plugin of Require.js.
+ *
+ * @since 15. 12. 3
+ * @author Koong Kyungmi (kyungmi.k@samsung.com)
+ */
+
 define([
-    './config-loader!'
+    'webida'
 ], function (
-    serverConf
+    webida
 ) {
     'use strict';
 
-    var APP_ID = 'app-dashboard';
     return {
-        appId: APP_ID,
-        clientId: 'DASHBOARD_CLIENT_ID',
-        signUpEnable: !!serverConf.featureEnables.signUp,
-        guestMode: !!serverConf.featureEnables.guestMode,
-        redirectUrl: serverConf.systemApps[APP_ID].baseUrl + '/pages/auth.html',
-        ideBaseUrl: serverConf.systemApps['webida-client'].baseUrl
+        load: function (name, req, onLoad) {
+            req([webida.conf.appApiBaseUrl + '/configs?callback=define'], function (configs) {
+                onLoad(configs);
+            });
+        }
     };
 });
