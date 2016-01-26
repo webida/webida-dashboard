@@ -103,26 +103,22 @@ define([
         },
 
         verifyAllPasswordInputs: function () {
-            var valid = true;
-            var msg = 'Okay, now you can try to update your password.';
-            if (self.$accountNewPassword.val() !== self.$accountConfirmPassword.val()) {
-                msg = 'Passwords don\'t match';
-                valid = false;
+            var valid = false;
+            if (self.$accountNewPassword.val().length !== 0 &&
+                self.$accountConfirmPassword.val().length !== 0 &&
+                self.$accountNewPassword.val().length !== 0) {
+                valid = true;
+                var msg = '';
+                if (self.$accountNewPassword.val() !== self.$accountConfirmPassword.val()) {
+                    msg = 'Password confirmation doesn\'t match.';
+                    valid = false;
+                }
+                if (self.$accountOldPassword.val() === self.$accountNewPassword.val()) {
+                    msg = 'New password should be different from the old.';
+                    valid = false;
+                }
+                this.$passwordMessage.text(msg);
             }
-            if (self.$accountNewPassword.val().length === 0) {
-                msg = 'Enter new password';
-                valid = false;
-            }
-            if (self.$accountOldPassword.val() === self.$accountNewPassword.val()) {
-                msg = 'Enter new password differently from the old.';
-                valid = false;
-            }
-            if (self.$accountOldPassword.val().length === 0) {
-                msg = 'Enter old password';
-                valid = false;
-            }
-            this.$passwordMessage.text(msg);
-            
             if (valid) {
                 self.enableUpdatePasswordButton();
             } else {
