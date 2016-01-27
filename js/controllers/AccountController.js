@@ -60,6 +60,7 @@ define([
             this.$userAccountModal.on('hidden.bs.modal', function () {
                 self.renderAccount();
                 self.verifyAllPasswordInputs();
+                self.$passwordMessage.text('');
             });
             
             this.$accountUpdatePasswordButton.on('click', function () {
