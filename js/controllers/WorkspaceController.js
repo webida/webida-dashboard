@@ -149,6 +149,7 @@ define([
             this.$newWorkspaceModal = this.$wrapper.find('#new-workspace');
             this.$newWorkspaceName = this.$newWorkspaceModal.find('#new-workspace-name');
             this.$createWorkspaceButton = this.$newWorkspaceModal.find('button.create');
+            this.$newWorkspaceMesssage = this.$newWorkspaceModal.find('#new-workspace-message');
 
             this.$workspaceDeleteConfirmModal = this.$wrapper.find('#workspace-delete-confirm');
             this.$deleteConfirmLabel = this.$workspaceDeleteConfirmModal.find('#delete-confirm-label');
@@ -180,10 +181,15 @@ define([
             });
             this.$newWorkspaceModal.on('hidden.bs.modal', function () {
                 self.$createWorkspaceButton.prop('disabled', false);
+                self.$newWorkspaceMesssage.text('');
             });
             this.$newWorkspaceName.on('keyup', function (evt) {
                 var wsName = evt.target.value.trim();
-                if (_.isEmpty(wsName) || self.checkWorkspace(wsName)) {
+                var msg = '';
+                if (_.isEmpty(wsName)) {
+                    self.$createWorkspaceButton.prop('disabled', true);
+                } else if (self.checkWorkspace(wsName)) {
+                    msg = 'The workspace name already exist.';
                     self.$createWorkspaceButton.prop('disabled', true);
                 } else {
                     self.$createWorkspaceButton.prop('disabled', false);
@@ -191,6 +197,7 @@ define([
                         self.$createWorkspaceButton.click();
                     }
                 }
+                self.$newWorkspaceMesssage.text(msg);
             });
             this.$createWorkspaceButton.on('click', function () {
                 var wsName = self.$newWorkspaceName.val().trim();
@@ -323,7 +330,7 @@ define([
         },
 
         loadWorkspaces: function () {
-            function _renderProjects (workspace) {
+            function _renderProjects(workspace) {
                 console.log('self.works.findWorkspace', workspace);
                 self.works.findWorkspace(workspace.name).fillFrom(workspace);
                 self.renderWorkspace(workspace);
