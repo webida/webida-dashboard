@@ -111,7 +111,7 @@ define([
                 if (this.workspaces.hasOwnProperty(i)) {
                     var ws = this.workspaces[i];
                     if (ws.name === name) {
-                        return this.workspaces.splice(i, 1);
+                        return this.workspaces.splice(i, 1)[0];
                     }
                 }
             }
@@ -149,6 +149,7 @@ define([
             this.$newWorkspaceModal = this.$wrapper.find('#new-workspace');
             this.$newWorkspaceName = this.$newWorkspaceModal.find('#new-workspace-name');
             this.$createWorkspaceButton = this.$newWorkspaceModal.find('button.create');
+            this.$newWorkspaceMesssage = this.$newWorkspaceModal.find('#new-workspace-message');
 
             this.$workspaceDeleteConfirmModal = this.$wrapper.find('#workspace-delete-confirm');
             this.$deleteConfirmLabel = this.$workspaceDeleteConfirmModal.find('#delete-confirm-label');
@@ -180,10 +181,15 @@ define([
             });
             this.$newWorkspaceModal.on('hidden.bs.modal', function () {
                 self.$createWorkspaceButton.prop('disabled', false);
+                self.$newWorkspaceMesssage.text('');
             });
             this.$newWorkspaceName.on('keyup', function (evt) {
                 var wsName = evt.target.value.trim();
-                if (_.isEmpty(wsName) || self.checkWorkspace(wsName)) {
+                var msg = '';
+                if (_.isEmpty(wsName)) {
+                    self.$createWorkspaceButton.prop('disabled', true);
+                } else if (self.checkWorkspace(wsName)) {
+                    msg = 'The workspace name already exist.';
                     self.$createWorkspaceButton.prop('disabled', true);
                 } else {
                     self.$createWorkspaceButton.prop('disabled', false);
@@ -191,6 +197,7 @@ define([
                         self.$createWorkspaceButton.click();
                     }
                 }
+                self.$newWorkspaceMesssage.text(msg);
             });
             this.$createWorkspaceButton.on('click', function () {
                 var wsName = self.$newWorkspaceName.val().trim();
@@ -299,6 +306,7 @@ define([
 
         renderStatus: function () {
             this.$workspaceStatus.removeClass('webida-hidden');
+            this.works.status.workspaceCount = this.works.workspaces.length;
             this.$workspaceUsage.text(this.works.status.workspaceCount);
             this.$projectUsage.text(this.works.status.projectCount);
             this.$deployUsage.text(this.works.status.deployCount);
@@ -323,14 +331,14 @@ define([
         },
 
         loadWorkspaces: function () {
-            function _renderProjects (workspace) {
+            function _renderProjects(workspace) {
                 console.log('self.works.findWorkspace', workspace);
                 self.works.findWorkspace(workspace.name).fillFrom(workspace);
                 self.renderWorkspace(workspace);
                 self.works.status.projectCount += (workspace.projects ? workspace.projects.length : 0);
                 workspace.projects.forEach(function (project) {
                     self.works.status.deployCount += (project.deploys ?
-                        project.deploys.length : 0);
+                                                      project.deploys.length : 0);
                 });
             }
             function _renderWorkspaces(workspaces) {
@@ -376,6 +384,7 @@ define([
                 });
                 self.works.addWorkspace(ws);
                 self.renderWorkspaces();
+                self.renderStatus();
                 if (callback) {
                     callback();
                 }
@@ -394,6 +403,8 @@ define([
                 var ws = self.works.deleteWorkspace(name);
                 if (ws) {
                     self.renderWorkspaces();
+                    self.works.status.projectCount -= ws.projects.length;
+                    self.renderStatus();
                 }
                 if (callback) {
                     callback();
