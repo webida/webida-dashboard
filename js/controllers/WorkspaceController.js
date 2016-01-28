@@ -111,7 +111,7 @@ define([
                 if (this.workspaces.hasOwnProperty(i)) {
                     var ws = this.workspaces[i];
                     if (ws.name === name) {
-                        return this.workspaces.splice(i, 1);
+                        return this.workspaces.splice(i, 1)[0];
                     }
                 }
             }
@@ -306,6 +306,7 @@ define([
 
         renderStatus: function () {
             this.$workspaceStatus.removeClass('webida-hidden');
+            this.works.status.workspaceCount = this.works.workspaces.length;
             this.$workspaceUsage.text(this.works.status.workspaceCount);
             this.$projectUsage.text(this.works.status.projectCount);
             this.$deployUsage.text(this.works.status.deployCount);
@@ -337,7 +338,7 @@ define([
                 self.works.status.projectCount += (workspace.projects ? workspace.projects.length : 0);
                 workspace.projects.forEach(function (project) {
                     self.works.status.deployCount += (project.deploys ?
-                        project.deploys.length : 0);
+                                                      project.deploys.length : 0);
                 });
             }
             function _renderWorkspaces(workspaces) {
@@ -383,6 +384,7 @@ define([
                 });
                 self.works.addWorkspace(ws);
                 self.renderWorkspaces();
+                self.renderStatus();
                 if (callback) {
                     callback();
                 }
@@ -401,6 +403,8 @@ define([
                 var ws = self.works.deleteWorkspace(name);
                 if (ws) {
                     self.renderWorkspaces();
+                    self.works.status.projectCount -= ws.projects.length;
+                    self.renderStatus();
                 }
                 if (callback) {
                     callback();
