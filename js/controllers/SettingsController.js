@@ -99,7 +99,7 @@ define([
                 }
             });
 
-            this.$githubToken.on('keyup', function () {
+            this.$githubToken.on('input', function () {
                 if (self.$githubToken.val() === self.settings.githubToken) {
                     self.$saveTokenButton.attr('disabled', '');
                 } else {

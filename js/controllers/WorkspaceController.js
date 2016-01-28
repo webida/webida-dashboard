@@ -183,7 +183,7 @@ define([
                 self.$createWorkspaceButton.prop('disabled', false);
                 self.$newWorkspaceMesssage.text('');
             });
-            this.$newWorkspaceName.on('keyup', function (evt) {
+            this.$newWorkspaceName.on('input', function (evt) {
                 var wsName = evt.target.value.trim();
                 var msg = '';
                 if (_.isEmpty(wsName)) {
@@ -223,7 +223,7 @@ define([
                 self.$workspaceDeleteConfirmModal.modal();
                 return false;
             });
-            this.$deleteConfirmText.on('keyup', function (evt) {
+            this.$deleteConfirmText.on('input', function (evt) {
                 var wsName = self.$deleteWorkspaceConfirmButton.attr('data-workspace');
                 var inputName = evt.target.value.trim();
                 if (inputName === wsName) {
@@ -263,7 +263,7 @@ define([
                 self.$editWorkspaceName.val(wsName);
                 self.$editWorkspaceModal.modal();
             });
-            this.$editWorkspaceName.on('keyup', function (evt) {
+            this.$editWorkspaceName.on('input', function (evt) {
                 var wsName = evt.target.value.trim();
                 if (_.isEmpty(wsName) || self.checkWorkspace(wsName)) {
                     self.$applyWorkspaceButton.prop('disabled', true);
