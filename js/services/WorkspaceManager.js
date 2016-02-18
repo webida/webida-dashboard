@@ -36,7 +36,7 @@ define([
             var workspaces = [];
             function _isWorkspace(item) {
                 return (!item.name.match(/^\./) && item.children &&
-                    _.findIndex(item.children, {name: '.workspace'}) > -1);
+                    _.findIndex(item.children, {name: WORKSPACE_DIR}) > -1);
             }
             function _isProject(item) {
                 return (!item.name.match(/^\./) && item.children &&
@@ -74,7 +74,7 @@ define([
 
         createWorkspace: function (name /*, desc*/ ) {
             // TODO should save desc when createWorkspace. Later, use desc parameter.
-            var WS_META_PATH = name + '/.workspace';
+            var WS_META_PATH = name + WORKSPACE_DIR; 
             var WS_META_FILE = WS_META_PATH + '/workspace.json';
             console.log('createWorkspace', name);
 

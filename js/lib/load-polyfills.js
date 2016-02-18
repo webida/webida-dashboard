@@ -24,7 +24,7 @@
 
 define([], function () {
     'use strict';
-    var BASE = '../../bower_components/';
+    var BASE = '../bower_components/';
     var POLYFILLS = {
         es6: {
             condition: (!Modernizr.promises ||

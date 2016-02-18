@@ -28,6 +28,7 @@ var require = {
         'router': './lib/router',
         'text': '../bower_components/requirejs-text/text',
         'webida': './lib/webida-0.3',
-        'load-polyfills': './lib/load-polyfills'
-    },
+        'load-polyfills': './lib/load-polyfills',
+        'top': '../'
+    }
 };
