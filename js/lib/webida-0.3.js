@@ -25,14 +25,8 @@
 * @module webida
 */
 
-/* global unescape: true */
 /* global sio: true */
 /* global io: true */
-
-if (!define) {
-    // supports AMD and node.js only, no other environments.
-    define = require('amdefine');
-}
 
 define([
     'text!top/site-config.json'
@@ -1024,6 +1018,123 @@ define([
     };
     var FileSystem = mod.FSService.FileSystem;
 
+    // some private util functions for FS Service
+    // moved here for js-hint errors. 
+    function createBlobObject(data, type) {
+        var blob;
+
+        try {
+            blob = new Blob([data], { 'type': type });
+        } catch (e) {
+            console.error('Failed to create Blob, trying by BlobBuilder...', e);
+            // TypeError old chrome and FF
+            window.BlobBuilder = window.BlobBuilder ||
+                window.WebKitBlobBuilder ||
+                window.MozBlobBuilder ||
+                window.MSBlobBuilder;
+            if (window.BlobBuilder) {
+                var bb = new window.BlobBuilder();
+                bb.append(data);
+                blob = bb.getBlob(type);
+            } else {
+                // We're screwed, blob constructor unsupported entirely
+                console.error('Finally failed to create Blob');
+            }
+        }
+        return blob;
+    }
+
+    function ajaxCall(opts) {
+        function serialize(obj) {
+            var str = [];
+            for (var p in obj) {
+                if (obj.hasOwnProperty(p)) {
+                    str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+                }
+            }
+            return str.join('&');
+        }
+        if (!opts.callback) {
+            throw new Error('callback must be set');
+        }
+        if (!opts.url) {
+            console.assert(false, 'URL field must be set');
+            return;
+        }
+
+        //var CRLF = '\r\n';
+        var url = opts.url;
+        var data = null;
+        var method = opts.type || 'GET';
+
+        if (typeof opts.data === 'object' && !(opts.data instanceof FD)) {
+            if (method === 'POST' || method === 'DELETE') {
+                data = serialize(opts.data);
+            } else {
+                url = opts.url + '?' + serialize(opts.data);
+            }
+        } else {
+            data = opts.data;
+        }
+
+        //console.log('ajaxCall', opts);
+        var xhr = new XHR();
+        xhr.open(method, url, true);
+        if (opts.responseType) {
+            xhr.responseType = opts.responseType;
+        }
+        xhr.withCredentials = true; // Should be after xhr.open(). Otherwise InvalidStateError occurs in IE11.
+        if (!isAnonymousMode) {
+            xhr.setRequestHeader('Authorization', token.data);
+        }
+        // In case of FD, xhr generates Content-Type automatically
+        if (!(opts.data instanceof FD)) {
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            //console.log('onreadystatechange', xhr.readyState, xhr.status, xhr.responseText);
+            if (xhr.readyState === 4) {
+                var status = xhr.status;
+                // Only 2XX and 304 are successful status code. In this case, retData.result should be 'failed'
+                var successful = status >= 200 && status < 300 || status === 304;
+                // if opts.success exists and request succeeded, call it with whole response text.
+                if (successful && opts.callbackWithRawData) {
+                    if (opts.responseType === '' || opts.responseType === 'text') {
+                        opts.callbackWithRawData(xhr.responseText);
+                    } else {
+                        opts.callbackWithRawData(xhr.response);
+                    }
+                    return;
+                }
+
+                if (status === 0) {
+                    opts.callback('server unreachable');
+                    return;
+                }
+
+                var retData;
+                try {
+                    retData = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    console.error(e, 'Invalid server return', xhr.responseText);
+                    retData = {result: 'failed', reason: 'Invalid server return: ' + xhr.responseText};
+                }
+
+                if (successful) {
+                    if (retData.result === 'ok') {
+                        opts.callback(null, retData.data);
+                    } else {
+                        console.error('Here shouldn\'t be reached. Invalid status code is set for failed response.');
+                        opts.callback(retData.reason || 'Unknown error');
+                    }
+                } else {
+                    opts.callback(retData.reason || 'Unknown reason');
+                }
+
+            }
+        };
+    }
     /**
     * Get the current usage of filesystem
     *
@@ -4054,121 +4165,7 @@ define([
         api.apply(this, params);
     };
 
-    function createBlobObject(data, type) {
-        var blob;
 
-        try {
-            blob = new Blob([data], { 'type': type });
-        } catch (e) {
-            console.error('Failed to create Blob, trying by BlobBuilder...', e);
-            // TypeError old chrome and FF
-            window.BlobBuilder = window.BlobBuilder ||
-                window.WebKitBlobBuilder ||
-                window.MozBlobBuilder ||
-                window.MSBlobBuilder;
-            if (window.BlobBuilder) {
-                var bb = new window.BlobBuilder();
-                bb.append(data);
-                blob = bb.getBlob(type);
-            } else {
-                // We're screwed, blob constructor unsupported entirely
-                console.error('Finally failed to create Blob');
-            }
-        }
-        return blob;
-    }
-
-    function ajaxCall(opts) {
-        function serialize(obj) {
-            var str = [];
-            for (var p in obj) {
-                if (obj.hasOwnProperty(p)) {
-                    str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-                }
-            }
-            return str.join('&');
-        }
-        if (!opts.callback) {
-            throw new Error('callback must be set');
-        }
-        if (!opts.url) {
-            console.assert(false, 'URL field must be set');
-            return;
-        }
-
-        //var CRLF = '\r\n';
-        var url = opts.url;
-        var data = null;
-        var method = opts.type || 'GET';
-
-        if (typeof opts.data === 'object' && !(opts.data instanceof FD)) {
-            if (method === 'POST' || method === 'DELETE') {
-                data = serialize(opts.data);
-            } else {
-                url = opts.url + '?' + serialize(opts.data);
-            }
-        } else {
-            data = opts.data;
-        }
-
-        //console.log('ajaxCall', opts);
-        var xhr = new XHR();
-        xhr.open(method, url, true);
-        if (opts.responseType) {
-            xhr.responseType = opts.responseType;
-        }
-        xhr.withCredentials = true; // Should be after xhr.open(). Otherwise InvalidStateError occurs in IE11.
-        if (!isAnonymousMode) {
-            xhr.setRequestHeader('Authorization', token.data);
-        }
-        // In case of FD, xhr generates Content-Type automatically
-        if (!(opts.data instanceof FD)) {
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        }
-        xhr.send(data);
-        xhr.onreadystatechange = function () {
-            //console.log('onreadystatechange', xhr.readyState, xhr.status, xhr.responseText);
-            if (xhr.readyState === 4) {
-                var status = xhr.status;
-                // Only 2XX and 304 are successful status code. In this case, retData.result should be 'failed'
-                var successful = status >= 200 && status < 300 || status === 304;
-                // if opts.success exists and request succeeded, call it with whole response text.
-                if (successful && opts.callbackWithRawData) {
-                    if (opts.responseType === '' || opts.responseType === 'text') {
-                        opts.callbackWithRawData(xhr.responseText);
-                    } else {
-                        opts.callbackWithRawData(xhr.response);
-                    }
-                    return;
-                }
-
-                if (status === 0) {
-                    opts.callback('server unreachable');
-                    return;
-                }
-
-                var retData;
-                try {
-                    retData = JSON.parse(xhr.responseText);
-                } catch (e) {
-                    console.error(e, 'Invalid server return', xhr.responseText);
-                    retData = {result: 'failed', reason: 'Invalid server return: ' + xhr.responseText};
-                }
-
-                if (successful) {
-                    if (retData.result === 'ok') {
-                        opts.callback(null, retData.data);
-                    } else {
-                        console.error('Here shouldn\'t be reached. Invalid status code is set for failed response.');
-                        opts.callback(retData.reason || 'Unknown error');
-                    }
-                } else {
-                    opts.callback(retData.reason || 'Unknown reason');
-                }
-
-            }
-        };
-    }
 
     /**
      * Default FS Service instance
