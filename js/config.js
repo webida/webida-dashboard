@@ -16,7 +16,7 @@
 
 /* global require:true */
 /* exported require */
-var require = {
+window.require = require || {
     baseUrl: '../js',
     paths: {
         'async': '../bower_components/async/dist/async.min',
@@ -28,6 +28,7 @@ var require = {
         'router': './lib/router',
         'text': '../bower_components/requirejs-text/text',
         'webida': './lib/webida-0.3',
-        'load-polyfills': './lib/load-polyfills'
-    },
+        'load-polyfills': './lib/load-polyfills',
+        'top': '../'
+    }
 };

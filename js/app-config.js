@@ -15,19 +15,19 @@
  */
 
 define([
-    './config-loader!'
+    'text!top/site-config.json'
 ], function (
-    serverConf
+    siteConfigText
 ) {
     'use strict';
-
-    var APP_ID = 'app-dashboard';
+    var siteConfig = JSON.parse(siteConfigText);
     return {
-        appId: APP_ID,
-        clientId: 'DASHBOARD_CLIENT_ID',
-        signUpEnable: !!serverConf.featureEnables.signUp,
-        guestMode: !!serverConf.featureEnables.guestMode,
-        redirectUrl: serverConf.systemApps[APP_ID].baseUrl + '/pages/auth.html',
-        ideBaseUrl: serverConf.systemApps['webida-client'].baseUrl
+        appId:  siteConfig.app.appId || 'unknown-dashboard',
+        ideBaseUrl: siteConfig.app.ideBaseUrl,
+        clientId: siteConfig.app.oauth.clientId,
+        redirectUrl: siteConfig.app.oauth.redirectUrl,
+        signUpEnable: !!siteConfig.server.signUpEnable,
+        guestMode: !!siteConfig.server.guestMode,
+        googleAnalytics : siteConfig.app.googleAnalytics
     };
 });

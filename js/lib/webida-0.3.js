@@ -19,101 +19,39 @@
 */
 
 /**
-* Webida SDK for Javascript module.
+* Webida API Binding for Javascript module.
 *
-* This module provides JavaScript API's for Webida Auth/App/FS services.
+* This module provides JavaScript API's for Webida Auth/App/FS API services.
 * @module webida
 */
 
-/* global unescape: true */
 /* global sio: true */
 /* global io: true */
 
-var ENV_TYPE;
-
-(function (root, factory) {
+define([
+    'text!top/site-config.json'
+],  function (siteConfigText) {
     'use strict';
 
-    if (typeof define === 'function' && define.amd) {
-        ENV_TYPE = 'amd';
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        ENV_TYPE = 'commonjs';
-        module.exports = factory();
-    } else {
-        // Browser globals
-        ENV_TYPE = 'browser';
-        root.Webida = factory();
-    }
-}(this, function () {
-    'use strict';
-
-    var XHR;
-    var FD;
-    if (ENV_TYPE === 'amd') {
-        XHR = XMLHttpRequest;
-        FD = FormData;
-    } else if (ENV_TYPE === 'commonjs') {
-        FD = function () {};
-        XHR = require('xmlhttprequest').XMLHttpRequest;
-    } else {
-        XHR = XMLHttpRequest;
-        FD = FormData;
-    }
-
-    function readCookie(name) {
-        if (typeof exports === 'object') {
-            return null;
-        } else {
-            name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-            var regex = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)', 'i');
-            var match = document.cookie.match(regex);
-            return match && unescape(match[1]);
-        }
-    }
-
-    function getParamByName(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
-        results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
-    function prependSubDomain(subdomain, url) {
-        return url.replace('//', '//' + subdomain + '.');
-    }
-
-    function getHostParam(paramName, subdomain, webidaHost) {
-        var globalVarName = paramName.replace('.', '_');
-        var hostUrl = (typeof window !== 'undefined' && window[globalVarName]) ||
-            getParamByName(paramName) ||
-            readCookie(paramName) ||
-            prependSubDomain(subdomain, webidaHost);
-        return hostUrl;
-    }
-
+    var XHR = XMLHttpRequest || require('xmlhttprequest').XMLHttpRequest;
+    var FD = FormData || function() {};
+    var siteConfig = JSON.parse(siteConfigText);
     function getHostFromLocation() {
         return location.protocol + '//' + location.host;
     }
 
     var mod = {};
-    mod.getHostParam = getHostParam;
-    
-    var webidaHost = (typeof window !== 'undefined' && window && window.webida_host) ||
-        getParamByName('webida.host') || readCookie('webida.host') || getHostFromLocation() || 'https://webida.org';
-    var fsServer = getHostParam('webida.fsHostUrl', 'fs', webidaHost);
-    var authServer = getHostParam('webida.authHostUrl', 'auth', webidaHost);
-    var appServer = getHostParam('webida.appHostUrl', 'app', webidaHost);
-    var buildServer = getHostParam('webida.buildHostUrl', 'build', webidaHost);
-    var dbServer = getHostParam('webida.dbHostUrl', 'db', webidaHost);
-    var ntfServer = getHostParam('webida.ntfHostUrl', 'ntf', webidaHost);
-    var corsServer = getHostParam('webida.corsHostUrl', 'cors', webidaHost);
-    var connServer = getHostParam('webida.connHostUrl', 'conn', webidaHost);
 
-    var deploy = {
-        type: readCookie('webida.deploy.type') || 'domain',
-        pathPrefix: readCookie('webida.deploy.pathPrefix') || '-'
-    };
+    var webidaHost = getHostFromLocation();
+    var appServer = siteConfig.server.appServer;
+    var authServer = siteConfig.server.authServer;
+    var fsServer = siteConfig.server.fsServer;
+    var buildServer = siteConfig.server.buildServer;
+    var ntfServer =  siteConfig.server.ntfServer;
+    var connServer = siteConfig.server.connServer;
+    var corsServer = siteConfig.server.corsServer;
+    var deploy = siteConfig.server.deploy;
+
     /**
      * webida config object
      * @name conf
@@ -122,21 +60,20 @@ var ENV_TYPE;
      */
     mod.conf = {
         webidaHost: webidaHost,
-        fsServer: fsServer,
-        authServer: authServer,
         appServer: appServer,
+        authServer: authServer,
+        fsServer: fsServer,
         buildServer: buildServer,
         ntfServer: ntfServer,
+        connServer: connServer,
         corsServer: corsServer,
-        fsApiBaseUrl: fsServer + '/webida/api/fs',
+        appApiBaseUrl : appServer + '/webida/api/app',
         authApiBaseUrl: authServer + '/webida/api/oauth',
-        appApiBaseUrl: appServer + '/webida/api/app',
-        dbApiBaseUrl: dbServer + '/webida/api/db',
-        buildApiBaseUrl: buildServer + '/webida/api/build',
         aclApiBaseUrl: authServer + '/webida/api/acl',
         groupApiBaseUrl: authServer + '/webida/api/group',
-        connServer: connServer,
-        deploy: deploy
+        fsApiBaseUrl: fsServer + '/webida/api/fs',
+        buildApiBaseUrl: buildServer + '/webida/api/build',
+        deploy: siteConfig.server.deploy
     };
 
     /**
@@ -1081,6 +1018,123 @@ var ENV_TYPE;
     };
     var FileSystem = mod.FSService.FileSystem;
 
+    // some private util functions for FS Service
+    // moved here for js-hint errors. 
+    function createBlobObject(data, type) {
+        var blob;
+
+        try {
+            blob = new Blob([data], { 'type': type });
+        } catch (e) {
+            console.error('Failed to create Blob, trying by BlobBuilder...', e);
+            // TypeError old chrome and FF
+            window.BlobBuilder = window.BlobBuilder ||
+                window.WebKitBlobBuilder ||
+                window.MozBlobBuilder ||
+                window.MSBlobBuilder;
+            if (window.BlobBuilder) {
+                var bb = new window.BlobBuilder();
+                bb.append(data);
+                blob = bb.getBlob(type);
+            } else {
+                // We're screwed, blob constructor unsupported entirely
+                console.error('Finally failed to create Blob');
+            }
+        }
+        return blob;
+    }
+
+    function ajaxCall(opts) {
+        function serialize(obj) {
+            var str = [];
+            for (var p in obj) {
+                if (obj.hasOwnProperty(p)) {
+                    str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+                }
+            }
+            return str.join('&');
+        }
+        if (!opts.callback) {
+            throw new Error('callback must be set');
+        }
+        if (!opts.url) {
+            console.assert(false, 'URL field must be set');
+            return;
+        }
+
+        //var CRLF = '\r\n';
+        var url = opts.url;
+        var data = null;
+        var method = opts.type || 'GET';
+
+        if (typeof opts.data === 'object' && !(opts.data instanceof FD)) {
+            if (method === 'POST' || method === 'DELETE') {
+                data = serialize(opts.data);
+            } else {
+                url = opts.url + '?' + serialize(opts.data);
+            }
+        } else {
+            data = opts.data;
+        }
+
+        //console.log('ajaxCall', opts);
+        var xhr = new XHR();
+        xhr.open(method, url, true);
+        if (opts.responseType) {
+            xhr.responseType = opts.responseType;
+        }
+        xhr.withCredentials = true; // Should be after xhr.open(). Otherwise InvalidStateError occurs in IE11.
+        if (!isAnonymousMode) {
+            xhr.setRequestHeader('Authorization', token.data);
+        }
+        // In case of FD, xhr generates Content-Type automatically
+        if (!(opts.data instanceof FD)) {
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        }
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            //console.log('onreadystatechange', xhr.readyState, xhr.status, xhr.responseText);
+            if (xhr.readyState === 4) {
+                var status = xhr.status;
+                // Only 2XX and 304 are successful status code. In this case, retData.result should be 'failed'
+                var successful = status >= 200 && status < 300 || status === 304;
+                // if opts.success exists and request succeeded, call it with whole response text.
+                if (successful && opts.callbackWithRawData) {
+                    if (opts.responseType === '' || opts.responseType === 'text') {
+                        opts.callbackWithRawData(xhr.responseText);
+                    } else {
+                        opts.callbackWithRawData(xhr.response);
+                    }
+                    return;
+                }
+
+                if (status === 0) {
+                    opts.callback('server unreachable');
+                    return;
+                }
+
+                var retData;
+                try {
+                    retData = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    console.error(e, 'Invalid server return', xhr.responseText);
+                    retData = {result: 'failed', reason: 'Invalid server return: ' + xhr.responseText};
+                }
+
+                if (successful) {
+                    if (retData.result === 'ok') {
+                        opts.callback(null, retData.data);
+                    } else {
+                        console.error('Here shouldn\'t be reached. Invalid status code is set for failed response.');
+                        opts.callback(retData.reason || 'Unknown error');
+                    }
+                } else {
+                    opts.callback(retData.reason || 'Unknown reason');
+                }
+
+            }
+        };
+    }
     /**
     * Get the current usage of filesystem
     *
@@ -4111,121 +4165,7 @@ var ENV_TYPE;
         api.apply(this, params);
     };
 
-    function createBlobObject(data, type) {
-        var blob;
 
-        try {
-            blob = new Blob([data], { 'type': type });
-        } catch (e) {
-            console.error('Failed to create Blob, trying by BlobBuilder...', e);
-            // TypeError old chrome and FF
-            window.BlobBuilder = window.BlobBuilder ||
-                window.WebKitBlobBuilder ||
-                window.MozBlobBuilder ||
-                window.MSBlobBuilder;
-            if (window.BlobBuilder) {
-                var bb = new window.BlobBuilder();
-                bb.append(data);
-                blob = bb.getBlob(type);
-            } else {
-                // We're screwed, blob constructor unsupported entirely
-                console.error('Finally failed to create Blob');
-            }
-        }
-        return blob;
-    }
-
-    function ajaxCall(opts) {
-        function serialize(obj) {
-            var str = [];
-            for (var p in obj) {
-                if (obj.hasOwnProperty(p)) {
-                    str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-                }
-            }
-            return str.join('&');
-        }
-        if (!opts.callback) {
-            throw new Error('callback must be set');
-        }
-        if (!opts.url) {
-            console.assert(false, 'URL field must be set');
-            return;
-        }
-
-        //var CRLF = '\r\n';
-        var url = opts.url;
-        var data = null;
-        var method = opts.type || 'GET';
-
-        if (typeof opts.data === 'object' && !(opts.data instanceof FD)) {
-            if (method === 'POST' || method === 'DELETE') {
-                data = serialize(opts.data);
-            } else {
-                url = opts.url + '?' + serialize(opts.data);
-            }
-        } else {
-            data = opts.data;
-        }
-
-        //console.log('ajaxCall', opts);
-        var xhr = new XHR();
-        xhr.open(method, url, true);
-        if (opts.responseType) {
-            xhr.responseType = opts.responseType;
-        }
-        xhr.withCredentials = true; // Should be after xhr.open(). Otherwise InvalidStateError occurs in IE11.
-        if (!isAnonymousMode) {
-            xhr.setRequestHeader('Authorization', token.data);
-        }
-        // In case of FD, xhr generates Content-Type automatically
-        if (!(opts.data instanceof FD)) {
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        }
-        xhr.send(data);
-        xhr.onreadystatechange = function () {
-            //console.log('onreadystatechange', xhr.readyState, xhr.status, xhr.responseText);
-            if (xhr.readyState === 4) {
-                var status = xhr.status;
-                // Only 2XX and 304 are successful status code. In this case, retData.result should be 'failed'
-                var successful = status >= 200 && status < 300 || status === 304;
-                // if opts.success exists and request succeeded, call it with whole response text.
-                if (successful && opts.callbackWithRawData) {
-                    if (opts.responseType === '' || opts.responseType === 'text') {
-                        opts.callbackWithRawData(xhr.responseText);
-                    } else {
-                        opts.callbackWithRawData(xhr.response);
-                    }
-                    return;
-                }
-
-                if (status === 0) {
-                    opts.callback('server unreachable');
-                    return;
-                }
-
-                var retData;
-                try {
-                    retData = JSON.parse(xhr.responseText);
-                } catch (e) {
-                    console.error(e, 'Invalid server return', xhr.responseText);
-                    retData = {result: 'failed', reason: 'Invalid server return: ' + xhr.responseText};
-                }
-
-                if (successful) {
-                    if (retData.result === 'ok') {
-                        opts.callback(null, retData.data);
-                    } else {
-                        console.error('Here shouldn\'t be reached. Invalid status code is set for failed response.');
-                        opts.callback(retData.reason || 'Unknown error');
-                    }
-                } else {
-                    opts.callback(retData.reason || 'Unknown reason');
-                }
-
-            }
-        };
-    }
 
     /**
      * Default FS Service instance
@@ -4303,4 +4243,4 @@ var ENV_TYPE;
     }
 
     return mod;
-}));
+});
