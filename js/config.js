@@ -16,7 +16,7 @@
 
 /* global require:true */
 /* exported require */
-window.require = require || {
+require = {
     baseUrl: '../js',
     paths: {
         'async': '../bower_components/async/dist/async.min',
