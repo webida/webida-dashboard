@@ -28,7 +28,7 @@ define([
 
     var WORKSPACE_PATH = '/';
     var fsid;
-    var WORKSPACE_DIR = '/.workspace';
+    var WORKSPACE_DIR = '.workspace';
 
     $.extend(WorkspaceManager.prototype, {
 
@@ -74,7 +74,7 @@ define([
 
         createWorkspace: function (name /*, desc*/ ) {
             // TODO should save desc when createWorkspace. Later, use desc parameter.
-            var WS_META_PATH = name + WORKSPACE_DIR; 
+            var WS_META_PATH = name + '/' + WORKSPACE_DIR; 
             var WS_META_FILE = WS_META_PATH + '/workspace.json';
             console.log('createWorkspace', name);
 
