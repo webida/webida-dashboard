@@ -50,7 +50,6 @@ define([
     var ntfServer =  siteConfig.server.ntfServer;
     var connServer = siteConfig.server.connServer;
     var corsServer = siteConfig.server.corsServer;
-    var deploy = siteConfig.server.deploy;
 
     /**
      * webida config object
