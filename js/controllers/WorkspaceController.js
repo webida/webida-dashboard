@@ -325,7 +325,8 @@ define([
                 self.works.status.quotaLimit = quota.limit;
                 self.renderStatus();
             }).catch(function (e) {
-                notify.alert('error', e, 'danger');
+                // TODO: fix server's quota handle logic(`fs/lib/linuxfs/default.js`)
+                //notify.alert('error', e, 'danger');
                 console.log(e);
             });
         },
